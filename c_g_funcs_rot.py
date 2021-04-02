@@ -10,7 +10,6 @@ import scipy.special as special
 
 import time
 
-
 import multiprocessing as mp
 
 import functools
@@ -21,7 +20,7 @@ from funcs_calc_moments_rot import calcS3_x_gradnew2, calcS3_x_neigh_gradnew2, c
 from funcs_calc_lists import calclist2_all, calclist3_all
 from psf_functions_2d import fourier_bessel_expansion, evaluate_psf_full
 
-def calc_acs_grads_rot_triplets_parallel(Bk, z, kvals, L, k1_map, map3):
+def calc_acs_grads_rot_parallel(Bk, z, kvals, L, k1_map, map3):
     # Calclulations of all needed autocorrelations and gradients, utilizing parallel processing
     kmax = np.max(kvals)
     Nmax = 6*kmax
@@ -34,7 +33,7 @@ def calc_acs_grads_rot_triplets_parallel(Bk, z, kvals, L, k1_map, map3):
 
     return S2_x, gS2_x, S2_x_neigh, gS2_x_neigh, S3_x, gS3_x, S3_x_neigh, gS3_x_neigh, S3_x_triplets, gS3_x_triplets
 
-def calc_acs_grads_rot_triplets(Bk, z, kvals, L, k1_map=None, map3=None):
+def calc_acs_grads_rot_notparallel(Bk, z, kvals, L, k1_map=None, map3=None):
     # Calclulations of all needed autocorrelations and gradients, without utilizing parallel processing (faster for smaller images)
   
     kmax = np.max(kvals)
@@ -55,23 +54,23 @@ def calc_acs_grads_rot_triplets(Bk, z, kvals, L, k1_map=None, map3=None):
     
     return S2_x, gS2_x, S2_x_neigh, gS2_x_neigh, S3_x, gS3_x, S3_x_neigh, gS3_x_neigh, S3_x_triplets, gS3_x_triplets
 
-def cost_grad_fun_2d_known_psf_tripletsnew(Z, Bk, T, kvals, M1data, M2data, M3data, sigma2, ExtraMat2, ExtraMat3, tsfMat, L, K, N_mat=None, k1_map=None, map3=None):
+def cost_grad_fun_rot_parallel(Z, Bk, T, kvals, M1data, M2data, M3data, sigma2, ExtraMat2, ExtraMat3, tsfMat, L, K, N_mat=None, k1_map=None, map3=None):
     start = time.time()
     gamma = Z[:K]
     c = Z[K:]
     z = T.H@c
     
-    S2_x, gS2_x, S2_x_neigh, gS2_x_neigh, S3_x, gS3_x, S3_x_neigh, gS3_x_neigh, S3_x_triplets, gS3_x_triplets = calc_acs_grads_rot_triplets_parallel(Bk, z, kvals, L, k1_map, map3)
+    S2_x, gS2_x, S2_x_neigh, gS2_x_neigh, S3_x, gS3_x, S3_x_neigh, gS3_x_neigh, S3_x_triplets, gS3_x_triplets = calc_acs_grads_rot_parallel(Bk, z, kvals, L, k1_map, map3)
     w1 = 1/2 
     w2 = 1/(2*L**2)
     w3 = 1/(2*L**4)
 
-    # %% First-order moment, forward model
+    # %% First-order moment
     S1 = np.real(np.sum(np.fft.ifftn(Bk @ z), axis=(0, 1))/(L**2))
     gS1 = np.real(np.sum(np.fft.ifftn(Bk, axes=(0,1)), axis=(0, 1))/(L**2) @ T.H)
     R1 = gamma*S1 - M1data
     
-    # %% Second-order moment, forward model
+    # %% Second-order moment
     S2 = np.real(S2_x[ :L, :L] + np.reshape(ExtraMat2*S2_x_neigh.flatten(), (L, L)))
     gS2 = np.real((np.reshape(gS2_x[ :L, :L, :], (L**2, len(z))) + ExtraMat2*np.reshape(gS2_x_neigh, ((2*L-1)**2, len(z)))) @ T.H)
     R2 = gamma*S2 - M2data
@@ -79,7 +78,7 @@ def cost_grad_fun_2d_known_psf_tripletsnew(Z, Bk, T, kvals, M1data, M2data, M3da
     # Noise
     R2[0, 0] += sigma2
 
-    # %% Third-order moment, forward model
+    # %% Third-order moment
     S3 = np.real(S3_x[ :L, :L, :L, :L] + np.reshape(ExtraMat3*S3_x_neigh.flatten(), (L, L, L, L)) + np.reshape(tsfMat*S3_x_triplets.flatten(), (L, L, L, L)))
     gS3 = np.real((np.reshape(gS3_x[ :L, :L, :L, :L, :], (L**4, len(z))) + ExtraMat3*np.reshape(gS3_x_neigh, ((2*L-1)**4, len(z)))  + tsfMat*np.reshape(gS3_x_triplets, ((2*L-1)**4, len(z)))) @ T.H)
     
@@ -110,22 +109,22 @@ def cost_grad_fun_2d_known_psf_tripletsnew(Z, Bk, T, kvals, M1data, M2data, M3da
       
     return f, np.concatenate((np.reshape(g_gamma, (K,)), g_c))
 
-def cost_grad_fun_2d_known_psf_tripletsnotparallelnew(Z, Bk, T, kvals, M1data, M2data, M3data, sigma2, ExtraMat2, ExtraMat3, tsfMat, L, K, N_mat=None, k1_map=None, map3=None):
+def cost_grad_fun_rot_notparallel(Z, Bk, T, kvals, M1data, M2data, M3data, sigma2, ExtraMat2, ExtraMat3, tsfMat, L, K, N_mat=None, k1_map=None, map3=None):
     gamma = Z[:K]
     c = Z[K:]
     z = T.H@c
 
-    S2_x, gS2_x, S2_x_neigh, gS2_x_neigh, S3_x, gS3_x, S3_x_neigh, gS3_x_neigh, S3_x_triplets, gS3_x_triplets = calc_acs_grads_rot_triplets(Bk, z, kvals, L, k1_map, map3)
+    S2_x, gS2_x, S2_x_neigh, gS2_x_neigh, S3_x, gS3_x, S3_x_neigh, gS3_x_neigh, S3_x_triplets, gS3_x_triplets = calc_acs_grads_rot_notparallel(Bk, z, kvals, L, k1_map, map3)
     w1 = 1/2 
     w2 = 1/(2*L**2)
     w3 = 1/(2*L**4)
 
-    # %% First-order moment, forward model
+    # %% First-order moment
     S1 = np.real(np.sum(np.fft.ifftn(Bk @ z), axis=(0, 1))/(L**2))
     gS1 = np.real(np.sum(np.fft.ifftn(Bk, axes=(0,1)), axis=(0, 1))/(L**2) @ T.H)
     R1 = gamma*S1 - M1data
     
-    # %% Second-order moment, forward model
+    # %% Second-order moment
     S2 = np.real(S2_x[ :L, :L] + np.reshape(ExtraMat2*S2_x_neigh.flatten(), (L, L)))
     gS2 = np.real((np.reshape(gS2_x[ :L, :L, :], (L**2, len(z))) + ExtraMat2*np.reshape(gS2_x_neigh, ((2*L-1)**2, len(z)))) @ T.H)
     R2 = gamma*S2 - M2data
@@ -133,7 +132,7 @@ def cost_grad_fun_2d_known_psf_tripletsnotparallelnew(Z, Bk, T, kvals, M1data, M
     # Noise
     R2[0, 0] += sigma2
 
-    # %% Third-order moment, forward model
+    # %% Third-order moment
     S3 = np.real(S3_x[ :L, :L, :L, :L] + np.reshape(ExtraMat3*S3_x_neigh.flatten(), (L, L, L, L)) + np.reshape(tsfMat*S3_x_triplets.flatten(), (L, L, L, L)))
     gS3 = np.real((np.reshape(gS3_x[ :L, :L, :L, :L, :], (L**4, len(z))) + ExtraMat3*np.reshape(gS3_x_neigh, ((2*L-1)**4, len(z)))  + tsfMat*np.reshape(gS3_x_triplets, ((2*L-1)**4, len(z)))) @ T.H)
     
@@ -159,4 +158,4 @@ def cost_grad_fun_2d_known_psf_tripletsnotparallelnew(Z, Bk, T, kvals, M1data, M
     g_gamma3 = 2*w3*np.sum(S3*R3)
     g_gamma = g_gamma1 + g_gamma2 + g_gamma3
     
-    return f, np.concatenate((np.reshape(g_gamma, (K,)), g_c)) # 
+    return f, np.concatenate((np.reshape(g_gamma, (K,)), g_c))

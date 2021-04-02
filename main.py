@@ -355,7 +355,7 @@ if __name__ == '__main__':
     # %% Change psf and tsf
     start = time.time()
     
-    X_est_change, psf_estimated_change, tsf_estimated_change = optimization_funcs_rot.optimize_2d_x_update_psf_tsfnotparallelnew(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, W, N, iters_till_change=150, gtol=1e-15)
+    X_est_change, psf_estimated_change, tsf_estimated_change = optimization_funcs_rot.optimize_rot_Algorithm1_notparallel(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, W, N, iters_till_change=150, gtol=1e-15)
 
     time_passed = time.time() - start
     print(f'Time passed: {time_passed} secs')

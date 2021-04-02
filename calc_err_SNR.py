@@ -86,9 +86,9 @@ def calc_err_SNR(L, ne, N, SNRs, sd):
                     for j2 in range(L):
                         M3_y[i1, j1, i2, j2] = M3_2d(yy, (i1, j1), (i2, j2))
     
-        X_est1, _, _ = optimization_funcs_rot.optimize_2d_x_update_psf_tsfnotparallelnew(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial1)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, W, 10000) 
-        X_est2, _, _ = optimization_funcs_rot.optimize_2d_x_update_psf_tsfnotparallelnew(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial2)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, W, 10000) 
-        X_est3, _, _ = optimization_funcs_rot.optimize_2d_x_update_psf_tsfnotparallelnew(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial3)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, W, 10000) 
+        X_est1, _, _ = optimization_funcs_rot.optimize_rot_Algorithm1_notparallel(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial1)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, W, 10000) 
+        X_est2, _, _ = optimization_funcs_rot.optimize_rot_Algorithm1_notparallel(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial2)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, W, 10000) 
+        X_est3, _, _ = optimization_funcs_rot.optimize_rot_Algorithm1_notparallel(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial3)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, W, 10000) 
 
         c_est1 = X_est1.x[1:]
         z_est1 = T.H @ c_est1
