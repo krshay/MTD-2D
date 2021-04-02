@@ -118,7 +118,7 @@ def calcS3_x_triplets_gradnew2(L, Nmax, Bk, z, kvals, map3):
     gS3_x_triplets = np.fft.ifftn(gS3_k_triplets, axes=(0,1,2,3)) / (L**2)
     return S3_x_triplets, gS3_x_triplets
 
-def calcS2_x_grad(L, Nmax, Bk, z, kvals, k1_map):
+def calcS2_x_grad_notparallel(L, Nmax, Bk, z, kvals, k1_map):
     S2_k = np.zeros((2*L-1, 2*L-1), dtype=np.complex_)
     gS2_k = np.zeros((2*L-1, 2*L-1, len(z)), dtype=np.complex_)
     
@@ -134,7 +134,7 @@ def calcS2_x_grad(L, Nmax, Bk, z, kvals, k1_map):
     return S2_x, gS2_x
 
 
-def calcS2_x_neigh_grad(L, Bk, z, kvals, k1_map):
+def calcS2_x_neigh_grad_notparallel(L, Bk, z, kvals, k1_map):
     S2_k_neigh = np.zeros((2*L-1, 2*L-1), dtype=np.complex_)
     gS2_k_neigh = np.zeros((2*L-1, 2*L-1, len(z)), dtype=np.complex_)
     
