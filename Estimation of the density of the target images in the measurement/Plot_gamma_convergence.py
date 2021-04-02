@@ -20,19 +20,15 @@ from makeExtraMat import makeExtraMat
 from maketsfMat import maketsfMat
 
 # %% loads
-errs_approx_009 = np.load('Results/gamma_exp/errs_approx_009.npy')
+errs_approx_009 = np.load('../Results/gamma_exp/errs_approx_009.npy')
 errs_approx_009 = errs_approx_009 / 100
-errs_approx_011 = np.load('Results/gamma_exp/errs_approx_011.npy')
-errs_true_009 = np.load('Results/gamma_exp/errs_true_009.npy')
+errs_true_009 = np.load('../Results/gamma_exp/errs_true_009.npy')
 errs_true_009 = errs_true_009 / 100
-errs_true_011 = np.load('Results/gamma_exp/errs_true_011.npy')
-errs_well_separated_009 = np.load('Results/gamma_exp/errs_well_separated_009.npy')
+errs_well_separated_009 = np.load('../Results/gamma_exp/errs_well_separated_009.npy')
 errs_well_separated_009 = errs_well_separated_009 / 100
-history_approx_009 = np.load('Results/gamma_exp/history_approx_009.npy')
-history_approx_011 = np.load('Results/gamma_exp/history_approx_011.npy')
-history_true_009 = np.load('Results/gamma_exp/history_true_009.npy')
-history_true_011 = np.load('Results/gamma_exp/history_true_011.npy')
-history_well_separated_009 = np.load('Results/gamma_exp/history_well_separated_009.npy')
+history_approx_009 = np.load('../Results/gamma_exp/history_approx_009.npy')
+history_true_009 = np.load('../Results/gamma_exp/history_true_009.npy')
+history_well_separated_009 = np.load('../Results/gamma_exp/history_well_separated_009.npy')
 
 # %% plots
 with plt.style.context('ieee'):

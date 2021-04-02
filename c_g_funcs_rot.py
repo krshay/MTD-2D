@@ -16,7 +16,7 @@ import functools
 
 from makeExtraMat import makeExtraMat
 
-from funcs_calc_moments_rot import calcS3_x_gradnew2, calcS3_x_neigh_gradnew2, calcS3_x_triplets_gradnew2,  calcS2_x_grad, calcS2_x_neigh_grad, calck1,  calcN_mat, calcmap3, calcS3_x_grad_neigh_triplets_parallel
+from funcs_calc_moments_rot import calcS3_x_gradnew2, calcS3_x_neigh_gradnew2, calcS3_x_triplets_gradnew2,  calcS2_x_grad_notparallel, calcS2_x_neigh_grad_notparallel, calck1,  calcN_mat, calcmap3, calcS3_x_grad_neigh_triplets_parallel
 from psf_functions_2d import fourier_bessel_expansion, evaluate_psf_full
 
 def calc_acs_grads_rot_parallel(Bk, z, kvals, L, k1_map, map3):
@@ -26,9 +26,9 @@ def calc_acs_grads_rot_parallel(Bk, z, kvals, L, k1_map, map3):
     S3_x, gS3_x, S3_x_neigh, gS3_x_neigh, S3_x_triplets, gS3_x_triplets = calcS3_x_grad_neigh_triplets_parallel(L, Nmax, Bk, z, kvals, map3)
             
     Nmax = 4*kmax
-    S2_x, gS2_x = calcS2_x_grad(L, Nmax, Bk, z, kvals, k1_map)
+    S2_x, gS2_x = calcS2_x_grad_notparallel(L, Nmax, Bk, z, kvals, k1_map)
     
-    S2_x_neigh, gS2_x_neigh = calcS2_x_neigh_grad(L, Bk, z, kvals, k1_map)
+    S2_x_neigh, gS2_x_neigh = calcS2_x_neigh_grad_notparallel(L, Bk, z, kvals, k1_map)
 
     return S2_x, gS2_x, S2_x_neigh, gS2_x_neigh, S3_x, gS3_x, S3_x_neigh, gS3_x_neigh, S3_x_triplets, gS3_x_triplets
 

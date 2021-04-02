@@ -15,6 +15,20 @@ import multiprocessing as mp
 from psf_functions_2d import evaluate_psf_full
 import psf_functions_2d
 
+def calck1k2k3(L):
+    kmap = list(itertools.product(np.arange(2*L-1), np.arange(2*L-1)))
+    k2map = list(itertools.product(kmap, kmap))
+    k1k2k3_map = []
+    for k2 in k2map:
+        shift1 = k2[0]
+        shift2 = k2[1]
+        idx3x = (-shift1[0] - shift2[0]) % (2*L - 1)
+        idx3y = (-shift1[1] - shift2[1]) % (2*L - 1)
+        shift3 = (idx3x, idx3y)
+        k1k2k3_map.append((shift1, shift2, shift3))
+    
+    return k1k2k3_map
+
 
 def calcmap3(L):
     k1k2k3_map = calck1k2k3(L)
