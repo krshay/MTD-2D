@@ -176,55 +176,6 @@ def min_err_coeffs(z, z_est, kvals):
         errs[t] = np.linalg.norm(z-z_est_rot, ord=2)/np.linalg.norm(z, ord=2)
     return np.min(errs), thetas[np.argmin(errs)]
 
-import c_g_funcs_rot
-import funcs_calc_moments_rot
-def calc_jac(Z, Bk, kvals, sigma2, ExtraMat, psf, L, K, N_mat, k1_map, k1k2k3_map):
-    ############
-    # NO NOISE #
-    ############
-    
-    # t1 = time.time()
-    gamma = np.real(Z[:K])###### NOTICE for K > 1
-    z_all = Z[K:] ###### NOTICE for K > 1
-    z = z_all[:len(z_all)//2] + 1j*z_all[len(z_all)//2:]
-
-    # st = time.time()
-    S2_x, gS2_x, S2_x_neigh, gS2_x_neigh, S3_x, gS3_x, S3_x_neigh, gS3_x_neigh = c_g_funcs_rot.calc_acs_grads_rot(Bk, z, kvals, L, k1_map, k1k2k3_map)
-    # print(f'Elapsed time for computation of moments and their gradients {time.time() - st} secs')
-    
-    # %% First-order moment, forward model
-    S1 = np.sum(np.fft.ifftn(Bk @ z), axis=(0, 1))/(L**2)
-    gS1 = np.sum(np.fft.ifftn(Bk, axes=(0,1)), axis=(0, 1))/(L**2)
-    
-    # %% Second-order moment, forward model
-    S2 = np.zeros((L, L), dtype=np.complex_)
-    gS2 = np.zeros((L, L, len(z)), dtype=np.complex_)
-    for i1 in range(L):
-        for j1 in range(L):
-                S2[i1, j1], gS2[i1, j1, :] = funcs_calc_moments_rot.calcS2_grad_full_shift((j1, i1), S2_x, gS2_x, S2_x_neigh, gS2_x_neigh, L, psf)
-    
-    # %% Third-order moment, forward model
-    # st = time.time()
-    S3 = np.zeros((L, L, L, L), dtype=np.complex_)
-    gS3 = np.zeros((L, L, L, L, len(z)), dtype=np.complex_)
-    S3 = S3_x[ :L, :L, :L, :L] + np.reshape(ExtraMat*S3_x_neigh.flatten(), (L, L, L, L))
-    gS3 = gS3_x[ :L, :L, :L, :L, :] + np.reshape(ExtraMat*np.reshape(gS3_x_neigh, ((2*L-1)**4, len(z))), (L, L, L, L, len(z)))
-    # print(f'Elapsed time for computation of sums {time.time() - st} secs')
-
-    s1 = S1.flatten()
-    s2 = S2.flatten()
-    s3 = S3.flatten()
-    gs1 = gamma * np.reshape(gS1, (1, len(z)))
-    gs2 = gamma * np.reshape(gS2, (L**2, len(z)))
-    gs3 = gamma * np.reshape(gS3, (L**4, len(z)))
-    jac = np.zeros((1 + L**2 + L**4, 1 + len(z)), dtype=np.complex_)
-    jac[0,0] = s1
-    jac[1:1+L**2, 0] = s2
-    jac[-L**4:, 0] = s3
-    jac[0, 1:] = gs1
-    jac[1:1+L**2, 1:] = gs2
-    jac[-L**4:, 1:] = gs3
-    return jac
 
 def calcT(nu, kvals):
     v = np.zeros(2*nu).astype(np.complex)

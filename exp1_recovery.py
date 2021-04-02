@@ -17,19 +17,18 @@ from fb_funcs import expand_fb, rot_img, min_err_rots, min_err_coeffs, calcT
 from generate_clean_micrograph_2d import generate_clean_micrograph_2d_one_neighbor_rots, generate_clean_micrograph_2d_rots
 import optimization_funcs_rot
 
-from calcM3_parallel import calcM3_parallel
+from calcM3_parallel import calcM3_parallel, calcM3_parallel_ver2
 
 plt.close("all")
 random.seed(100)
 if __name__ == '__main__':
     X = plt.imread("images/molecule9.png")
     L = np.shape(X)[0]
-    X = X / np.linalg.norm(X)
     W = L # L for arbitrary spacing distribution, 2*L-1 for well-separated
 
-    N = 4000
-    NumMicrographs = 1
-    ne = 50
+    N = 50000
+    # NumMicrographs = 1
+    ne = 40
     B, z, roots, kvals, nu = expand_fb(X, ne)
     T = calcT(nu, kvals)
     BT = B @ T.H
@@ -44,37 +43,42 @@ if __name__ == '__main__':
     gamma = 0.1
     SNR = 10
     sigma2 = np.linalg.norm(Xrec)**2 / (SNR * np.pi * (L//2)**2)
+    sigma2 = 0
     
-    t_acs_start = time.time()
-    M1_ys, M2_ys, M3_ys = calcM3_parallel(L, sigma2, gamma, c, kvals, Bk, W, T, N, NumMicrographs)
-    t_acs_finish = time.time() - t_acs_start
+    # t_acs_start = time.time()
+    # M1_y, M2_y, M3_y, y = calcM3_parallel_ver2(L, sigma2, gamma, c, kvals, Bk, W, T, N)
+    # t_acs_finish = time.time() - t_acs_start
     
-    M1_y = np.mean(M1_ys)
+    # np.save('Results/Recovery/M1_ys_9_SNRinf.npy', M1_y)
     
-    M2_y = np.mean(M2_ys, axis=0)
-
-    M3_y = np.mean(M3_ys, axis=0)
+    # np.save('Results/Recovery/M2_ys_9_SNRinf.npy', M2_y)
     
-    # np.save('Results/Recovery/M1_ys_molecule13_SNR10.npy', M1_ys)
+    # np.save('Results/Recovery/M3_ys_9_SNRinf.npy', M3_y)
     
-    # np.save('Results/Recovery/M2_ys_molecule13_SNR10.npy', M2_ys)
+    # print("all saved")
     
-    # np.save('Results/Recovery/M3_ys_molecule13_SNR10.npy', M3_ys)
+    M1_y = np.load('Results/Recovery/M1_ys_9_SNRinf.npy')
     
-    print("all_saved")
+    M2_y = np.load('Results/Recovery/M2_ys_9_SNRinf.npy')
+    
+    M3_y = np.load('Results/Recovery/M3_ys_9_SNRinf.npy')
+    
+    print("all loaded")
     
     gamma_initial = 0.09
     X_initial = np.random.rand(L, L)
-    X_initial = X_initial / np.linalg.norm(X_initial)
+    X_initial = np.linalg.norm(Xrec) * X_initial / np.linalg.norm(X_initial)
     
     _, z_initial, _, _, _ = expand_fb(X_initial, ne)
     c_initial = np.real(T @ z_initial)
+    
     start = time.time()
     
-    X_est, psf_estimated, tsf_estimated = optimization_funcs_rot.optimize_rot_Algorithm1_notparallel(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, W, N, iters_till_change=150, gtol=1e-15)
+    X_est, psf_estimated, tsf_estimated = optimization_funcs_rot.optimize_2d_x_update_psf_tsfnew(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, W, N, iters_till_change=100, gtol=1e-15, max_iter=1700)
 
     time_passed = time.time() - start
     print(f'Time passed: {time_passed} secs')
+    
     gamma_est = X_est.x[0] 
     c_est = X_est.x[1:]
     z_est = T.H@c_est
@@ -99,3 +103,4 @@ if __name__ == '__main__':
     plt.title('Estimated')
     plt.xticks([])
     plt.yticks([])
+    
