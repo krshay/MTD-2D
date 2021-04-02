@@ -10,18 +10,15 @@ from scipy.optimize import minimize, check_grad
 import multiprocessing as mp
 import c_g_funcs_rot
 import psf_functions_2d as psf_funcs
-from funcs_calc_moments_rot import calck1k2k3, calcmap3, calck1k2k3_binned, calck1, calcN_mat
+from funcs_calc_moments_rot import calcmap3, calck1, calcN_mat
 from makeExtraMat import makeExtraMat
 from maketsfMat import maketsfMat
 from maketsfMat_parallel import maketsfMat_parallel
-from matGradCoeffs_psf import matGradCoeffs_psf
 import scipy.special as special
 from generate_clean_micrograph_2d import generate_clean_micrograph_2d_one_neighbor_rots, generate_clean_micrograph_2d_rots
 
 import psf_functions_2d
 import tsf_functions_2d
-
-import stochastic_optimizers
 
 def optimize_2d_known_psf_triplets(initial_guesses, Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, K, tsfMat, ExtraMat2, ExtraMat3, numiters=3000, gtol=1e-15):
     # Optimization assuming known psf and tsf, and all matrices already computed

@@ -13,36 +13,26 @@ import random
 
 from PIL import Image
 
-from fb_funcs import expand_fb, rot_img, min_err_rots, min_err_coeffs, calc_jac, rot_img_freq, calcT, rot_img_freqT
+from fb_funcs import expand_fb, rot_img, min_err_rots, min_err_coeffs, rot_img_freq, calcT, rot_img_freqT
 from generate_clean_micrograph_2d import generate_clean_micrograph_2d_one_neighbor_rots, generate_clean_micrograph_2d_rots
 from funcs_calc_moments import M2_2d, M3_2d
-from funcs_calc_moments_rot import calck1k2k3, calcmap3, calck1k2k3_binned, calck1, calcS3_x, calcS3_x_neigh, calcS3_full_shift, calcS3_grad_full_shift, calcS3_x_grad, calcS3_x_grad_binned, calcS3_x_neigh_grad, calcS3_x_neigh_grad_binned, calcS2_grad_full_shift, calcS2_x_grad, calcS2_x_neigh_grad, calcN_mat
+from funcs_calc_moments_rot import calcmap3, calck1
 from psf_functions_2d import full_psf_2d, coeffs_initial_guess, calc_psf_from_coeffs
 from tsf_functions_2d import full_tsf_2d
-from costgrad import check_moments
 import optimization_funcs_rot
 import funcs_calc_moments_rot
 from calc_estimation_error import calc_estimation_error
-from generate_signal import generate_signal
 from makeExtraMat import makeExtraMat
 from maketsfMat import maketsfMat
-
-from c_g_funcs_rot import calc_acs_grads_rot_parallel, calc_acs_grads_rot
-
-import phantominator
 
 random.seed(150)
 
 plt.close("all")
 
 if __name__ == '__main__':
-    
-    # script_dir = os.path.dirname(__file__)
-    # rel_path = "images/molecule17.png"
-    # file_path = os.path.join(script_dir, rel_path)
-    X = plt.imread("images/tiger65.png")
-    # X = phantominator.ct_shepp_logan(17)
-    # X = np.load('X_data.npy')
+
+    X = plt.imread("../images/tiger65.png")
+
     L = np.shape(X)[0]
     X = L**2 * X / np.linalg.norm(X)
     W = L # L for arbitrary spacing distribution, 2*L-1 for well-separated

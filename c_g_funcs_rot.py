@@ -16,8 +16,7 @@ import functools
 
 from makeExtraMat import makeExtraMat
 
-from funcs_calc_moments_rot import calcS3_x_gradnew2, calcS3_x_neigh_gradnew2, calcS3_x_triplets_gradnew2, calcS3_x_grad_binned, calcS3_x_neigh_grad_binned, calck1k2k3, calcS3_grad_full_shift, calcS2_x_grad, calcS2_x_neigh_grad, calck1, calcS2_grad_full_shift, calck1, calcS2_grad_full_shift, calcN_mat, calcS3_x_grad_parallel, calcS2_grad_full_shift_coeffs, calcS3_grad_full_shift_coeffs, calcS3_x_grad_k, calcS2_x_grad_k, calc_gpsf, calcmap3, calcS3_x_grad_neigh_triplets_parallel
-from funcs_calc_lists import calclist2_all, calclist3_all
+from funcs_calc_moments_rot import calcS3_x_gradnew2, calcS3_x_neigh_gradnew2, calcS3_x_triplets_gradnew2,  calcS2_x_grad, calcS2_x_neigh_grad, calck1,  calcN_mat, calcmap3, calcS3_x_grad_neigh_triplets_parallel
 from psf_functions_2d import fourier_bessel_expansion, evaluate_psf_full
 
 def calc_acs_grads_rot_parallel(Bk, z, kvals, L, k1_map, map3):
