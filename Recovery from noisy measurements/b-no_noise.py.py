@@ -17,7 +17,7 @@ from fb_funcs import expand_fb, rot_img, min_err_rots, min_err_coeffs, calcT
 from generate_clean_micrograph_2d import generate_clean_micrograph_2d_one_neighbor_rots, generate_clean_micrograph_2d_rots
 import optimization_funcs_rot
 
-from calcM3_parallel import calcM3_parallel, calcM3_parallel_ver2
+from calcM3_parallel_micrographs import calcM3_parallel_micrographs, calcM3_parallel_shifts
 
 plt.close("all")
 random.seed(100)
@@ -46,7 +46,7 @@ if __name__ == '__main__':
     sigma2 = 0
     
     # t_acs_start = time.time()
-    # M1_y, M2_y, M3_y, y = calcM3_parallel_ver2(L, sigma2, gamma, c, kvals, Bk, W, T, N)
+    # M1_y, M2_y, M3_y, y = calcM3_parallel_shifts(L, sigma2, gamma, c, kvals, Bk, W, T, N)
     # t_acs_finish = time.time() - t_acs_start
     
     # np.save('Results/Recovery/M1_ys_9_SNRinf.npy', M1_y)

@@ -6,5 +6,5 @@ save_non_project_files = False
 
 [main]
 version = 0.2.0
-recent_files = ['est_err_SNR.py', 'calc_err_SNR.py', 'Example_Micorgraph_Noise_Levels.py', 'exp_error_convergence.py', 'exp_gamma_convergence.py', 'exp1_recovery_plots.py']
+recent_files = ['Utils\\optimization_funcs_rot.py']
 

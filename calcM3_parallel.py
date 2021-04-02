@@ -10,20 +10,20 @@ import multiprocessing as mp
 
 from funcs_calc_moments import M2_2d
 
-from calc_3rdorder_ac import calc_3rdorder_ac, calc_3rdorder_ac_ver2
+from calc_M3_for_micrograph import calc_M3_for_micrograph, calc_M3_for_list
 
 from generate_clean_micrograph_2d import generate_clean_micrograph_2d_rots
 
 import itertools
 
-def calcM3_parallel(L, sigma2, gamma, c, kvals, Bk, W, T, N, NumMicrographs):
+def calcM3_parallel_micrographs(L, sigma2, gamma, c, kvals, Bk, W, T, N, NumMicrographs):
     print('Started calculations')
     ys = []
     M1_ys = np.zeros((NumMicrographs, ))
     M2_ys = np.zeros((NumMicrographs, L, L))
     M3_ys = np.zeros((NumMicrographs, L, L, L, L))
     for idx in range(NumMicrographs):
-        y_clean, _, _ = generate_clean_micrograph_2d_rots(c, kvals, Bk, W, L, N, gamma*(N/L)**2, T)
+        y_clean, _, _ = generate_clean_micrograph_2d_rots(c, kvals, Bk, W, L, N, gamma*(N/L)**2, T, seed=100)
         y = y_clean + np.random.default_rng().normal(loc=0, scale=np.sqrt(sigma2), size=np.shape(y_clean))
         yy = np.zeros((N, N, 1))
         yy[ :, :, 0] = y
@@ -41,7 +41,7 @@ def calcM3_parallel(L, sigma2, gamma, c, kvals, Bk, W, T, N, NumMicrographs):
     
     num_cpus = mp.cpu_count()
     pool = mp.Pool(num_cpus)
-    M3_ys_parallel = pool.starmap(calc_3rdorder_ac, [[L, y] for y in ys])
+    M3_ys_parallel = pool.starmap(calc_M3_for_micrograph, [[L, y] for y in ys])
     pool.close()
     pool.join()
     
@@ -50,9 +50,9 @@ def calcM3_parallel(L, sigma2, gamma, c, kvals, Bk, W, T, N, NumMicrographs):
     
     return M1_ys, M2_ys, M3_ys
 
-def calcM3_parallel_ver2(L, sigma2, gamma, c, kvals, Bk, W, T, N):
+def calcM3_parallel_shifts(L, sigma2, gamma, c, kvals, Bk, W, T, N):
     print('Started calculations')
-    y_clean, _, _ = generate_clean_micrograph_2d_rots(c, kvals, Bk, W, L, N, gamma*(N/L)**2, T)
+    y_clean, _, _ = generate_clean_micrograph_2d_rots(c, kvals, Bk, W, L, N, gamma*(N/L)**2, T, seed=100)
     y = y_clean + np.random.default_rng().normal(loc=0, scale=np.sqrt(sigma2), size=np.shape(y_clean))
     yy = np.zeros((N, N, 1))
     yy[ :, :, 0] = y
@@ -68,7 +68,7 @@ def calcM3_parallel_ver2(L, sigma2, gamma, c, kvals, Bk, W, T, N):
     list_shifts = list(itertools.product(np.arange(L), np.arange(L), np.arange(L), np.arange(L)))
     list_list_shifts = np.array_split(list_shifts, num_cpus)
     pool = mp.Pool(num_cpus)
-    M3_ys_parallel = pool.starmap(calc_3rdorder_ac_ver2, [[yy, list_list_shifts[ii], ii] for ii in range(num_cpus)])
+    M3_ys_parallel = pool.starmap(calc_M3_for_list, [[yy, list_list_shifts[ii], ii] for ii in range(num_cpus)])
     pool.close()
     pool.join()
     

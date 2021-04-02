@@ -5,7 +5,8 @@ Created on Mon Sep 30 16:40:17 2019
 @author: kreym
 """
 import numpy as np
-from fb_funcs import rot_img, rot_img_freqT
+from fb_funcs import rot_img_freqT
+
 def generate_clean_micrograph_2d(X, W, N, m, p=np.array([1])):
     """Form an N*N matrix containing matrices from X with probability p.
 
@@ -119,7 +120,7 @@ def generate_clean_micrograph_2d_one_neighbor_rots(c, kvals, Bk, W, L, N, m, T, 
     #    Y = zeros(N, N,'gpuArray');
     return Y, placed_list, locations
 
-def generate_clean_micrograph_2d_rots(c, kvals, Bk, W, L, N, m, T, p=np.array([1])):
+def generate_clean_micrograph_2d_rots(c, kvals, Bk, W, L, N, m, T, p=np.array([1]), seed=None):
     """Form an N*N matrix containing matrices from X with probability p.
 
     Keyword arguments:
@@ -129,6 +130,8 @@ def generate_clean_micrograph_2d_rots(c, kvals, Bk, W, L, N, m, T, p=np.array([1
     m -- wanted number of images to place
     p -- choosing probability of images in X (default np.array([1]))
     """
+    if seed != None:
+        np.random.seed(seed)
     m = round(m)
     thetas = np.linspace(0, 2*np.pi, m)
     thetas = np.random.uniform(low=0, high=2*np.pi, size=(m, ))

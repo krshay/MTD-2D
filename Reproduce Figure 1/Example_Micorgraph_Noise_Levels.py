@@ -14,9 +14,8 @@ import random
 from fb_funcs import expand_fb, rot_img_freq, calcT, rot_img_freqT
 from generate_clean_micrograph_2d import generate_clean_micrograph_2d_rots
 
-
 plt.close("all")
-random.seed(100)
+np.random.seed(100)
 if __name__ == '__main__':
     X = plt.imread("../images/molecule9.png")
     L = np.shape(X)[0]
@@ -39,7 +38,7 @@ if __name__ == '__main__':
     
     Xrot_freq = rot_img_freq(theta, z, kvals, Bk, L)
     Xrot_freqT = rot_img_freqT(theta, c, kvals, Bk, L, T)
-    y_clean, s, locs = generate_clean_micrograph_2d_rots(c, kvals, Bk, W, L, N, 0.30*(N/L)**2, T)
+    y_clean, s, locs = generate_clean_micrograph_2d_rots(c, kvals, Bk, W, L, N, 0.30*(N/L)**2, T, seed=100)
 
     gamma = s[0]*(L/N)**2
     SNR = 0.1
@@ -72,13 +71,13 @@ if __name__ == '__main__':
         ax.tick_params(axis='both', which='both', bottom=False, top=False, labelbottom=False, right=False, left=False, labelleft=False)
 
         fig.set_size_inches(4*width, 4*height)
-        # if n == 0:
-        #     fig.savefig(r'C:\Users\kreym\Google Drive\Thesis\Documents\Article\figures\Micrographs_noise_a.pdf', bbox_inches='tight')
-        # else:
-        #     if n == 1:
-        #         fig.savefig(r'C:\Users\kreym\Google Drive\Thesis\Documents\Article\figures\Micrographs_noise_b.pdf', bbox_inches='tight')
-        #     else:
-        #         fig.savefig(r'C:\Users\kreym\Google Drive\Thesis\Documents\Article\figures\Micrographs_noise_clean.pdf', bbox_inches='tight')
+        if n == 0:
+            fig.savefig(r'C:\Users\kreym\Google Drive\Thesis\Documents\Article\figures\Micrographs_noise_a.pdf', bbox_inches='tight')
+        else:
+            if n == 1:
+                fig.savefig(r'C:\Users\kreym\Google Drive\Thesis\Documents\Article\figures\Micrographs_noise_b.pdf', bbox_inches='tight')
+            else:
+                fig.savefig(r'C:\Users\kreym\Google Drive\Thesis\Documents\Article\figures\Micrographs_noise_clean.pdf', bbox_inches='tight')
 
 
         

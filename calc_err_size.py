@@ -16,64 +16,6 @@ import optimization_funcs_rot
 from makeExtraMat import makeExtraMat
 from maketsfMat import maketsfMat
 
-# def calc_err_size(L, ne, N, sizes, sd):
-#     np.random.seed(sd)
-#     errs = np.zeros(np.shape(sizes))
-#     X = np.random.rand(L, L)
-#     X = X / np.linalg.norm(X)
-    
-#     W = L # L for arbitrary spacing distribution, 2*L-1 for well-separated
-
-#     B, z, roots, kvals, nu = expand_fb(X, ne)
-#     T = calcT(nu, kvals)
-#     c = np.real(T @ z)
-#     z = T.H@c
-#     Bk = np.zeros((2*L-1, 2*L-1, nu), dtype=np.complex_)
-#     for ii in range(nu):
-#         Bk[ :, :, ii] = np.fft.fft2(np.pad(np.reshape(B[ :, ii], (L, L)), L//2))
-
-
-
-#     gamma_initial = 0.09
-#     # y_init, s_init, locs_init = generate_clean_micrograph_2d_rots(c, kvals, Bk, W, L, N, gamma*(N/L)**2, T)
-#     X_initial = np.random.rand(L, L)
-#     X_initial = X_initial / np.linalg.norm(X_initial)
-    
-#     _, z_initial, _, _, _ = expand_fb(X_initial, ne)
-#     c_initial = np.real(T @ z_initial)
-    
-
-#     for (idx, sz) in enumerate(sizes):
-#         y_clean, s, locs = generate_clean_micrograph_2d_rots(c, kvals, Bk, W, L, sz, 0.100*(sz/L)**2, T)
-#         # gamma = s[0]*(L/N)**2
-#         sigma2 = 0
-#         y = y_clean + np.random.default_rng().normal(loc=0, scale=np.sqrt(sigma2), size=np.shape(y_clean))
-
-        
-#         yy = np.zeros((sz, sz, 1))
-#         yy[ :, :, 0] = y
-        
-#         M1_y = np.mean(yy)
-        
-#         M2_y = np.zeros((L, L))
-#         for i1 in range(L):
-#             for j1 in range(L):
-#                 M2_y[i1, j1] = M2_2d(yy, (i1, j1))
-        
-#         M3_y = np.zeros((L, L, L, L))
-#         for i1 in range(L):
-#             for j1 in range(L):
-#                 for i2 in range(L):
-#                     for j2 in range(L):
-#                         M3_y[i1, j1, i2, j2] = M3_2d(yy, (i1, j1), (i2, j2))
-    
-#         X_est, _, _ = optimization_funcs_rot.optimize_rot_Algorithm1_notparallel(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, W, N, iters_till_change=75) 
-#         c_est = X_est.x[1:]
-#         z_est = T.H @ c_est
-#         est_err_coeffs = min_err_coeffs(z, z_est, kvals)
-#         errs[idx] = est_err_coeffs[0]
-#     return errs
-
 def calc_err_size_accuratepsftsf(L, ne, N, sizes, sd):
     np.random.seed(sd)
     errs = np.zeros((len(sizes), 3))
@@ -163,7 +105,7 @@ def calc_err_size_accuratepsftsf(L, ne, N, sizes, sd):
         costs[idx, 2] = X_est3.fun
     return errs, costs
 
-def calc_err_size_approximatepsftsf(L, ne, N, sizes, sd):
+def calc_err_size_Algorithm1(L, ne, N, sizes, sd):
     np.random.seed(sd)
     errs = np.zeros((len(sizes), 3))
     costs = np.zeros((len(sizes), 3))
