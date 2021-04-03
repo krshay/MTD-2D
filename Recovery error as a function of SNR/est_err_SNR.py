@@ -12,7 +12,7 @@ import time
 
 import multiprocessing as mp
 
-from calc_err_SNR import calc_err_SNR
+from Utils.calc_err_SNR import calc_err_SNR
 
 
 plt.close("all")

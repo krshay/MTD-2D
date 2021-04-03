@@ -5,10 +5,10 @@ Created on Mon Sep 30 16:40:17 2019
 @author: kreym
 """
 import numpy as np
-from fb_funcs import rot_img_freqT
+from Utils.fb_funcs import rot_img_freqT
 
 def generate_clean_micrograph_2d(X, W, N, m, p=np.array([1])):
-    """Form an N*N matrix containing matrices from X with probability p.
+    """Form an N*N matrix containing matrices from Utils.X with probability p.
 
     Keyword arguments:
     X -- a tuple of required images
@@ -121,7 +121,7 @@ def generate_clean_micrograph_2d_one_neighbor_rots(c, kvals, Bk, W, L, N, m, T, 
     return Y, placed_list, locations
 
 def generate_clean_micrograph_2d_rots(c, kvals, Bk, W, L, N, m, T, p=np.array([1]), seed=None):
-    """Form an N*N matrix containing matrices from X with probability p.
+    """Form an N*N matrix containing matrices from Utils.X with probability p.
 
     Keyword arguments:
     X -- a tuple of required images

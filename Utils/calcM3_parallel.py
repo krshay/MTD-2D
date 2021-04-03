@@ -8,11 +8,11 @@ import numpy as np
 
 import multiprocessing as mp
 
-from funcs_calc_moments import M2_2d
+from Utils.funcs_calc_moments import M2_2d
 
-from calc_3rdorder_ac import calc_M3_for_micrograph, calc_M3_for_list
+from Utils.calc_3rdorder_ac import calc_M3_for_micrograph, calc_M3_for_list
 
-from generate_clean_micrograph_2d import generate_clean_micrograph_2d_rots
+from Utils.generate_clean_micrograph_2d import generate_clean_micrograph_2d_rots
 
 import itertools
 

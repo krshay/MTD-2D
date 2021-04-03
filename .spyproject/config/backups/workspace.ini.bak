@@ -6,5 +6,5 @@ save_non_project_files = False
 
 [main]
 version = 0.2.0
-recent_files = ['Recovery from noisy measurements\\Plot_recovery.py', 'Recovery from noisy measurements\\b-no_noise.py.py', 'calcM3_parallel.py', 'calc_3rdorder_ac.py']
+recent_files = ['Reproduce Figure 1\\Example_Micorgraph_Noise_Levels.py', 'Utils\\optimization_funcs_rot.py']
 

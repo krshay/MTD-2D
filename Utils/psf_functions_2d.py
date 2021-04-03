@@ -9,8 +9,8 @@ import scipy.spatial as spatial
 import scipy.integrate as integrate
 import scipy.special as special
 
-from generate_clean_micrograph_2d import generate_clean_micrograph_2d
-# from scipy.optimize import least_squares as ls
+from Utils.generate_clean_micrograph_2d import generate_clean_micrograph_2d
+# from Utils.scipy.optimize import least_squares as ls
 
 def numeric_psf_2d(locations, L):
     M = len(locations)

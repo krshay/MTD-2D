@@ -12,7 +12,7 @@ import time
 
 import multiprocessing as mp
 
-from calc_err_size import calc_err_size_accuratepsftsf
+from Utils.calc_err_size import calc_err_size_accuratepsftsf
 
 
 plt.close("all")

@@ -7,13 +7,10 @@ Created on Sat Jul 18 12:23:14 2020
 
 import numpy as np
 import itertools
-import scipy.special as special
 import scipy.sparse as sp
 
 
 import multiprocessing as mp
-from psf_functions_2d import evaluate_psf_full
-import psf_functions_2d
 
 def calck1k2k3(L):
     kmap = list(itertools.product(np.arange(2*L-1), np.arange(2*L-1)))

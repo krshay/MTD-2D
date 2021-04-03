@@ -9,17 +9,17 @@ Created on Wed Mar 31 14:07:04 2021
 import numpy as np
 import matplotlib.pyplot as plt
 
-from mpl_toolkits.axes_grid1 import make_axes_locatable
+from Utils.mpl_toolkits.axes_grid1 import make_axes_locatable
 
 import scipy
 
-from fb_funcs import expand_fb, calcT
-from funcs_calc_moments import M2_2d, M3_2d
-from psf_functions_2d import full_psf_2d
-from tsf_functions_2d import full_tsf_2d
-import optimization_funcs_rot
-from makeExtraMat import makeExtraMat
-from maketsfMat import maketsfMat
+from Utils.fb_funcs import expand_fb, calcT
+from Utils.funcs_calc_moments import M2_2d, M3_2d
+from Utils.psf_functions_2d import full_psf_2d
+from Utils.tsf_functions_2d import full_tsf_2d
+import Utils.optimization_funcs_rot
+from Utils.makeExtraMat import makeExtraMat
+from Utils.maketsfMat import maketsfMat
 
 # %% main
 plt.close("all")

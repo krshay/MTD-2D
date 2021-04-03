@@ -8,7 +8,7 @@ Created on Wed Jul  1 20:00:31 2020
 import numpy as np
 import scipy.special as spl
 import scipy.sparse as sp
-from calc_estimation_error import calc_estimation_error
+from Utils.calc_estimation_error import calc_estimation_error
 
 def expand_fb(img, ne):
     '''
@@ -17,7 +17,7 @@ def expand_fb(img, ne):
         ne: number of expansion coefficients
     
     Outputs:
-        B: matrix that maps from the expansion coefficients to
+        B: matrix that maps from Utils.the expansion coefficients to
            the approximated image
         z: expansion coefficients in complex format
         roots: roots of the Bessel functions

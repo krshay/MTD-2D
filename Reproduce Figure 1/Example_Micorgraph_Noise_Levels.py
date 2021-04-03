@@ -9,21 +9,20 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
-import random
 
-from fb_funcs import expand_fb, rot_img_freq, calcT, rot_img_freqT
-from generate_clean_micrograph_2d import generate_clean_micrograph_2d_rots
+from Utils.fb_funcs import expand_fb, rot_img_freq, calcT, rot_img_freqT
+from Utils.generate_clean_micrograph_2d import generate_clean_micrograph_2d_rots
 
 plt.close("all")
 np.random.seed(100)
 if __name__ == '__main__':
     X = plt.imread("../images/molecule9.png")
     L = np.shape(X)[0]
-    X = L**2 * X / np.linalg.norm(X)
+    X = X * 10
     W = L # L for arbitrary spacing distribution, 2*L-1 for well-separated
 
     N = 70
-    ne = 50
+    ne = 34
     B, z, roots, kvals, nu = expand_fb(X, ne)
     T = calcT(nu, kvals)
     BT = B @ T.H

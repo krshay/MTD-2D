@@ -8,7 +8,7 @@ import numpy as np
 
 import multiprocessing as mp
 
-from funcs_calc_moments import M3_2d
+from Utils.funcs_calc_moments import M3_2d
 
 def calc_M3_for_micrograph(L, yy):
     M3_y = np.zeros((L, L, L, L))

@@ -10,14 +10,14 @@ import matplotlib.pyplot as plt
 
 import scipy
 
-from fb_funcs import expand_fb, calcT
-from generate_clean_micrograph_2d import generate_clean_micrograph_2d_rots
-from funcs_calc_moments import M2_2d, M3_2d
-from psf_functions_2d import full_psf_2d
-from tsf_functions_2d import full_tsf_2d
-import optimization_funcs_rot
-from makeExtraMat import makeExtraMat
-from maketsfMat import maketsfMat
+from Utils.fb_funcs import expand_fb, calcT
+from Utils.generate_clean_micrograph_2d import generate_clean_micrograph_2d_rots
+from Utils.funcs_calc_moments import M2_2d, M3_2d
+from Utils.psf_functions_2d import full_psf_2d
+from Utils.tsf_functions_2d import full_tsf_2d
+import Utils.optimization_funcs_rot
+from Utils.makeExtraMat import makeExtraMat
+from Utils.maketsfMat import maketsfMat
 
 plt.close("all")
 
@@ -76,7 +76,7 @@ X_initial = X_initial / np.linalg.norm(X_initial)
 
 _, z_initial, _, _, _ = expand_fb(X_initial, ne)
 c_initial = np.real(T @ z_initial)
-# %% initiate from 0.09
+# %% initiate from Utils.0.09
 gamma_initial_009 = 0.090
 
 y_initial, _, locs_initial = generate_clean_micrograph_2d_rots(c, kvals, Bk, W, L, N, gamma_initial_009*(N/L)**2, T)
@@ -91,13 +91,13 @@ ExtraMat2_well_separated_009 = scipy.sparse.csr_matrix(np.zeros(np.shape(ExtraMa
 ExtraMat3_well_separated_009 = scipy.sparse.csr_matrix(np.zeros(np.shape(ExtraMat3_approx_009)))
 tsfMat_well_separated_009 = scipy.sparse.csr_matrix(np.zeros(np.shape(tsfMat_approx_009)))
 
-est_true_009, history_true_009 = optimization_funcs_rot.optimize_2d_known_psf_triplets_with_callback(np.concatenate((np.reshape(gamma_initial_009, (1,)), c_initial)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, tsfMat_true, ExtraMat2_true, ExtraMat3_true, numiters=100, gtol=1e-15)
+est_true_009, history_true_009 = Utils.optimization_funcs_rot.optimize_2d_known_psf_triplets_with_callback(np.concatenate((np.reshape(gamma_initial_009, (1,)), c_initial)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, tsfMat_true, ExtraMat2_true, ExtraMat3_true, numiters=100, gtol=1e-15)
 errs_true_009 = np.abs(np.array(history_true_009) - gamma) / gamma
 
-est_approx_009, history_approx_009 = optimization_funcs_rot.optimize_2d_known_psf_triplets_with_callback(np.concatenate((np.reshape(gamma_initial_009, (1,)), c_initial)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, tsfMat_approx_009, ExtraMat2_approx_009, ExtraMat3_approx_009, numiters=100, gtol=1e-15)
+est_approx_009, history_approx_009 = Utils.optimization_funcs_rot.optimize_2d_known_psf_triplets_with_callback(np.concatenate((np.reshape(gamma_initial_009, (1,)), c_initial)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, tsfMat_approx_009, ExtraMat2_approx_009, ExtraMat3_approx_009, numiters=100, gtol=1e-15)
 errs_approx_009 = np.abs(np.array(history_approx_009) - gamma) / gamma
 
-est_well_separated_009, history_well_separated_009 = optimization_funcs_rot.optimize_2d_known_psf_triplets_with_callback(np.concatenate((np.reshape(gamma_initial_009, (1,)), c_initial)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, tsfMat_well_separated_009, ExtraMat2_well_separated_009, ExtraMat3_well_separated_009, numiters=100, gtol=1e-15)
+est_well_separated_009, history_well_separated_009 = Utils.optimization_funcs_rot.optimize_2d_known_psf_triplets_with_callback(np.concatenate((np.reshape(gamma_initial_009, (1,)), c_initial)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, tsfMat_well_separated_009, ExtraMat2_well_separated_009, ExtraMat3_well_separated_009, numiters=100, gtol=1e-15)
 errs_well_separated_009 = 100 * np.abs(np.array(history_well_separated_009) - gamma) / gamma
 
 

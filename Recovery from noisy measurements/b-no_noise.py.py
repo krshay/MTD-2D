@@ -13,11 +13,11 @@ import random
 import time
 
 
-from fb_funcs import expand_fb, rot_img, min_err_rots, min_err_coeffs, calcT
-from generate_clean_micrograph_2d import generate_clean_micrograph_2d_one_neighbor_rots, generate_clean_micrograph_2d_rots
-import optimization_funcs_rot
+from Utils.fb_funcs import expand_fb, rot_img, min_err_rots, min_err_coeffs, calcT
+from Utils.generate_clean_micrograph_2d import generate_clean_micrograph_2d_one_neighbor_rots, generate_clean_micrograph_2d_rots
+import Utils.optimization_funcs_rot
 
-from calcM3_parallel import calcM3_parallel_micrographs, calcM3_parallel_shifts
+from Utils.calcM3_parallel import calcM3_parallel_micrographs, calcM3_parallel_shifts
 
 
 
@@ -77,7 +77,7 @@ if __name__ == '__main__':
     
     start = time.time()
     
-    X_est, psf_estimated, tsf_estimated = optimization_funcs_rot.optimize_2d_x_update_psf_tsfnew(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, W, N, iters_till_change=100, gtol=1e-15, max_iter=2500)
+    X_est, psf_estimated, tsf_estimated = Utils.optimization_funcs_rot.optimize_2d_x_update_psf_tsfnew(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, W, N, iters_till_change=100, gtol=1e-15, max_iter=2500)
 
     time_passed = time.time() - start
     print(f'Time passed: {time_passed} secs')

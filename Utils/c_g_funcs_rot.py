@@ -14,10 +14,10 @@ import multiprocessing as mp
 
 import functools
 
-from makeExtraMat import makeExtraMat
+from Utils.makeExtraMat import makeExtraMat
 
-from funcs_calc_moments_rot import calcS3_x_gradnew2, calcS3_x_neigh_gradnew2, calcS3_x_triplets_gradnew2,  calcS2_x_grad_notparallel, calcS2_x_neigh_grad_notparallel, calck1,  calcN_mat, calcmap3, calcS3_x_grad_neigh_triplets_parallel, calcS2_x_grad_notparallel, calcS2_x_neigh_grad_notparallel
-from psf_functions_2d import fourier_bessel_expansion, evaluate_psf_full
+from Utils.funcs_calc_moments_rot import calcS3_x_gradnew2, calcS3_x_neigh_gradnew2, calcS3_x_triplets_gradnew2,  calcS2_x_grad_notparallel, calcS2_x_neigh_grad_notparallel, calck1,  calcN_mat, calcmap3, calcS3_x_grad_neigh_triplets_parallel, calcS2_x_grad_notparallel, calcS2_x_neigh_grad_notparallel
+from Utils.psf_functions_2d import fourier_bessel_expansion, evaluate_psf_full
 
 def calc_acs_grads_rot_parallel(Bk, z, kvals, L, k1_map, map3):
     # Calclulations of all needed autocorrelations and gradients, utilizing parallel processing

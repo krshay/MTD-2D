@@ -7,14 +7,14 @@ Created on Sun Jan 24 18:38:45 2021
 
 import numpy as np
 
-from fb_funcs import expand_fb, min_err_rots, min_err_coeffs, calcT
-from generate_clean_micrograph_2d import generate_clean_micrograph_2d_rots
-from funcs_calc_moments import M2_2d, M3_2d
-from psf_functions_2d import full_psf_2d, coeffs_initial_guess
-from tsf_functions_2d import full_tsf_2d
-import optimization_funcs_rot
-from makeExtraMat import makeExtraMat
-from maketsfMat import maketsfMat
+from Utils.fb_funcs import expand_fb, min_err_rots, min_err_coeffs, calcT
+from Utils.generate_clean_micrograph_2d import generate_clean_micrograph_2d_rots
+from Utils.funcs_calc_moments import M2_2d, M3_2d
+from Utils.psf_functions_2d import full_psf_2d, coeffs_initial_guess
+from Utils.tsf_functions_2d import full_tsf_2d
+import Utils.optimization_funcs_rot
+from Utils.makeExtraMat import makeExtraMat
+from Utils.maketsfMat import maketsfMat
 
 def calc_err_size_accuratepsftsf(L, ne, N, sizes, sd):
     np.random.seed(sd)
@@ -83,21 +83,21 @@ def calc_err_size_accuratepsftsf(L, ne, N, sizes, sd):
                     for j2 in range(L):
                         M3_y[i1, j1, i2, j2] = M3_2d(yy, (i1, j1), (i2, j2))
     
-        X_est1 = optimization_funcs_rot.optimize_2d_known_psf_triplets(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial1)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, psf, L, 1, tsfMat, ExtraMat2, ExtraMat3) 
+        X_est1 = Utils.optimization_funcs_rot.optimize_2d_known_psf_triplets(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial1)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, psf, L, 1, tsfMat, ExtraMat2, ExtraMat3) 
         c_est1 = X_est1.x[1:]
         z_est1 = T.H @ c_est1
         est_err_coeffs1 = min_err_coeffs(z, z_est1, kvals)
         errs[idx, 0] = est_err_coeffs1[0]
         costs[idx, 0] = X_est1.fun
         
-        X_est2 = optimization_funcs_rot.optimize_2d_known_psf_triplets(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial2)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, psf, L, 1, tsfMat, ExtraMat2, ExtraMat3) 
+        X_est2 = Utils.optimization_funcs_rot.optimize_2d_known_psf_triplets(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial2)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, psf, L, 1, tsfMat, ExtraMat2, ExtraMat3) 
         c_est2 = X_est2.x[1:]
         z_est2 = T.H @ c_est2
         est_err_coeffs2 = min_err_coeffs(z, z_est2, kvals)
         errs[idx, 1] = est_err_coeffs2[0]
         costs[idx, 1] = X_est2.fun
         
-        X_est3 = optimization_funcs_rot.optimize_2d_known_psf_triplets(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial3)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, psf, L, 1, tsfMat, ExtraMat2, ExtraMat3) 
+        X_est3 = Utils.optimization_funcs_rot.optimize_2d_known_psf_triplets(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial3)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, psf, L, 1, tsfMat, ExtraMat2, ExtraMat3) 
         c_est3 = X_est3.x[1:]
         z_est3 = T.H @ c_est3
         est_err_coeffs3 = min_err_coeffs(z, z_est3, kvals)
@@ -166,9 +166,9 @@ def calc_err_size_Algorithm1(L, ne, N, sizes, sd):
                     for j2 in range(L):
                         M3_y[i1, j1, i2, j2] = M3_2d(yy, (i1, j1), (i2, j2))
     
-        X_est1, _, _ = optimization_funcs_rot.optimize_rot_Algorithm1_notparallel(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial1)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, W, 10000) 
-        X_est2, _, _ = optimization_funcs_rot.optimize_rot_Algorithm1_notparallel(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial2)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, W, 10000) 
-        X_est3, _, _ = optimization_funcs_rot.optimize_rot_Algorithm1_notparallel(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial3)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, W, 10000) 
+        X_est1, _, _ = Utils.optimization_funcs_rot.optimize_rot_Algorithm1_notparallel(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial1)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, W, 10000) 
+        X_est2, _, _ = Utils.optimization_funcs_rot.optimize_rot_Algorithm1_notparallel(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial2)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, W, 10000) 
+        X_est3, _, _ = Utils.optimization_funcs_rot.optimize_rot_Algorithm1_notparallel(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial3)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, W, 10000) 
 
         c_est1 = X_est1.x[1:]
         z_est1 = T.H @ c_est1
@@ -258,7 +258,7 @@ def calc_err_size_nopsftsf(L, ne, N, sizes, sd):
                     for j2 in range(L):
                         M3_y[i1, j1, i2, j2] = M3_2d(yy, (i1, j1), (i2, j2))
     
-        X_est1 = optimization_funcs_rot.optimize_2d_known_psf_triplets(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial1)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, psf, L, 1, tsfMat, ExtraMat2, ExtraMat3) 
+        X_est1 = Utils.optimization_funcs_rot.optimize_2d_known_psf_triplets(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial1)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, psf, L, 1, tsfMat, ExtraMat2, ExtraMat3) 
         c_est1 = X_est1.x[1:]
         z_est1 = T.H @ c_est1
         est_err_coeffs1 = min_err_coeffs(z, z_est1, kvals)
@@ -266,7 +266,7 @@ def calc_err_size_nopsftsf(L, ne, N, sizes, sd):
         costs[idx, 0] = X_est1.fun
         X_ests[idx, 0, :] = X_est1.x
         
-        X_est2 = optimization_funcs_rot.optimize_2d_known_psf_triplets(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial2)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, psf, L, 1, tsfMat, ExtraMat2, ExtraMat3) 
+        X_est2 = Utils.optimization_funcs_rot.optimize_2d_known_psf_triplets(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial2)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, psf, L, 1, tsfMat, ExtraMat2, ExtraMat3) 
         c_est2 = X_est2.x[1:]
         z_est2 = T.H @ c_est2
         est_err_coeffs2 = min_err_coeffs(z, z_est2, kvals)
@@ -274,7 +274,7 @@ def calc_err_size_nopsftsf(L, ne, N, sizes, sd):
         costs[idx, 1] = X_est2.fun
         X_ests[idx, 1, :] = X_est2.x
         
-        X_est3 = optimization_funcs_rot.optimize_2d_known_psf_triplets(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial3)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, psf, L, 1, tsfMat, ExtraMat2, ExtraMat3) 
+        X_est3 = Utils.optimization_funcs_rot.optimize_2d_known_psf_triplets(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial3)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, psf, L, 1, tsfMat, ExtraMat2, ExtraMat3) 
         c_est3 = X_est3.x[1:]
         z_est3 = T.H @ c_est3
         est_err_coeffs3 = min_err_coeffs(z, z_est3, kvals)
