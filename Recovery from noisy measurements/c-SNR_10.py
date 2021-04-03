@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sat Mar  6 19:48:24 2021
+Created on Sat Apr  3 17:33:40 2021
 
 @author: kreym
 """
@@ -18,8 +18,6 @@ from Utils.generate_clean_micrograph_2d import generate_clean_micrograph_2d_one_
 import Utils.optimization_funcs_rot
 
 from Utils.calcM3_parallel import calcM3_parallel_micrographs, calcM3_parallel_shifts
-
-
 
 plt.close("all")
 np.random.seed(100)
@@ -44,18 +42,18 @@ if __name__ == '__main__':
         Bk[ :, :, i] = np.fft.fft2(np.pad(np.reshape(B[ :, i], (L, L)), L//2))
     
     gamma = 0.1
-
-    sigma2 = 0
+    SNR = 10
+    sigma2 = np.linalg.norm(Xrec)**2 / (SNR * np.pi * (L//2)**2)
     
     t_acs_start = time.time()
     M1_y, M2_y, M3_y, y = calcM3_parallel_shifts(L, sigma2, gamma, c, kvals, Bk, W, T, N)
     t_acs_finish = time.time() - t_acs_start
     
-    np.save('../Results/Recovery/M1_ys_9_SNRinf.npy', M1_y)
+    np.save('../Results/Recovery/M1_y_9_SNR10.npy', M1_y)
     
-    np.save('../Results/Recovery/M2_ys_9_SNRinf.npy', M2_y)
+    np.save('../Results/Recovery/M2_y_9_SNR10.npy', M2_y)
     
-    np.save('../Results/Recovery/M3_ys_9_SNRinf.npy', M3_y)
+    np.save('../Results/Recovery/M3_y_9_SNR10.npy', M3_y)
     
     print("all saved")
     

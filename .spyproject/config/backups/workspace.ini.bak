@@ -6,5 +6,5 @@ save_non_project_files = False
 
 [main]
 version = 0.2.0
-recent_files = ['Utils\\c_g_funcs_rot.py', 'Utils\\calc_3rdorder_ac.py', 'Utils\\calcM3_parallel.py', 'Utils\\calc_err_size.py']
+recent_files = ['Utils\\c_g_funcs_rot.py', 'Utils\\calc_3rdorder_ac.py', 'Utils\\calcM3_parallel.py', 'Utils\\calc_err_size.py', 'Recovery error as a function of the measurement size\\Plot_error_size.py', 'Recovery error as a function of the measurement size\\est_err_size_arbitrary_spacing_distribution_nopsftsf.py', 'Recovery error as a function of the measurement size\\est_err_size_arbitrary_spacing_distribution_accuratepsftsf.py']
 
