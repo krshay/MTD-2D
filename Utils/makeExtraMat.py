@@ -8,6 +8,7 @@ import numpy as np
 import scipy
 
 def makeExtraMat(L, psf):
+    # Rearranging the pair separation function to a matrix-form, to ease calculations
     Mat3 = scipy.sparse.lil_matrix((L**4, (2*L-1)**4))
     for i1 in range(L):
         for j1 in range(L):

@@ -6,14 +6,12 @@ Created on Fri Jul 31 20:23:28 2020
 """
 
 import numpy as np
-from scipy.optimize import minimize, check_grad
-import multiprocessing as mp
+from scipy.optimize import minimize
 import Utils.c_g_funcs_rot
 from Utils.funcs_calc_moments_rot import calcmap3, calck1, calcN_mat
 from Utils.makeExtraMat import makeExtraMat
 from Utils.maketsfMat import maketsfMat
 from Utils.maketsfMat_parallel import maketsfMat_parallel
-import scipy.special as special
 from Utils.generate_clean_micrograph_2d import generate_clean_micrograph_2d_one_neighbor_rots, generate_clean_micrograph_2d_rots
 
 import Utils.psf_functions_2d
@@ -27,12 +25,12 @@ def optimize_2d_known_psf_triplets(initial_guesses, Bk, T, kvals, M1_y, M2_y, M3
     
     return minimize(fun=Utils.c_g_funcs_rot.cost_grad_fun_rot_notparallel, x0=initial_guesses, method='BFGS', jac=True, options={'disp': True, 'maxiter':numiters, 'gtol': gtol}, args = (Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, ExtraMat2, ExtraMat3, tsfMat, L, K, N_mat, k1_map, map3))
 
-def optimize_rot_Algorithm1_parallel(initial_guesses, Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, K, W, N, iters_till_change=150, gtol=1e-15):
+def optimize_rot_Algorithm1_parallel(initial_guesses, Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, K, W, N, iters_till_change=150, gtol=1e-15, max_iter=2000):
     k1_map = calck1(L)
     map3 = calcmap3(L)
     N_mat = calcN_mat(L)
     
-    y_init, _, locs_init = generate_clean_micrograph_2d_rots(initial_guesses[1: ], kvals, Bk, W, L, 10000, (initial_guesses[0]*(10000/L)**2).astype(int), T)
+    _, _, locs_init = generate_clean_micrograph_2d_rots(initial_guesses[1: ], kvals, Bk, W, L, 10000, (initial_guesses[0]*(10000/L)**2).astype(int), T, seed=100)
     psf_init = Utils.psf_functions_2d.full_psf_2d(locs_init, L)
     ExtraMat2, ExtraMat3 = makeExtraMat(L, psf_init)
     tsf_init = Utils.tsf_functions_2d.full_tsf_2d(locs_init, L)
@@ -43,7 +41,7 @@ def optimize_rot_Algorithm1_parallel(initial_guesses, Bk, T, kvals, M1_y, M2_y, 
     print(f'We got to gamma of {first_gamma}')
     first_c = first_estimates.x[1: ]
     
-    y2, _, locs2 = generate_clean_micrograph_2d_rots(first_c, kvals, Bk, W, L, N, (first_gamma*(N/L)**2).astype(int), T)
+    _, _, locs2 = generate_clean_micrograph_2d_rots(first_c, kvals, Bk, W, L, N, (first_gamma*(N/L)**2).astype(int), T, seed=1000)
     psf2 = Utils.psf_functions_2d.full_psf_2d(locs2, L)
     ExtraMat2, ExtraMat3 = makeExtraMat(L, psf2)
     tsf2 = Utils.tsf_functions_2d.full_tsf_2d(locs2, L)
@@ -51,16 +49,16 @@ def optimize_rot_Algorithm1_parallel(initial_guesses, Bk, T, kvals, M1_y, M2_y, 
     
     new_guesses = np.concatenate((np.reshape(first_gamma, (1,)), first_c))
     
-    return minimize(fun=Utils.c_g_funcs_rot.cost_grad_fun_rot_parallel, x0=new_guesses, method='BFGS', jac=True, options={'disp': True, 'maxiter':2000, 'gtol': gtol}, args = (Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, ExtraMat2, ExtraMat3, tsfMat, L, K, N_mat, k1_map, map3)), psf2, tsf2
+    return minimize(fun=Utils.c_g_funcs_rot.cost_grad_fun_rot_parallel, x0=new_guesses, method='BFGS', jac=True, options={'disp': True, 'maxiter':max_iter, 'gtol': gtol}, args = (Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, ExtraMat2, ExtraMat3, tsfMat, L, K, N_mat, k1_map, map3)), psf2, tsf2
    
-def optimize_rot_Algorithm1_notparallel(initial_guesses, Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, K, W, N, iters_till_change=150, gtol=1e-15):
+def optimize_rot_Algorithm1_notparallel(initial_guesses, Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, K, W, N, iters_till_change=150, gtol=1e-15, max_iter=2000):
     k1_map = calck1(L)
     map3 = calcmap3(L)
     N_mat = calcN_mat(L)
     
     print('Starting...')
     
-    y_init, _, locs_init = generate_clean_micrograph_2d_rots(initial_guesses[1: ], kvals, Bk, W, L, 10000, (initial_guesses[0]*(10000/L)**2).astype(int), T)
+    y_init, _, locs_init = generate_clean_micrograph_2d_rots(initial_guesses[1: ], kvals, Bk, W, L, 10000, (initial_guesses[0]*(10000/L)**2).astype(int), T, seed=100)
     psf_init = Utils.psf_functions_2d.full_psf_2d(locs_init, L)
     ExtraMat2, ExtraMat3 = makeExtraMat(L, psf_init)
     tsf_init = Utils.tsf_functions_2d.full_tsf_2d(locs_init, L)
@@ -72,7 +70,7 @@ def optimize_rot_Algorithm1_notparallel(initial_guesses, Bk, T, kvals, M1_y, M2_
     print(f'We got to gamma of {first_gamma}')
     first_c = first_estimates.x[1: ]
     
-    y2, _, locs2 = generate_clean_micrograph_2d_rots(first_c, kvals, Bk, W, L, 10000, (first_gamma*(10000/L)**2).astype(int), T)
+    y2, _, locs2 = generate_clean_micrograph_2d_rots(first_c, kvals, Bk, W, L, 10000, (first_gamma*(10000/L)**2).astype(int), T, seed=1000)
     psf2 = Utils.psf_functions_2d.full_psf_2d(locs2, L)
     ExtraMat2, ExtraMat3 = makeExtraMat(L, psf2)
     tsf2 = Utils.tsf_functions_2d.full_tsf_2d(locs2, L)
@@ -80,4 +78,4 @@ def optimize_rot_Algorithm1_notparallel(initial_guesses, Bk, T, kvals, M1_y, M2_
     
     new_guesses = np.concatenate((np.reshape(first_gamma, (1,)), first_c))
     
-    return minimize(fun=Utils.c_g_funcs_rot.cost_grad_fun_rot_notparallel, x0=new_guesses, method='BFGS', jac=True, options={'disp': True, 'maxiter':2000, 'gtol': gtol}, args = (Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, ExtraMat2, ExtraMat3, tsfMat, L, K, N_mat, k1_map, map3)), psf2, tsf2
+    return minimize(fun=Utils.c_g_funcs_rot.cost_grad_fun_rot_notparallel, x0=new_guesses, method='BFGS', jac=True, options={'disp': True, 'maxiter':max_iter, 'gtol': gtol}, args = (Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, ExtraMat2, ExtraMat3, tsfMat, L, K, N_mat, k1_map, map3)), psf2, tsf2

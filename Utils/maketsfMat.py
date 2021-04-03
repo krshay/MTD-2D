@@ -8,6 +8,7 @@ import numpy as np
 import scipy
 
 def maketsfMat(L, tsf):
+    # Rearranging the triplet separation function to a matrix-form, to ease calculations
     Mat3 = scipy.sparse.lil_matrix((L**4, (2*L-1)**4))
     for ii1 in range(L):
         for jj1 in range(L):

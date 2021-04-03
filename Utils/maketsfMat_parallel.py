@@ -12,6 +12,7 @@ import itertools
 import multiprocessing as mp
 
 def maketsfMat_parallel(L, tsf):
+    # Rearranging the triplet separation function to a matrix-form, to ease calculations. Parallel processing.
     shifts = list(itertools.product(np.arange(L), np.arange(L), np.arange(L), np.arange(L)))
     num_cpus = mp.cpu_count()
     divided_shifts = np.array_split(shifts, num_cpus)
