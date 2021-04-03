@@ -157,7 +157,6 @@ def rot_img_freq(theta, z, kvals, Bk, L):
 def rot_img_freqT(theta, c, kvals, Bk, L, T):
     return np.real(np.fft.ifft2((Bk*np.exp(1j*kvals*theta)@(T.H@c))))[L//2:-(L//2), L//2:-(L//2)]
 
-
 def min_err_rots(z, z_est, kvals, B, L):
     X = np.reshape(np.real(B @ z), (L, L))
     thetas = np.linspace(0, 2*np.pi, 360)
@@ -175,7 +174,6 @@ def min_err_coeffs(z, z_est, kvals):
         z_est_rot = z_est*np.exp(1j*thetas[t]*kvals)
         errs[t] = np.linalg.norm(z-z_est_rot, ord=2)/np.linalg.norm(z, ord=2)
     return np.min(errs), thetas[np.argmin(errs)]
-
 
 def calcT(nu, kvals):
     v = np.zeros(2*nu).astype(np.complex)
