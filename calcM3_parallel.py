@@ -10,7 +10,7 @@ import multiprocessing as mp
 
 from funcs_calc_moments import M2_2d
 
-from calc_M3_for_micrograph import calc_M3_for_micrograph, calc_M3_for_list
+from calc_3rdorder_ac import calc_M3_for_micrograph, calc_M3_for_list
 
 from generate_clean_micrograph_2d import generate_clean_micrograph_2d_rots
 
