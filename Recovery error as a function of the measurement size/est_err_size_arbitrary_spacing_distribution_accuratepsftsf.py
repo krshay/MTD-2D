@@ -12,7 +12,7 @@ import time
 
 import multiprocessing as mp
 
-from Utils.calc_err_size import calc_err_size_accuratepsftsf
+from Utils.calc_err_size import calc_err_size_knownpsftsf
 
 
 plt.close("all")
@@ -27,7 +27,7 @@ if __name__ == '__main__':
     
     num_cpus = mp.cpu_count()
     pool = mp.Pool(num_cpus)
-    S = pool.starmap(calc_err_size_accuratepsftsf, [[L, ne, N, sizes, i+100] for i in range(Niters)])
+    S = pool.starmap(calc_err_size_knownpsftsf, [[L, ne, N, sizes, i+100] for i in range(Niters)])
     pool.close()
     pool.join() 
     

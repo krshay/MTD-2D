@@ -17,6 +17,7 @@ from Utils.generate_clean_micrograph_2d import generate_clean_micrograph_2d_rots
 import itertools
 
 def calcM3_parallel_micrographs(L, sigma2, gamma, c, kvals, Bk, W, T, N, NumMicrographs):
+    # Parallel calculations of third-order autocorrelations of multiple micrographs
     print('Started calculations')
     ys = []
     M1_ys = np.zeros((NumMicrographs, ))
@@ -51,6 +52,7 @@ def calcM3_parallel_micrographs(L, sigma2, gamma, c, kvals, Bk, W, T, N, NumMicr
     return M1_ys, M2_ys, M3_ys
 
 def calcM3_parallel_shifts(L, sigma2, gamma, c, kvals, Bk, W, T, N):
+    # Parallel calculations of third-order autocorrelations of one micrograph (the parallelism is on the shifts)
     print('Started calculations')
     y_clean, _, _ = generate_clean_micrograph_2d_rots(c, kvals, Bk, W, L, N, gamma*(N/L)**2, T, seed=100)
     y = y_clean + np.random.default_rng().normal(loc=0, scale=np.sqrt(sigma2), size=np.shape(y_clean))

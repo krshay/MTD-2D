@@ -7,16 +7,17 @@ Created on Sun Jan 24 18:38:45 2021
 
 import numpy as np
 
-from Utils.fb_funcs import expand_fb, min_err_rots, min_err_coeffs, calcT
+from Utils.fb_funcs import expand_fb, min_err_coeffs, calcT
 from Utils.generate_clean_micrograph_2d import generate_clean_micrograph_2d_rots
 from Utils.funcs_calc_moments import M2_2d, M3_2d
-from Utils.psf_functions_2d import full_psf_2d, coeffs_initial_guess
+from Utils.psf_functions_2d import full_psf_2d
 from Utils.tsf_functions_2d import full_tsf_2d
 import Utils.optimization_funcs_rot
 from Utils.makeExtraMat import makeExtraMat
 from Utils.maketsfMat import maketsfMat
 
-def calc_err_size_accuratepsftsf(L, ne, N, sizes, sd):
+def calc_err_size_knownpsftsf(L, ne, N, sizes, sd):
+    # Calculation of estimation error in estimating a specific target image, multiple micrograph sizes. For the case of known PSF and TSF.
     np.random.seed(sd)
     errs = np.zeros((len(sizes), 3))
     costs = np.zeros((len(sizes), 3))
@@ -35,8 +36,7 @@ def calc_err_size_accuratepsftsf(L, ne, N, sizes, sd):
 
 
     gamma_initial = 0.09
-    # y_init, s_init, locs_init = generate_clean_micrograph_2d_rots(c, kvals, Bk, W, L, N, gamma*(N/L)**2, T)
-   
+
     X_initial1 = np.random.rand(L, L)
     X_initial1 = X_initial1 / np.linalg.norm(X_initial1)
     
@@ -57,7 +57,6 @@ def calc_err_size_accuratepsftsf(L, ne, N, sizes, sd):
 
     for (idx, sz) in enumerate(sizes):
         y_clean, s, locs = generate_clean_micrograph_2d_rots(c, kvals, Bk, W, L, sz, 0.100*(sz/L)**2, T)
-        # gamma = s[0]*(L/N)**2
         sigma2 = 0
         y = y_clean + np.random.default_rng().normal(loc=0, scale=np.sqrt(sigma2), size=np.shape(y_clean))
         
@@ -106,6 +105,7 @@ def calc_err_size_accuratepsftsf(L, ne, N, sizes, sd):
     return errs, costs
 
 def calc_err_size_Algorithm1(L, ne, N, sizes, sd):
+    # Calculation of estimation error in estimating a specific target image, multiple micrograph sizes. For the case of Algorithm 1.
     np.random.seed(sd)
     errs = np.zeros((len(sizes), 3))
     costs = np.zeros((len(sizes), 3))
@@ -121,7 +121,6 @@ def calc_err_size_Algorithm1(L, ne, N, sizes, sd):
     Bk = np.zeros((2*L-1, 2*L-1, nu), dtype=np.complex_)
     for ii in range(nu):
         Bk[ :, :, ii] = np.fft.fft2(np.pad(np.reshape(B[ :, ii], (L, L)), L//2))
-
 
     gamma_initial = 0.09
 
@@ -145,7 +144,6 @@ def calc_err_size_Algorithm1(L, ne, N, sizes, sd):
     
     for (idx, sz) in enumerate(sizes):
         y_clean, s, locs = generate_clean_micrograph_2d_rots(c, kvals, Bk, W, L, sz, 0.100*(sz/L)**2, T)
-        # gamma = s[0]*(L/N)**2
         sigma2 = 0
         y = y_clean + np.random.default_rng().normal(loc=0, scale=np.sqrt(sigma2), size=np.shape(y_clean))
         
@@ -189,8 +187,8 @@ def calc_err_size_Algorithm1(L, ne, N, sizes, sd):
         costs[idx, 2] = X_est3.fun
     return errs, costs
 
-
 def calc_err_size_nopsftsf(L, ne, N, sizes, sd):
+    # Calculation of estimation error in estimating a specific target image, multiple micrograph sizes. For the case of assuming that the measurement is well-separated.
     np.random.seed(sd)
     errs = np.zeros((len(sizes), 3))
     costs = np.zeros((len(sizes), 3))

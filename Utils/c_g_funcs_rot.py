@@ -54,6 +54,7 @@ def calc_acs_grads_rot_notparallel(Bk, z, kvals, L, k1_map=None, map3=None):
     return S2_x, gS2_x, S2_x_neigh, gS2_x_neigh, S3_x, gS3_x, S3_x_neigh, gS3_x_neigh, S3_x_triplets, gS3_x_triplets
 
 def cost_grad_fun_rot_parallel(Z, Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, ExtraMat2, ExtraMat3, tsfMat, L, K, N_mat=None, k1_map=None, map3=None):
+    # Cost and gradient function according to eq. (39). Parallel processing.
     start = time.time()
     gamma = Z[:K]
     c = Z[K:]
@@ -109,6 +110,7 @@ def cost_grad_fun_rot_parallel(Z, Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, ExtraM
     return f, np.concatenate((np.reshape(g_gamma, (K,)), g_c))
 
 def cost_grad_fun_rot_notparallel(Z, Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, ExtraMat2, ExtraMat3, tsfMat, L, K, N_mat=None, k1_map=None, map3=None):
+    # Cost and gradient function according to eq. (39). No parallel processing (faster for smaller target images).
     gamma = Z[:K]
     c = Z[K:]
     z = T.H@c
