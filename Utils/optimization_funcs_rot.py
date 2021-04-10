@@ -44,6 +44,28 @@ def optimize_2d_known_psf_triplets(initial_guesses, Bk, T, kvals, M1_y, M2_y, M3
     return minimize(fun=Utils.c_g_funcs_rot.cost_grad_fun_rot_notparallel, x0=initial_guesses, method='BFGS', jac=True, options={'disp': True, 'maxiter':numiters, 'gtol': gtol}, args = (Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, ExtraMat2, ExtraMat3, tsfMat, L, K, N_mat, k1_map, map3))
 
 def optimize_rot_Algorithm1_parallel(initial_guesses, Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, K, W, N, iters_till_change=150, gtol=1e-15, max_iter=2000):
+    """Optimization of the objective function, using Algorithm 1, with parallel processing.
+
+    Args:
+        initial guesses: vector containing initial guesses for gamma and c
+        Bk: matrix that maps from the expansion coefficients to the approximated image, in the freuency domain
+        T: matrix that maps from the real representation to the complex representation of the expansion coefficients
+        kvals: vector of frequencies
+        M1_y: the first-order autocorrelation of the measurement
+        M2_y: the second-order autocorrelations of the measurement, of size L * L
+        M3_y: the third-order autocorrelations of the measurement, of size L * L * L * L
+        sigma2: the variance of the noise
+        L: diameter of the target image
+        K: number of target images' types; may be utilized for heterogeneity
+        W: separation between images; L for arbitrary spacing distribution, 2*L-1 for the well-separated case
+        N: size of the final synthesized measurement used to approximate the PSF and TSF
+        iters_till_change: maximum number of optimization iterations for the initial optimization to estimate gamma (default is 150)
+        gtol: Gradient norm must be less than gtol before successful termination (default is 1e-15)
+        numiters: maximum number of optimization iterations (default is 2000) 
+    
+    Returns:
+        The optimization result represented as a OptimizeResult object
+    """
     k1_map = calck1(L)
     map3 = calcmap3(L)
     N_mat = calcN_mat(L)
@@ -70,6 +92,28 @@ def optimize_rot_Algorithm1_parallel(initial_guesses, Bk, T, kvals, M1_y, M2_y, 
     return minimize(fun=Utils.c_g_funcs_rot.cost_grad_fun_rot_parallel, x0=new_guesses, method='BFGS', jac=True, options={'disp': True, 'maxiter':max_iter, 'gtol': gtol}, args = (Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, ExtraMat2, ExtraMat3, tsfMat, L, K, N_mat, k1_map, map3)), psf2, tsf2
    
 def optimize_rot_Algorithm1_notparallel(initial_guesses, Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, K, W, N, iters_till_change=150, gtol=1e-15, max_iter=2000):
+    """Optimization of the objective function, using Algorithm 1, without parallel processing.
+
+    Args:
+        initial guesses: vector containing initial guesses for gamma and c
+        Bk: matrix that maps from the expansion coefficients to the approximated image, in the freuency domain
+        T: matrix that maps from the real representation to the complex representation of the expansion coefficients
+        kvals: vector of frequencies
+        M1_y: the first-order autocorrelation of the measurement
+        M2_y: the second-order autocorrelations of the measurement, of size L * L
+        M3_y: the third-order autocorrelations of the measurement, of size L * L * L * L
+        sigma2: the variance of the noise
+        L: diameter of the target image
+        K: number of target images' types; may be utilized for heterogeneity
+        W: separation between images; L for arbitrary spacing distribution, 2*L-1 for the well-separated case
+        N: size of the final synthesized measurement used to approximate the PSF and TSF
+        iters_till_change: maximum number of optimization iterations for the initial optimization to estimate gamma (default is 150)
+        gtol: Gradient norm must be less than gtol before successful termination (default is 1e-15)
+        numiters: maximum number of optimization iterations (default is 2000) 
+    
+    Returns:
+        The optimization result represented as a OptimizeResult object
+    """
     k1_map = calck1(L)
     map3 = calcmap3(L)
     N_mat = calcN_mat(L)
