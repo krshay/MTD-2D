@@ -6,5 +6,5 @@ save_non_project_files = False
 
 [main]
 version = 0.2.0
-recent_files = ['Utils\\c_g_funcs_rot.py', 'Utils\\calc_3rdorder_ac.py', 'Utils\\calcM3_parallel.py', 'Utils\\calc_err_size.py', 'Recovery error as a function of the measurement size\\Plot_error_size.py', 'Recovery error as a function of the measurement size\\est_err_size_arbitrary_spacing_distribution_nopsftsf.py', 'Recovery error as a function of the measurement size\\est_err_size_arbitrary_spacing_distribution_accuratepsftsf.py', 'Recovery from noisy measurements\\b-no_noise.py.py', 'Recovery from noisy measurements\\c-SNR_10.py', 'Recovery from noisy measurements\\d-SNR_01.py', 'Utils\\optimization_funcs_rot.py', 'Utils\\psf_functions_2d.py', 'Utils\\makeExtraMat.py', 'Utils\\maketsfMat_parallel.py', 'Utils\\maketsfMat.py']
+recent_files = ['Recovery from noisy measurements\\Plot_recovery.py', 'Reproduce Figure 1\\Example_Micorgraph_Noise_Levels.py', 'Recovery error as a function of the measurement size\\Plot_error_size.py', 'Reproduce Figure 2\\Example_Micorgraph_neighbors_triplets.py']
 

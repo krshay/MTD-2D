@@ -2,20 +2,22 @@
 """
 Created on Fri Jul 31 20:23:28 2020
 
-@author: kreym
+@author: Shay Kreymer
 """
 
 import numpy as np
-from scipy.optimize import minimize
+from scipy.optimize import minimize, check_grad
+import multiprocessing as mp
 import Utils.c_g_funcs_rot
 from Utils.funcs_calc_moments_rot import calcmap3, calck1, calcN_mat
-from Utils.makeExtraMat import makeExtraMat
-from Utils.maketsfMat import maketsfMat
-from Utils.maketsfMat_parallel import maketsfMat_parallel
+from Utils.psf_tsf_funcs import makeExtraMat
+from Utils.psf_tsf_funcs import maketsfMat
+from Utils.psf_tsf_funcs import maketsfMat_parallel
+import scipy.special as special
 from Utils.generate_clean_micrograph_2d import generate_clean_micrograph_2d_one_neighbor_rots, generate_clean_micrograph_2d_rots
 
-import Utils.psf_functions_2d
-import Utils.tsf_functions_2d
+import Utils.psf_tsf_funcs
+import Utils.psf_tsf_funcs
 
 def optimize_2d_known_psf_triplets(initial_guesses, Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, K, tsfMat, ExtraMat2, ExtraMat3, numiters=3000, gtol=1e-15):
     # Optimization assuming known psf and tsf, and all matrices already computed
@@ -30,10 +32,10 @@ def optimize_rot_Algorithm1_parallel(initial_guesses, Bk, T, kvals, M1_y, M2_y, 
     map3 = calcmap3(L)
     N_mat = calcN_mat(L)
     
-    _, _, locs_init = generate_clean_micrograph_2d_rots(initial_guesses[1: ], kvals, Bk, W, L, 10000, (initial_guesses[0]*(10000/L)**2).astype(int), T, seed=100)
-    psf_init = Utils.psf_functions_2d.full_psf_2d(locs_init, L)
+    _, _, locs_init = generate_clean_micrograph_2d_rots(initial_guesses[1: ], kvals, Bk, W, L, 10000, (initial_guesses[0]*(10000/L)**2).astype(int), T, seed=1)
+    psf_init = Utils.psf_tsf_funcs.full_psf_2d(locs_init, L)
     ExtraMat2, ExtraMat3 = makeExtraMat(L, psf_init)
-    tsf_init = Utils.tsf_functions_2d.full_tsf_2d(locs_init, L)
+    tsf_init = Utils.psf_tsf_funcs.full_tsf_2d(locs_init, L)
     tsfMat = maketsfMat_parallel(L, tsf_init)
         
     first_estimates = minimize(fun=Utils.c_g_funcs_rot.cost_grad_fun_rot_parallel, x0=initial_guesses, method='BFGS', jac=True, options={'disp': True, 'maxiter':iters_till_change, 'gtol': gtol}, args = (Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, ExtraMat2, ExtraMat3, tsfMat, L, K, N_mat, k1_map, map3))
@@ -42,9 +44,9 @@ def optimize_rot_Algorithm1_parallel(initial_guesses, Bk, T, kvals, M1_y, M2_y, 
     first_c = first_estimates.x[1: ]
     
     _, _, locs2 = generate_clean_micrograph_2d_rots(first_c, kvals, Bk, W, L, N, (first_gamma*(N/L)**2).astype(int), T, seed=1000)
-    psf2 = Utils.psf_functions_2d.full_psf_2d(locs2, L)
+    psf2 = Utils.psf_tsf_funcs.full_psf_2d(locs2, L)
     ExtraMat2, ExtraMat3 = makeExtraMat(L, psf2)
-    tsf2 = Utils.tsf_functions_2d.full_tsf_2d(locs2, L)
+    tsf2 = Utils.psf_tsf_funcs.full_tsf_2d(locs2, L)
     tsfMat = maketsfMat_parallel(L, tsf2)
     
     new_guesses = np.concatenate((np.reshape(first_gamma, (1,)), first_c))
@@ -59,9 +61,9 @@ def optimize_rot_Algorithm1_notparallel(initial_guesses, Bk, T, kvals, M1_y, M2_
     print('Starting...')
     
     y_init, _, locs_init = generate_clean_micrograph_2d_rots(initial_guesses[1: ], kvals, Bk, W, L, 10000, (initial_guesses[0]*(10000/L)**2).astype(int), T, seed=100)
-    psf_init = Utils.psf_functions_2d.full_psf_2d(locs_init, L)
+    psf_init = Utils.psf_tsf_funcs.full_psf_2d(locs_init, L)
     ExtraMat2, ExtraMat3 = makeExtraMat(L, psf_init)
-    tsf_init = Utils.tsf_functions_2d.full_tsf_2d(locs_init, L)
+    tsf_init = Utils.psf_tsf_funcs.full_tsf_2d(locs_init, L)
     tsfMat = maketsfMat(L, tsf_init)
     print('Done')
         
@@ -71,9 +73,9 @@ def optimize_rot_Algorithm1_notparallel(initial_guesses, Bk, T, kvals, M1_y, M2_
     first_c = first_estimates.x[1: ]
     
     y2, _, locs2 = generate_clean_micrograph_2d_rots(first_c, kvals, Bk, W, L, 10000, (first_gamma*(10000/L)**2).astype(int), T, seed=1000)
-    psf2 = Utils.psf_functions_2d.full_psf_2d(locs2, L)
+    psf2 = Utils.psf_tsf_funcs.full_psf_2d(locs2, L)
     ExtraMat2, ExtraMat3 = makeExtraMat(L, psf2)
-    tsf2 = Utils.tsf_functions_2d.full_tsf_2d(locs2, L)
+    tsf2 = Utils.psf_tsf_funcs.full_tsf_2d(locs2, L)
     tsfMat = maketsfMat(L, tsf2)
     
     new_guesses = np.concatenate((np.reshape(first_gamma, (1,)), first_c))

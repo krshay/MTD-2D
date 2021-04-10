@@ -2,7 +2,7 @@
 """
 Created on Thu Apr  1 12:02:30 2021
 
-@author: kreym
+@author: Shay Kreymer
 """
 
 import numpy as np
@@ -12,7 +12,7 @@ import time
 
 import multiprocessing as mp
 
-from Utils.calc_err_SNR import calc_err_SNR
+from calc_err_SNR import calc_err_SNR
 
 
 plt.close("all")
@@ -20,11 +20,11 @@ plt.close("all")
 if __name__ == '__main__':
     start = time.time()
     N = 30000
-    Niters = 50
-    SNRs_length = 20
+    Niters = 20
+    SNRs_length = 25
     L = 5
     ne = 10
-    SNRs = np.logspace(np.log10(0.1), np.log10(10), SNRs_length)
+    SNRs = np.logspace(np.log10(0.5), np.log10(100), SNRs_length)
     
     num_cpus = mp.cpu_count()
     pool = mp.Pool(num_cpus)
@@ -34,7 +34,7 @@ if __name__ == '__main__':
     
     finish = time.time() - start
     
-    errs = np.zeros((Niters, 10))
+    errs = np.zeros((Niters, SNRs_length))
 
     for j in range(Niters):
         errs[j, :] = np.min(S[j][0], axis=1)
@@ -42,14 +42,13 @@ if __name__ == '__main__':
     
     np.save('SNRs.npy', SNRs)
     
-    np.save('errs_SNR_0_50.npy', errs)
+    np.save('errs_SNR_0_25.npy', errs)
 
 
     plt.figure()
-    plt.loglog(SNRs, errs_mean)  
-    # plt.loglog(SNrs, errs_mean[-1]*(sizes**2/sizes[-1]**2)**(-1/2), '--')
+    plt.loglog(SNRs, errs_mean, '.-')  
+    plt.loglog(SNRs[-16:-10], errs_mean[-16]*(SNRs[-16:-10]/SNRs[-16])**(-1.5), '--')
     plt.xlabel('SNR')
     plt.ylabel('MSE')
-    plt.title('MSE in estimation of FB coefficients vs. micrograph size')
     # plt.legend(('data', '-1/2 slope'))
     

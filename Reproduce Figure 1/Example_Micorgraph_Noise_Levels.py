@@ -2,7 +2,7 @@
 """
 Created on Wed Jul  1 20:26:09 2020
 
-@author: kreym
+@author: Shay Kreymer
 """
 
 import numpy as np
@@ -40,7 +40,7 @@ if __name__ == '__main__':
     y_clean, s, locs = generate_clean_micrograph_2d_rots(c, kvals, Bk, W, L, N, 0.30*(N/L)**2, T, seed=100)
 
     gamma = s[0]*(L/N)**2
-    SNR = 0.1
+    SNR = 0.5
     sigma2 = np.linalg.norm(Xrec)**2 / (SNR * np.pi * (L//2)**2)
     y1 = y_clean + np.random.default_rng().normal(loc=0, scale=np.sqrt(sigma2), size=np.shape(y_clean))
     

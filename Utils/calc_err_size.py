@@ -2,7 +2,7 @@
 """
 Created on Sun Jan 24 18:38:45 2021
 
-@author: kreym
+@author: Shay Kreymer
 """
 
 import numpy as np
@@ -10,11 +10,11 @@ import numpy as np
 from Utils.fb_funcs import expand_fb, min_err_coeffs, calcT
 from Utils.generate_clean_micrograph_2d import generate_clean_micrograph_2d_rots
 from Utils.funcs_calc_moments import M2_2d, M3_2d
-from Utils.psf_functions_2d import full_psf_2d
-from Utils.tsf_functions_2d import full_tsf_2d
+from Utils.psf_tsf_funcs import full_psf_2d
+from Utils.psf_tsf_funcs import full_tsf_2d
 import Utils.optimization_funcs_rot
-from Utils.makeExtraMat import makeExtraMat
-from Utils.maketsfMat import maketsfMat
+from Utils.psf_tsf_funcs import makeExtraMat
+from Utils.psf_tsf_funcs import maketsfMat
 
 def calc_err_size_knownpsftsf(L, ne, N, sizes, sd):
     # Calculation of estimation error in estimating a specific target image, multiple micrograph sizes. For the case of known PSF and TSF.

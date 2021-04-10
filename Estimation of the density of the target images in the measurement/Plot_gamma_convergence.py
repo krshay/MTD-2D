@@ -2,7 +2,7 @@
 """
 Created on Fri Feb 19 14:37:57 2021
 
-@author: kreym
+@author: Shay Kreymer
 """
 # %% imports
 import numpy as np
@@ -13,11 +13,11 @@ import scipy
 from Utils.fb_funcs import expand_fb, calcT
 from Utils.generate_clean_micrograph_2d import generate_clean_micrograph_2d_rots
 from Utils.funcs_calc_moments import M2_2d, M3_2d
-from Utils.psf_functions_2d import full_psf_2d
-from Utils.tsf_functions_2d import full_tsf_2d
+from Utils.psf_tsf_funcs import full_psf_2d
+from Utils.psf_tsf_funcs import full_tsf_2d
 import Utils.optimization_funcs_rot
-from Utils.makeExtraMat import makeExtraMat
-from Utils.maketsfMat import maketsfMat
+from Utils.psf_tsf_funcs import makeExtraMat
+from Utils.psf_tsf_funcs import maketsfMat
 
 # %% loads
 errs_approx_009 = np.load('../Results/gamma_exp/errs_approx_009.npy')

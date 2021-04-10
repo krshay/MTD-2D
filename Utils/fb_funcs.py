@@ -2,7 +2,7 @@
 """
 Created on Wed Jul  1 20:00:31 2020
 
-@author: kreym
+@author: Shay Kreymer
 """
 
 import numpy as np
@@ -11,19 +11,19 @@ import scipy.sparse as sp
 from Utils.calc_estimation_error import calc_estimation_error
 
 def expand_fb(img, ne):
-    '''
-    Inputs:
+    """ Expands img using its first ne expansion coefficients
+    Args:
         img: 2D image to be expanded
         ne: number of expansion coefficients
     
-    Outputs:
-        B: matrix that maps from Utils.the expansion coefficients to
+    Returns:
+        B: matrix that maps from the expansion coefficients to
            the approximated image
         z: expansion coefficients in complex format
         roots: roots of the Bessel functions
         kvals: order of the Bessel functions
         nu: modified number of expansion coefficients
-    '''
+    """
     n1 = np.shape(img)[0]
     R = n1 // 2
     r_limit = np.pi*R

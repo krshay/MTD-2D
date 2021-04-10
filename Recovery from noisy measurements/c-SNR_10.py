@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sat Apr  3 17:33:40 2021
+Created on Sat Mar  6 19:48:24 2021
 
-@author: kreym
+@author: Shay Kreymer
 """
 
 import numpy as np
@@ -19,6 +19,8 @@ import Utils.optimization_funcs_rot
 
 from Utils.calcM3_parallel import calcM3_parallel_micrographs, calcM3_parallel_shifts
 
+
+
 plt.close("all")
 np.random.seed(100)
 if __name__ == '__main__':
@@ -27,8 +29,8 @@ if __name__ == '__main__':
     L = np.shape(X)[0]
     W = L # L for arbitrary spacing distribution, 2*L-1 for well-separated
 
-    N = 50000
-    # NumMicrographs = 1
+    N = 7000
+    NumMicrographs = 1000
     ne = 34
     B, z, roots, kvals, nu = expand_fb(X, ne)
     T = calcT(nu, kvals)
@@ -46,26 +48,28 @@ if __name__ == '__main__':
     sigma2 = np.linalg.norm(Xrec)**2 / (SNR * np.pi * (L//2)**2)
     
     t_acs_start = time.time()
-    M1_y, M2_y, M3_y, y = calcM3_parallel_shifts(L, sigma2, gamma, c, kvals, Bk, W, T, N)
+    M1_ys, M2_ys, M3_ys = calcM3_parallel_micrographs(L, sigma2, gamma, c, kvals, Bk, W, T, N, NumMicrographs)
     t_acs_finish = time.time() - t_acs_start
     
-    np.save('../Results/Recovery/M1_y_9_SNR10.npy', M1_y)
+    M1_y = np.mean(M1_ys)
     
-    np.save('../Results/Recovery/M2_y_9_SNR10.npy', M2_y)
+    M2_y = np.mean(M2_ys, 0)
     
-    np.save('../Results/Recovery/M3_y_9_SNR10.npy', M3_y)
+    M3_y = np.mean(M3_ys, 0)
     
-    print("all saved")
+    # M1_yold = np.load('../Results/Recovery/M1_ys_9_SNR01_1000.npy')
     
-    # M1_y = np.load('Results/Recovery/M1_ys_9_SNRinf.npy')
+    # M2_yold = np.load('../Results/Recovery/M2_ys_9_SNR01_1000.npy')
     
-    # M2_y = np.load('Results/Recovery/M2_ys_9_SNRinf.npy')
+    # M3_yold = np.load('../Results/Recovery/M3_ys_9_SNR01_1000.npy')
     
-    # M3_y = np.load('Results/Recovery/M3_ys_9_SNRinf.npy')
+    # M1_y = (2/3)*M1_yold + (1/3)*M1_ynew
     
-    # print("all loaded")
+    # M2_y = (2/3)*M2_yold + (1/3)*M2_ynew
     
-    gamma_initial = 0.09
+    # M3_y = (2/3)*M3_yold + (1/3)*M3_ynew
+   
+    gamma_initial = 0.090
     X_initial = np.random.rand(L, L)
     X_initial = np.linalg.norm(Xrec) * X_initial / np.linalg.norm(X_initial)
     
@@ -74,7 +78,7 @@ if __name__ == '__main__':
     
     start = time.time()
     
-    X_est, psf_estimated, tsf_estimated = Utils.optimization_funcs_rot.optimize_rot_Algorithm1_parallel(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, W, N, iters_till_change=100, gtol=1e-15, max_iter=2500)
+    X_est, psf_estimated, tsf_estimated = Utils.optimization_funcs_rot.optimize_rot_Algorithm1_parallel(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, W, 50000, iters_till_change=100, gtol=1e-15, max_iter=2500)
 
     time_passed = time.time() - start
     print(f'Time passed: {time_passed} secs')

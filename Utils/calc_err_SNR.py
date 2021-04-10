@@ -2,14 +2,14 @@
 """
 Created on Thu Apr  1 12:02:52 2021
 
-@author: kreym
+@author: Shay Kreymer
 """
 
 # -*- coding: utf-8 -*-
 """
 Created on Sun Jan 24 18:38:45 2021
 
-@author: kreym
+@author: Shay Kreymer
 """
 
 import numpy as np
@@ -63,8 +63,10 @@ def calc_err_SNR(L, ne, N, SNRs, sd):
     _, z_initial3, _, _, _ = expand_fb(X_initial3, ne)
     c_initial3 = np.real(T @ z_initial3)
 
-    y_clean, s, locs = generate_clean_micrograph_2d_rots(c, kvals, Bk, W, L, N, 0.100*(N/L)**2, T)
+    y_clean, s, locs = generate_clean_micrograph_2d_rots(c, kvals, Bk, W, L, N, 0.100*(N/L)**2, T, seed=sd)
     for (idx, SNR) in enumerate(SNRs):
+        
+        print(f'iteration #{idx} in seed #{sd}')
 
         sigma2 = np.linalg.norm(Xrec)**2 / (SNR * np.pi * (L//2)**2)
         y = y_clean + np.random.default_rng().normal(loc=0, scale=np.sqrt(sigma2), size=np.shape(y_clean))
@@ -86,9 +88,9 @@ def calc_err_SNR(L, ne, N, SNRs, sd):
                     for j2 in range(L):
                         M3_y[i1, j1, i2, j2] = M3_2d(yy, (i1, j1), (i2, j2))
     
-        X_est1, _, _ = Utils.optimization_funcs_rot.optimize_rot_Algorithm1_notparallel(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial1)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, W, 10000) 
-        X_est2, _, _ = Utils.optimization_funcs_rot.optimize_rot_Algorithm1_notparallel(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial2)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, W, 10000) 
-        X_est3, _, _ = Utils.optimization_funcs_rot.optimize_rot_Algorithm1_notparallel(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial3)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, W, 10000) 
+        X_est1, _, _ = Utils.optimization_funcs_rot.optimize_rot_Algorithm1_notparallel(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial1)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, W, 10000, iters_till_change=150) 
+        X_est2, _, _ = Utils.optimization_funcs_rot.optimize_rot_Algorithm1_notparallel(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial2)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, W, 10000, iters_till_change=150) 
+        X_est3, _, _ = Utils.optimization_funcs_rot.optimize_rot_Algorithm1_notparallel(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial3)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, W, 10000, iters_till_change=150) 
 
         c_est1 = X_est1.x[1:]
         z_est1 = T.H @ c_est1

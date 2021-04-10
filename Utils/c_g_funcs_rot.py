@@ -2,7 +2,7 @@
 """
 Created on Sat Jul 25 15:46:42 2020
 
-@author: kreym
+@author: Shay Kreymer
 """
 
 import numpy as np
@@ -14,10 +14,10 @@ import multiprocessing as mp
 
 import functools
 
-from Utils.makeExtraMat import makeExtraMat
+from Utils.psf_tsf_funcs import makeExtraMat
 
 from Utils.funcs_calc_moments_rot import calcS3_x_gradnew2, calcS3_x_neigh_gradnew2, calcS3_x_triplets_gradnew2,  calcS2_x_grad_notparallel, calcS2_x_neigh_grad_notparallel, calck1,  calcN_mat, calcmap3, calcS3_x_grad_neigh_triplets_parallel, calcS2_x_grad_notparallel, calcS2_x_neigh_grad_notparallel
-from Utils.psf_functions_2d import fourier_bessel_expansion, evaluate_psf_full
+from Utils.psf_tsf_funcs import fourier_bessel_expansion, evaluate_psf_full
 
 def calc_acs_grads_rot_parallel(Bk, z, kvals, L, k1_map, map3):
     # Calclulations of all needed autocorrelations and gradients, utilizing parallel processing
@@ -54,7 +54,6 @@ def calc_acs_grads_rot_notparallel(Bk, z, kvals, L, k1_map=None, map3=None):
     return S2_x, gS2_x, S2_x_neigh, gS2_x_neigh, S3_x, gS3_x, S3_x_neigh, gS3_x_neigh, S3_x_triplets, gS3_x_triplets
 
 def cost_grad_fun_rot_parallel(Z, Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, ExtraMat2, ExtraMat3, tsfMat, L, K, N_mat=None, k1_map=None, map3=None):
-    # Cost and gradient function according to eq. (39). Parallel processing.
     start = time.time()
     gamma = Z[:K]
     c = Z[K:]
@@ -110,7 +109,6 @@ def cost_grad_fun_rot_parallel(Z, Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, ExtraM
     return f, np.concatenate((np.reshape(g_gamma, (K,)), g_c))
 
 def cost_grad_fun_rot_notparallel(Z, Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, ExtraMat2, ExtraMat3, tsfMat, L, K, N_mat=None, k1_map=None, map3=None):
-    # Cost and gradient function according to eq. (39). No parallel processing (faster for smaller target images).
     gamma = Z[:K]
     c = Z[K:]
     z = T.H@c
