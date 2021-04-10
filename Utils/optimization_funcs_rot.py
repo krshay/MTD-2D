@@ -6,21 +6,37 @@ Created on Fri Jul 31 20:23:28 2020
 """
 
 import numpy as np
-from scipy.optimize import minimize, check_grad
-import multiprocessing as mp
+from scipy.optimize import minimize
 import Utils.c_g_funcs_rot
 from Utils.funcs_calc_moments_rot import calcmap3, calck1, calcN_mat
-from Utils.psf_tsf_funcs import makeExtraMat
-from Utils.psf_tsf_funcs import maketsfMat
-from Utils.psf_tsf_funcs import maketsfMat_parallel
-import scipy.special as special
-from Utils.generate_clean_micrograph_2d import generate_clean_micrograph_2d_one_neighbor_rots, generate_clean_micrograph_2d_rots
+from Utils.psf_tsf_funcs import makeExtraMat, maketsfMat, maketsfMat_parallel
+from Utils.generate_clean_micrograph_2d import generate_clean_micrograph_2d_rots
 
-import Utils.psf_tsf_funcs
 import Utils.psf_tsf_funcs
 
 def optimize_2d_known_psf_triplets(initial_guesses, Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, K, tsfMat, ExtraMat2, ExtraMat3, numiters=3000, gtol=1e-15):
-    # Optimization assuming known psf and tsf, and all matrices already computed
+    """Optimization of the objective function, assuming known PSF and TSF.
+
+    Args:
+        initial guesses: vector containing initial guesses for gamma and c
+        Bk: matrix that maps from the expansion coefficients to the approximated image, in the freuency domain
+        T: matrix that maps from the real representation to the complex representation of the expansion coefficients
+        kvals: vector of frequencies
+        M1_y: the first-order autocorrelation of the measurement
+        M2_y: the second-order autocorrelations of the measurement, of size L * L
+        M3_y: the third-order autocorrelations of the measurement, of size L * L * L * L
+        sigma2: the variance of the noise
+        L: diameter of the target image
+        K: number of target images' types; may be utilized for heterogeneity
+        tsfMat: matrix containing all TSF values; used to ease computations
+        ExtraMat2: matrix containing all PSF values; used to ease computations of the second-order autocorrelations
+        ExtraMat3: matrix containing all PSF values; used to ease computations of the third-order autocorrelations
+        numiters: maximum number of optimization iterations (default is 3000) 
+        gtol: Gradient norm must be less than gtol before successful termination (default is 1e-15)
+    
+    Returns:
+        The optimization result represented as a OptimizeResult object
+    """
     k1_map = calck1(L)
     map3 = calcmap3(L)
     N_mat = calcN_mat(L)

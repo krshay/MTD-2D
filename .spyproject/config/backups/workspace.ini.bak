@@ -6,5 +6,5 @@ save_non_project_files = False
 
 [main]
 version = 0.2.0
-recent_files = ['Recovery from noisy measurements\\Plot_recovery.py', 'Reproduce Figure 1\\Example_Micorgraph_Noise_Levels.py', 'Recovery error as a function of the measurement size\\Plot_error_size.py', 'Reproduce Figure 2\\Example_Micorgraph_neighbors_triplets.py']
+recent_files = ['Utils\\psf_tsf_funcs.py', 'Utils\\generate_clean_micrograph_2d.py', 'Utils\\fb_funcs.py']
 
