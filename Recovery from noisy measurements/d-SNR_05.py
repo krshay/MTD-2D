@@ -8,16 +8,14 @@ Created on Sat Mar  6 19:48:24 2021
 import numpy as np
 import matplotlib.pyplot as plt
 
-import random
 
 import time
 
 
-from Utils.fb_funcs import expand_fb, rot_img, min_err_rots, min_err_coeffs, calcT
-from Utils.generate_clean_micrograph_2d import generate_clean_micrograph_2d_one_neighbor_rots, generate_clean_micrograph_2d_rots
+from Utils.fb_funcs import expand_fb, rot_img, min_err_coeffs, calcT
 import Utils.optimization_funcs_rot
 
-from Utils.calcM3_parallel import calcM3_parallel_micrographs, calcM3_parallel_shifts
+from Utils.calcM3_parallel import calcM3_parallel_micrographs
 
 
 

@@ -32,7 +32,7 @@ def optimize_2d_known_psf_triplets(initial_guesses, Bk, T, kvals, M1_y, M2_y, M3
         ExtraMat2: matrix containing all PSF values; used to ease computations of the second-order autocorrelations
         ExtraMat3: matrix containing all PSF values; used to ease computations of the third-order autocorrelations
         numiters: maximum number of optimization iterations (default is 3000) 
-        gtol: Gradient norm must be less than gtol before successful termination (default is 1e-15)
+        gtol: gradient norm must be less than gtol before successful termination (default is 1e-15)
     
     Returns:
         The optimization result represented as a OptimizeResult object
@@ -60,7 +60,7 @@ def optimize_rot_Algorithm1_parallel(initial_guesses, Bk, T, kvals, M1_y, M2_y, 
         W: separation between images; L for arbitrary spacing distribution, 2*L-1 for the well-separated case
         N: size of the final synthesized measurement used to approximate the PSF and TSF
         iters_till_change: maximum number of optimization iterations for the initial optimization to estimate gamma (default is 150)
-        gtol: Gradient norm must be less than gtol before successful termination (default is 1e-15)
+        gtol: gradient norm must be less than gtol before successful termination (default is 1e-15)
         numiters: maximum number of optimization iterations (default is 2000) 
     
     Returns:
@@ -108,7 +108,7 @@ def optimize_rot_Algorithm1_notparallel(initial_guesses, Bk, T, kvals, M1_y, M2_
         W: separation between images; L for arbitrary spacing distribution, 2*L-1 for the well-separated case
         N: size of the final synthesized measurement used to approximate the PSF and TSF
         iters_till_change: maximum number of optimization iterations for the initial optimization to estimate gamma (default is 150)
-        gtol: Gradient norm must be less than gtol before successful termination (default is 1e-15)
+        gtol: gradient norm must be less than gtol before successful termination (default is 1e-15)
         numiters: maximum number of optimization iterations (default is 2000) 
     
     Returns:
