@@ -1,5 +1,5 @@
 # MTD-2D-ASD
- Code for the paper TO ADD LINK.
+ Code for the paper Two-dimensional Multi-target Detection by Shay Kreymer and Tamir Bendory.
  
  Paper reproduction:
  
