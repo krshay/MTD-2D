@@ -42,65 +42,68 @@ Xrec_true = np.reshape(np.real(B @ z), np.shape(X))
 
 
 # %% plots
-# with plt.style.context('ieee'):
-fig = plt.figure()
-
-ax = plt.axes()
-im = ax.imshow(Xrec_true)
-divider = make_axes_locatable(ax)
-cax = divider.append_axes("right", size="5%", pad=0.05)
-im.set_clim(0, 7)
-cbar = plt.colorbar(im, cax=cax)
-cbar.ax.tick_params(labelsize=20)
-# ax.text(-0.1, 1.03, '('+string.ascii_lowercase[n]+')', transform=ax.transAxes, 
-        # size=30, weight='bold')
-ax.tick_params(axis='both', which='both', bottom=False, top=False, labelbottom=False, right=False, left=False, labelleft=False)
-fig.tight_layout()
-plt.show()
+with plt.style.context('ieee'):
+    # %% Original
+    fig = plt.figure()
     
-plt.savefig(r'C:\Users\kreym\Google Drive\Thesis\Documents\Article\figures\recovery_true.pdf')
-
-
-
-z_est_best_no_noise = np.load("../Results/Recovery/z_est_best_no_noise.npy")
-X_no_noise = np.reshape(np.real(B @ z_est_best_no_noise), np.shape(X))
-
-fig = plt.figure()
-
-ax = plt.axes()
-im = ax.imshow(X_no_noise)
-divider = make_axes_locatable(ax)
-cax = divider.append_axes("right", size="5%", pad=0.05)
-im.set_clim(0, 7)
-cbar = plt.colorbar(im, cax=cax)
-cbar.ax.tick_params(labelsize=20)
-# ax.text(-0.1, 1.03, '('+string.ascii_lowercase[n]+')', transform=ax.transAxes, 
-        # size=30, weight='bold')
-ax.tick_params(axis='both', which='both', bottom=False, top=False, labelbottom=False, right=False, left=False, labelleft=False)
-fig.tight_layout()
-plt.show()
+    ax = plt.axes()
+    im = ax.imshow(Xrec_true)
+    # divider = make_axes_locatable(ax)
+    # cax = divider.append_axes("right", size="5%", pad=0.05)
+    # im.set_clim(0, 7)
+    # cbar = plt.colorbar(im, cax=cax)
+    # cbar.ax.tick_params(labelsize=20)
+    # ax.text(-0.1, 1.03, '('+string.ascii_lowercase[n]+')', transform=ax.transAxes, 
+            # size=30, weight='bold')
+    ax.tick_params(axis='both', which='both', bottom=False, top=False, labelbottom=False, right=False, left=False, labelleft=False)
+    fig.tight_layout()
+    plt.show()
+        
+    plt.savefig(r'C:\Users\kreym\Google Drive\Thesis\Documents\Article\figures\recovery_true.pdf')
     
-plt.savefig(r'C:\Users\kreym\Google Drive\Thesis\Documents\Article\figures\recovery_no_noise.pdf')
-
-
-z_est_best_SNR10 = np.load("../Results/Recovery/z_est_best_SNR10.npy")
-X_SNR10 = np.reshape(np.real(B @ z_est_best_SNR10), np.shape(X))
-
-fig = plt.figure()
-
-ax = plt.axes()
-im = ax.imshow(X_SNR10)
-divider = make_axes_locatable(ax)
-cax = divider.append_axes("right", size="5%", pad=0.05)
-im.set_clim(0, 7)
-cbar = plt.colorbar(im, cax=cax)
-cbar.ax.tick_params(labelsize=20)
-# ax.text(-0.1, 1.03, '('+string.ascii_lowercase[n]+')', transform=ax.transAxes, 
-        # size=30, weight='bold')
-ax.tick_params(axis='both', which='both', bottom=False, top=False, labelbottom=False, right=False, left=False, labelleft=False)
-fig.tight_layout()
-plt.show()
+    # %% SNR = 10
+    z_est_best_SNR10 = np.load("../Results/Recovery/z_est_best_SNR_10.npy")
+    X_SNR10 = np.reshape(np.real(B @ z_est_best_SNR10), np.shape(X))
     
-plt.savefig(r'C:\Users\kreym\Google Drive\Thesis\Documents\Article\figures\recovery_SNR10.pdf')
+    fig = plt.figure()
+    
+    ax = plt.axes()
+    im = ax.imshow(X_SNR10)
+    # divider = make_axes_locatable(ax)
+    # cax = divider.append_axes("right", size="5%", pad=0.05)
+    # im.set_clim(0, 7)
+    # cbar = plt.colorbar(im, cax=cax)
+    # cbar.ax.tick_params(labelsize=20)
+    # ax.text(-0.1, 1.03, '('+string.ascii_lowercase[n]+')', transform=ax.transAxes, 
+            # size=30, weight='bold')
+    ax.tick_params(axis='both', which='both', bottom=False, top=False, labelbottom=False, right=False, left=False, labelleft=False)
+    fig.tight_layout()
+    plt.show()
+        
+    plt.savefig(r'C:\Users\kreym\Google Drive\Thesis\Documents\Article\figures\recovery_SNR_10.pdf')
+    
+    
+    # %% SNR = 0.5
+    z_est_best_SNR_05 = np.load("../Results/Recovery/z_est_best_SNR_05.npy")
+    X_SNR_05 = np.reshape(np.real(B @ z_est_best_SNR_05), np.shape(X))
+    
+    fig = plt.figure()
+    
+    ax = plt.axes()
+    im = ax.imshow(X_SNR_05)
+    # divider = make_axes_locatable(ax)
+    # cax = divider.append_axes("right", size="5%", pad=0.05)
+    # im.set_clim(0, 7)
+    # cbar = plt.colorbar(im, cax=cax)
+    # cbar.ax.tick_params(labelsize=20)
+    # ax.text(-0.1, 1.03, '('+string.ascii_lowercase[n]+')', transform=ax.transAxes, 
+            # size=30, weight='bold')
+    ax.tick_params(axis='both', which='both', bottom=False, top=False, labelbottom=False, right=False, left=False, labelleft=False)
+    fig.tight_layout()
+    plt.show()
+        
+    plt.savefig(r'C:\Users\kreym\Google Drive\Thesis\Documents\Article\figures\recovery_SNR_05.pdf')
+    
+
 
     

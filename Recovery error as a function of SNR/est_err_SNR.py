@@ -2,7 +2,7 @@
 """
 Created on Thu Apr  1 12:02:30 2021
 
-@author: Shay Kreymer
+@author: kreym
 """
 
 import numpy as np
@@ -12,7 +12,7 @@ import time
 
 import multiprocessing as mp
 
-from calc_err_SNR import calc_err_SNR
+from Utils.calc_err_SNR import calc_err_SNR
 
 
 plt.close("all")
