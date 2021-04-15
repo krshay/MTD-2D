@@ -20,14 +20,14 @@ plt.close("all")
 if __name__ == '__main__':
     start = time.time()
     N = 30000
-    Niters = 50
+    Niters = 1
     L = 5
     ne = 10
     sizes = np.logspace(np.log10(3000), np.log10(N), 10).astype(np.int)
     
     num_cpus = mp.cpu_count()
     pool = mp.Pool(num_cpus)
-    S = pool.starmap(calc_err_size_Algorithm1, [[L, ne, N, sizes, i+100] for i in range(Niters)])
+    S = pool.starmap(calc_err_size_Algorithm1, [[L, ne, N, sizes, 26] for i in range(Niters)])
     pool.close()
     pool.join() 
     

@@ -12,9 +12,9 @@ import matplotlib.pyplot as plt
 
 # %% loads
 errs_approx = np.load('../Results/Error with micrograph size/errs_approx.npy')
-
+errs_approx = errs_approx[:50]
 errs_true = np.load('../Results/Error with micrograph size/errs_true.npy')
-
+errs_true = errs_true[:50]
 errs_no = np.load('../Results/Error with micrograph size/errs_no_0_50.npy')
 
 sizes = np.load('../Results/Error with micrograph size/sizes.npy')
