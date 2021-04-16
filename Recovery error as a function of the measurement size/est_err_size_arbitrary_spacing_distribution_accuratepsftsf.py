@@ -23,7 +23,7 @@ if __name__ == '__main__':
     Niters = 50
     L = 5
     ne = 10
-    sizes = np.logspace(np.log10(3000), np.log10(N), 10).astype(np.int)
+    sizes = np.logspace(np.log10(1000), np.log10(N), 10).astype(int)
     
     num_cpus = mp.cpu_count()
     pool = mp.Pool(num_cpus)

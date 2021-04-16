@@ -41,7 +41,7 @@ def optimize_2d_known_psf_triplets(initial_guesses, Bk, T, kvals, M1_y, M2_y, M3
     map3 = calcmap3(L)
     N_mat = calcN_mat(L)
     
-    return minimize(fun=Utils.c_g_funcs_rot.cost_grad_fun_rot_notparallel, x0=initial_guesses, method='BFGS', jac=True, options={'disp': True, 'maxiter':numiters, 'gtol': gtol}, args = (Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, ExtraMat2, ExtraMat3, tsfMat, L, K, N_mat, k1_map, map3))
+    return minimize(fun=Utils.c_g_funcs_rot.cost_grad_fun_rot_notparallel, x0=initial_guesses, method='BFGS', jac=True, options={'disp':False, 'maxiter':numiters, 'gtol': gtol}, args = (Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, ExtraMat2, ExtraMat3, tsfMat, L, K, N_mat, k1_map, map3))
 
 def optimize_rot_Algorithm1_parallel(initial_guesses, Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, K, W, N, iters_till_change=150, gtol=1e-15, max_iter=2000):
     """Optimization of the objective function, using Algorithm 1, with parallel processing.
@@ -118,18 +118,14 @@ def optimize_rot_Algorithm1_notparallel(initial_guesses, Bk, T, kvals, M1_y, M2_
     map3 = calcmap3(L)
     N_mat = calcN_mat(L)
     
-    print('Starting...')
-    
     y_init, _, locs_init = generate_clean_micrograph_2d_rots(initial_guesses[1: ], kvals, Bk, W, L, 10000, (initial_guesses[0]*(10000/L)**2).astype(int), T, seed=100)
     psf_init = Utils.psf_tsf_funcs.full_psf_2d(locs_init, L)
     ExtraMat2, ExtraMat3 = makeExtraMat(L, psf_init)
     tsf_init = Utils.psf_tsf_funcs.full_tsf_2d(locs_init, L)
     tsfMat = maketsfMat(L, tsf_init)
-    print('Done')
         
-    first_estimates = minimize(fun=Utils.c_g_funcs_rot.cost_grad_fun_rot_notparallel, x0=initial_guesses, method='BFGS', jac=True, options={'disp': True, 'maxiter':iters_till_change, 'gtol': gtol}, args = (Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, ExtraMat2, ExtraMat3, tsfMat, L, K, N_mat, k1_map, map3))
+    first_estimates = minimize(fun=Utils.c_g_funcs_rot.cost_grad_fun_rot_notparallel, x0=initial_guesses, method='BFGS', jac=True, options={'disp':False ,'maxiter':iters_till_change, 'gtol': gtol}, args = (Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, ExtraMat2, ExtraMat3, tsfMat, L, K, N_mat, k1_map, map3))
     first_gamma = first_estimates.x[0]
-    print(f'We got to gamma of {first_gamma}')
     first_c = first_estimates.x[1: ]
     
     y2, _, locs2 = generate_clean_micrograph_2d_rots(first_c, kvals, Bk, W, L, 10000, (first_gamma*(10000/L)**2).astype(int), T, seed=1000)
@@ -140,4 +136,4 @@ def optimize_rot_Algorithm1_notparallel(initial_guesses, Bk, T, kvals, M1_y, M2_
     
     new_guesses = np.concatenate((np.reshape(first_gamma, (1,)), first_c))
     
-    return minimize(fun=Utils.c_g_funcs_rot.cost_grad_fun_rot_notparallel, x0=new_guesses, method='BFGS', jac=True, options={'disp': True, 'maxiter':max_iter, 'gtol': gtol}, args = (Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, ExtraMat2, ExtraMat3, tsfMat, L, K, N_mat, k1_map, map3)), psf2, tsf2
+    return minimize(fun=Utils.c_g_funcs_rot.cost_grad_fun_rot_notparallel, x0=new_guesses, method='BFGS', jac=True, options={'disp': False, 'maxiter':max_iter, 'gtol': gtol}, args = (Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, ExtraMat2, ExtraMat3, tsfMat, L, K, N_mat, k1_map, map3)), psf2, tsf2
