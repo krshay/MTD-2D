@@ -6,5 +6,5 @@ save_non_project_files = False
 
 [main]
 version = 0.2.0
-recent_files = ['Recovery error as a function of the measurement size\\est_err_size_arbitrary_spacing_distribution_Algorithm1.py', 'Recovery error as a function of the measurement size\\Plot_error_size.py', 'Utils\\calc_err_size.py', 'Recovery error as a function of the measurement size\\est_err_size_arbitrary_spacing_distribution_accuratepsftsf.py', 'Recovery error as a function of the measurement size\\estimate_err_size.py']
+recent_files = ['Recovery error as a function of SNR\\est_err_SNR.py', 'Recovery error as a function of the measurement size\\Plot_error_size.py', 'Utils\\calc_err_SNR.py']
 
