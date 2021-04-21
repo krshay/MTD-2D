@@ -8,7 +8,7 @@ Created on Wed Jul  1 20:00:31 2020
 import numpy as np
 import scipy.special as spl
 import scipy.sparse as sp
-from Utils.calc_estimation_error import calc_estimation_error
+# from Utils.calc_estimation_error import calc_estimation_error
 
 def expand_fb(img, ne):
     """ Expands img using its first ne expansion coefficients
@@ -19,7 +19,7 @@ def expand_fb(img, ne):
     Returns:
         B: matrix that maps from the expansion coefficients to
            the approximated image
-        z: expansion coefficients in complex format
+        z: Fourier-Bessel expansion coefficients in complex format
         roots: roots of the Bessel functions
         kvals: order of the Bessel functions
         nu: modified number of expansion coefficients
@@ -137,36 +137,58 @@ def expand_fb(img, ne):
 
     return (B, z, roots, kvals, nu)
 
-def rot_img(theta, z, kvals, B):
-    '''
-    Rotate image by angle theta (in radians)
-    '''
-    rot_z = np.zeros(np.shape(z), dtype=np.complex_)
-    for i in range(len(z)):
-        rot_z[i] = z[i]*np.exp(1j*theta*kvals[i])
+# def rot_img(theta, z, kvals, B):
+#     '''
+#     Rotate image by angle theta (in radians)
+#     '''
+#     rot_z = np.zeros(np.shape(z), dtype=np.complex_)
+#     for i in range(len(z)):
+#         rot_z[i] = z[i]*np.exp(1j*theta*kvals[i])
 
-    rot_img = np.real(B@rot_z)
-    n1 = np.int(np.sqrt(len(rot_img)))
-    rot_img = np.reshape(rot_img, (n1, n1))
+#     rot_img = np.real(B@rot_z)
+#     n1 = np.int(np.sqrt(len(rot_img)))
+#     rot_img = np.reshape(rot_img, (n1, n1))
 
-    return rot_img
+#     return rot_img
 
-def rot_img_freq(theta, z, kvals, Bk, L):
-    return np.real(np.fft.ifft2((Bk*np.exp(1j*kvals*theta)@z)))[L//2:-(L//2), L//2:-(L//2)]
+# def rot_img_freq(theta, z, kvals, Bk, L):
+#     return np.real(np.fft.ifft2((Bk*np.exp(1j*kvals*theta)@z)))[L//2:-(L//2), L//2:-(L//2)]
 
 def rot_img_freqT(theta, c, kvals, Bk, L, T):
+    """ Rotate image by angle theta (in radians)
+    Args:
+        theta: angle of rotation (in radians)
+        c: real representation of the expansion coefficients of the target image
+        kvals: vector of frequencies
+        Bk: matrix that maps from the expansion coefficients to the approximated image, in the freuency domain
+        L: diameter of the target image
+        T: matrix that maps from the real representation to the complex representation of the expansion coefficients
+        
+    Returns:
+        original image rotated by angle theta
+    """
     return np.real(np.fft.ifft2((Bk*np.exp(1j*kvals*theta)@(T.H@c))))[L//2:-(L//2), L//2:-(L//2)]
 
-def min_err_rots(z, z_est, kvals, B, L):
-    X = np.reshape(np.real(B @ z), (L, L))
-    thetas = np.linspace(0, 2*np.pi, 360)
-    errs = np.zeros_like(thetas)
-    for t in range(len(thetas)):
-        X_rot = rot_img(thetas[t], z_est, kvals, B)
-        errs[t] = calc_estimation_error(X, X_rot)
-    return np.min(errs), thetas[np.argmin(errs)]
+# def min_err_rots(z, z_est, kvals, B, L):
+#     X = np.reshape(np.real(B @ z), (L, L))
+#     thetas = np.linspace(0, 2*np.pi, 360)
+#     errs = np.zeros_like(thetas)
+#     for t in range(len(thetas)):
+#         X_rot = rot_img(thetas[t], z_est, kvals, B)
+#         errs[t] = calc_estimation_error(X, X_rot)
+#     return np.min(errs), thetas[np.argmin(errs)]
 
 def min_err_coeffs(z, z_est, kvals):
+    """ Calculate estimation error for vector of coefficients, while taking the in-plane rotation symmetry into account
+    Args:
+        z: true vector of Fourier-Bessel expansion coefficients
+        c: estimated vector of Fourier-Bessel expansion coefficients
+        kvals: vector of frequencies
+        
+    Returns:
+        estimation error
+        rotation angle for which the estimation error is minimal
+    """
     thetas = np.linspace(0, 2*np.pi, 3600)
     z_est_rot = np.zeros(np.shape(z), dtype=np.complex_)
     errs = np.zeros_like(thetas)
@@ -176,6 +198,14 @@ def min_err_coeffs(z, z_est, kvals):
     return np.min(errs), thetas[np.argmin(errs)]
 
 def calcT(nu, kvals):
+    """ Calculate matrix that maps from the real representation to the complex representation of the expansion coefficients
+    Args:
+        nu: modified number of expansion coefficients
+        kvals: order of the Bessel functions
+                
+    Returns:
+        T: sparse matrix that maps from the real representation to the complex representation of the expansion coefficients
+    """
     v = np.zeros(2*nu).astype(np.complex)
     iv = np.zeros(2*nu).astype(np.int)
     jv = np.zeros(2*nu).astype(np.int)

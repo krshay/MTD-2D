@@ -57,7 +57,7 @@ def calc_err_size_knownpsftsf(L, ne, N, sizes, sd):
         y_clean, s, locs = generate_clean_micrograph_2d_rots(c, kvals, Bk, W, L, sz, 0.100*(sz/L)**2, T, seed=sd)
         sigma2 = 0
         y = y_clean + np.random.default_rng().normal(loc=0, scale=np.sqrt(sigma2), size=np.shape(y_clean))
-        
+        del y_clean
         psf = full_psf_2d(locs, L)
         tsf = full_tsf_2d(locs, L)
         
@@ -65,7 +65,7 @@ def calc_err_size_knownpsftsf(L, ne, N, sizes, sd):
         tsfMat = maketsfMat(L, tsf)
         yy = np.zeros((sz, sz, 1))
         yy[ :, :, 0] = y
-        
+        del y
         M1_y = np.mean(yy)
         
         M2_y = np.zeros((L, L))
@@ -79,6 +79,7 @@ def calc_err_size_knownpsftsf(L, ne, N, sizes, sd):
                 for i2 in range(L):
                     for j2 in range(L):
                         M3_y[i1, j1, i2, j2] = M3_2d(yy, (i1, j1), (i2, j2))
+        del yy
         X_est1 = Utils.optimization_funcs_rot.optimize_2d_known_psf_triplets(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial1)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, tsfMat, ExtraMat2, ExtraMat3) 
         c_est1 = X_est1.x[1:]
         z_est1 = T.H @ c_est1
@@ -144,9 +145,10 @@ def calc_err_size_Algorithm1(L, ne, N, sizes, sd):
         y_clean, s, locs = generate_clean_micrograph_2d_rots(c, kvals, Bk, W, L, sz, 0.100*(sz/L)**2, T, seed=sd)
         sigma2 = 0
         y = y_clean + np.random.default_rng().normal(loc=0, scale=np.sqrt(sigma2), size=np.shape(y_clean))
-        
+        del y_clean
         yy = np.zeros((sz, sz, 1))
         yy[ :, :, 0] = y
+        del y
         
         M1_y = np.mean(yy)
         
@@ -161,7 +163,7 @@ def calc_err_size_Algorithm1(L, ne, N, sizes, sd):
                 for i2 in range(L):
                     for j2 in range(L):
                         M3_y[i1, j1, i2, j2] = M3_2d(yy, (i1, j1), (i2, j2))
-    
+        del yy
         X_est1, _, _ = Utils.optimization_funcs_rot.optimize_rot_Algorithm1_notparallel(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial1)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, W, 10000) 
         X_est2, _, _ = Utils.optimization_funcs_rot.optimize_rot_Algorithm1_notparallel(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial2)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, W, 10000) 
         X_est3, _, _ = Utils.optimization_funcs_rot.optimize_rot_Algorithm1_notparallel(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial3)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, W, 10000) 
