@@ -47,4 +47,4 @@ with plt.style.context('ieee'):
     fig.tight_layout()
     plt.show()
     
-    plt.savefig(r'C:\Users\kreym\Google Drive\Thesis\Documents\Article\figures\error_convergence_experiment.pdf')
+    # plt.savefig(r'C:\Users\kreym\Google Drive\Thesis\Documents\Article\figures\error_convergence_experiment.pdf')

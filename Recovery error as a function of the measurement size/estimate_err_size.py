@@ -17,7 +17,7 @@ plt.close("all")
 
 if __name__ == '__main__':
     N = 30000
-    Niters = 50
+    Niters = 100
     L = 5
     ne = 10
     Nsizes = 15
@@ -47,33 +47,35 @@ if __name__ == '__main__':
     pool.join()
     
     np.save('Sno.npy', np.array(Sno))
-
-    errsAlgorithm1 = np.zeros((50, Nsizes))
-
-    for j in range(50):
-        errsAlgorithm1[j, :] = SAlgorithm1[j][0][np.arange(Nsizes), np.argmin(SAlgorithm1[j][1], axis=1)]
-    errsAlgorithm1_mean = np.median(errsAlgorithm1, 0)
     
-    errsknown = np.zeros((100, Nsizes))
+    # %% Calculations
 
-    for j in range(100):
+    errsAlgorithm1 = np.zeros((Niters, Nsizes))
+
+    for j in range(Niters):
+        errsAlgorithm1[j, :] = SAlgorithm1[j][0][np.arange(Nsizes), np.argmin(SAlgorithm1[j][1], axis=1)]
+    errsAlgorithm1_median = np.median(errsAlgorithm1, 0)
+    
+    errsknown = np.zeros((Niters, Nsizes))
+
+    for j in range(Niters):
         errsknown[j, :] = Sknown[j][0][np.arange(Nsizes), np.argmin(Sknown[j][1], axis=1)]
-    errsknown_mean = np.median(errsknown, 0)
+    errsknown_median = np.median(errsknown, 0)
     
     # %% plots
     plt.close("all")
     with plt.style.context('ieee'):
         fig = plt.figure()
         
-        plt.loglog(sizes**2, errsknown_mean[0]*(sizes**2/sizes[0]**2)**(-1/2), 'k--', label='_nolegend_', lw=0.5)
-        plt.loglog(sizes**2, errsknown_mean, '.-b', label=r'known $\xi$ and $\zeta$')
+        plt.loglog(sizes**2, errsknown_median[3]*(sizes**2/sizes[3]**2)**(-1/2), 'k--', label='_nolegend_', lw=0.5)
+        plt.loglog(sizes**2, errsknown_median, '.-b', label=r'known $\xi$ and $\zeta$')
     
-        plt.loglog(sizes**2, errsAlgorithm1_mean[0]*(sizes**2/sizes[0]**2)**(-1/2), 'k--', label='_nolegend_', lw=0.5)
-        plt.loglog(sizes**2, errsAlgorithm1_mean, '.--r', label='Algorithm 1')
+        plt.loglog(sizes**2, errsAlgorithm1_median[3]*(sizes**2/sizes[3]**2)**(-1/2), 'k--', label='_nolegend_', lw=0.5)
+        plt.loglog(sizes**2, errsAlgorithm1_median, '.--r', label='Algorithm 1')
         
         # plt.loglog(sizes**2, errs_no_median, ':g', label=r'no $\xi$ and $\zeta$')
     
-        plt.legend(loc=(0.5, 0.55))#, fontsize=6)
+        plt.legend()#loc=(0.5, 0.55))#, fontsize=6)
         
         plt.xlabel('Measurement size [pixels]')
         
@@ -82,3 +84,4 @@ if __name__ == '__main__':
         plt.show()
 
         plt.savefig(r'C:\Users\kreym\Google Drive\Thesis\Documents\Article\figures\error_convergence_experiment.pdf')
+        
