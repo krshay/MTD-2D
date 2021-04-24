@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 
 import multiprocessing as mp
 
-from Utils.calc_err_SNR import calc_err_SNR_Algorithm1, calc_err_SNR_knownpsftsf
+from Utils.calc_err_SNR import calc_err_SNR_bothcases
 
 
 plt.close("all")
@@ -26,34 +26,29 @@ if __name__ == '__main__':
     num_cpus = mp.cpu_count()
     
     pool = mp.Pool(num_cpus)
-    S_known = pool.starmap(calc_err_SNR_knownpsftsf, [[L, ne, N, SNRs, i] for i in range(Niters)])
+    S = pool.starmap(calc_err_SNR_bothcases, [[L, ne, N, SNRs, i] for i in range(Niters)])
     pool.close()
     pool.join()
     
     errs_known = np.zeros((Niters, SNRs_length))
 
     for j in range(Niters):
-        errs_known[j, :] = S_known[j][0][np.arange(SNRs_length), np.argmin(S_known[j][1], axis=1)]
+        errs_known[j, :] = S[j][0][np.arange(SNRs_length), np.argmin(S[j][1], axis=1)]
     errs_known_mean = np.median(errs_known, 0)
-    
-    pool = mp.Pool(num_cpus)
-    S_Algorithm1 = pool.starmap(calc_err_SNR_Algorithm1, [[L, ne, N, SNRs, i] for i in range(Niters)])
-    pool.close()
-    pool.join()
     
     errs_Algorithm1 = np.zeros((Niters, SNRs_length))
 
     for j in range(Niters):
-        errs_Algorithm1[j, :] = S_Algorithm1[j][0][np.arange(SNRs_length), np.argmin(S_Algorithm1[j][1], axis=1)]
+        errs_Algorithm1[j, :] = S[j][2][np.arange(SNRs_length), np.argmin(S[j][3], axis=1)]
     errs_Algorithm1_mean = np.median(errs_Algorithm1, 0)
-    
+
     # with plt.style.context('ieee'):
     fig = plt.figure()
     plt.loglog(SNRs, errs_known_mean, '.-b')  
     plt.loglog(SNRs[0:14], errs_known_mean[3]*(SNRs[0:14]/SNRs[3])**(-3/2), 'k--', lw=0.5)
     
     plt.loglog(SNRs, errs_Algorithm1_mean, '.--r')  
-    plt.loglog(SNRs[0:14], errs_Algorithm1_mean[3]*(SNRs[0:14]/SNRs[3])**(-3/4), 'k--', lw=0.5)
+    plt.loglog(SNRs[0:14], errs_Algorithm1_mean[3]*(SNRs[0:14]/SNRs[3])**(-3/2), 'k--', lw=0.5)
     
     plt.xlabel('SNR')
     plt.ylabel('Median estimation error')

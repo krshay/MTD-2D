@@ -31,7 +31,6 @@ def calc_err_size_knownpsftsf(L, ne, N, sizes, sd):
     for ii in range(nu):
         Bk[ :, :, ii] = np.fft.fft2(np.pad(np.reshape(B[ :, ii], (L, L)), L//2))
 
-
     gamma_initial = 0.09
 
     X_initial1 = np.random.rand(L, L)
