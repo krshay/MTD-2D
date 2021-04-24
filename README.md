@@ -1,7 +1,7 @@
 # MTD-2D-ASD
  Code for the paper Two-dimensional Multi-target Detection by Shay Kreymer and Tamir Bendory.
  
- Paper reproduction:
+ # Paper reproduction:
  
  To reproduce Figure 1, run the script from Utils.folder Reproduce Figure 1.
  
@@ -15,7 +15,7 @@
  
  To reproduce the experiments from Utils.Section III-C, run the scripts from Utils.the folder Recovery error as a function of SNR.
  
- Images and data:
+ # Images and data:
  
  The image used in the paper are located in the folder images.
  
@@ -23,6 +23,3 @@
  
  All utilities are in the Utils folder.
  
- 
-
-
