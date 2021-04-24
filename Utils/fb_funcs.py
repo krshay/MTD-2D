@@ -137,23 +137,6 @@ def expand_fb(img, ne):
 
     return (B, z, roots, kvals, nu)
 
-# def rot_img(theta, z, kvals, B):
-#     '''
-#     Rotate image by angle theta (in radians)
-#     '''
-#     rot_z = np.zeros(np.shape(z), dtype=np.complex_)
-#     for i in range(len(z)):
-#         rot_z[i] = z[i]*np.exp(1j*theta*kvals[i])
-
-#     rot_img = np.real(B@rot_z)
-#     n1 = np.int(np.sqrt(len(rot_img)))
-#     rot_img = np.reshape(rot_img, (n1, n1))
-
-#     return rot_img
-
-# def rot_img_freq(theta, z, kvals, Bk, L):
-#     return np.real(np.fft.ifft2((Bk*np.exp(1j*kvals*theta)@z)))[L//2:-(L//2), L//2:-(L//2)]
-
 def rot_img_freqT(theta, c, kvals, Bk, L, T):
     """ Rotate image by angle theta (in radians)
     Args:
@@ -168,15 +151,6 @@ def rot_img_freqT(theta, c, kvals, Bk, L, T):
         original image rotated by angle theta
     """
     return np.real(np.fft.ifft2((Bk*np.exp(1j*kvals*theta)@(T.H@c))))[L//2:-(L//2), L//2:-(L//2)]
-
-# def min_err_rots(z, z_est, kvals, B, L):
-#     X = np.reshape(np.real(B @ z), (L, L))
-#     thetas = np.linspace(0, 2*np.pi, 360)
-#     errs = np.zeros_like(thetas)
-#     for t in range(len(thetas)):
-#         X_rot = rot_img(thetas[t], z_est, kvals, B)
-#         errs[t] = calc_estimation_error(X, X_rot)
-#     return np.min(errs), thetas[np.argmin(errs)]
 
 def min_err_coeffs(z, z_est, kvals):
     """ Calculate estimation error for vector of coefficients, while taking the in-plane rotation symmetry into account

@@ -15,7 +15,7 @@ from Utils.generate_clean_micrograph_2d import generate_clean_micrograph_2d_rots
 import Utils.psf_tsf_funcs
 
 def optimize_2d_known_psf_triplets(initial_guesses, Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, K, tsfMat, ExtraMat2, ExtraMat3, numiters=3000, gtol=1e-15):
-    """Optimization of the objective function, assuming known PSF and TSF.
+    """ Optimization of the objective function, assuming known PSF and TSF.
 
     Args:
         initial guesses: vector containing initial guesses for gamma and c
@@ -44,7 +44,7 @@ def optimize_2d_known_psf_triplets(initial_guesses, Bk, T, kvals, M1_y, M2_y, M3
     return minimize(fun=Utils.c_g_funcs_rot.cost_grad_fun_rot_notparallel, x0=initial_guesses, method='BFGS', jac=True, options={'disp':False, 'maxiter':numiters, 'gtol': gtol}, args = (Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, ExtraMat2, ExtraMat3, tsfMat, L, K, N_mat, k1_map, map3))
 
 def optimize_rot_Algorithm1_parallel(initial_guesses, Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, K, W, N, iters_till_change=150, gtol=1e-15, max_iter=2000):
-    """Optimization of the objective function, using Algorithm 1, with parallel processing.
+    """ Optimization of the objective function, using Algorithm 1, with parallel processing.
 
     Args:
         initial guesses: vector containing initial guesses for gamma and c
@@ -92,7 +92,7 @@ def optimize_rot_Algorithm1_parallel(initial_guesses, Bk, T, kvals, M1_y, M2_y, 
     return minimize(fun=Utils.c_g_funcs_rot.cost_grad_fun_rot_parallel, x0=new_guesses, method='BFGS', jac=True, options={'disp': True, 'maxiter':max_iter, 'gtol': gtol}, args = (Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, ExtraMat2, ExtraMat3, tsfMat, L, K, N_mat, k1_map, map3)), psf2, tsf2
    
 def optimize_rot_Algorithm1_notparallel(initial_guesses, Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, K, W, N, iters_till_change=150, gtol=1e-15, max_iter=2000):
-    """Optimization of the objective function, using Algorithm 1, without parallel processing.
+    """ Optimization of the objective function, using Algorithm 1, without parallel processing.
 
     Args:
         initial guesses: vector containing initial guesses for gamma and c

@@ -6,5 +6,5 @@ save_non_project_files = False
 
 [main]
 version = 0.2.0
-recent_files = ['Recovery error as a function of the measurement size\\estimate_err_size.py', 'Recovery error as a function of the measurement size\\Plot_error_size.py', 'Recovery error as a function of SNR\\est_err_SNR.py', 'Utils\\calc_err_SNR.py', 'Utils\\calc_err_size.py', 'Utils\\fb_funcs.py', 'Utils\\optimization_funcs_rot.py', 'Utils\\generate_clean_micrograph_2d.py', 'Utils\\funcs_calc_moments_rot.py']
+recent_files = ['Recovery error as a function of SNR\\est_err_SNR.py', 'Utils\\calc_err_SNR.py', 'Utils\\calc_err_size.py']
 

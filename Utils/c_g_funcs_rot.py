@@ -16,7 +16,7 @@ import functools
 
 from Utils.psf_tsf_funcs import makeExtraMat
 
-from Utils.funcs_calc_moments_rot import calcS3_x_gradnew2, calcS3_x_neigh_gradnew2, calcS3_x_triplets_gradnew2,  calcS2_x_grad_notparallel, calcS2_x_neigh_grad_notparallel, calck1,  calcN_mat, calcmap3, calcS3_x_grad_neigh_triplets_parallel, calcS2_x_grad_notparallel, calcS2_x_neigh_grad_notparallel
+from Utils.funcs_calc_moments_rot import calcS3_x_grad, calcS3_x_neigh_grad, calcS3_x_triplets_grad,  calcS2_x_grad_notparallel, calcS2_x_neigh_grad_notparallel, calck1,  calcN_mat, calcmap3, calcS3_x_grad_neigh_triplets_parallel, calcS2_x_grad_notparallel, calcS2_x_neigh_grad_notparallel
 
 def calc_acs_grads_rot_parallel(Bk, z, kvals, L, k1_map, map3):
     # Calclulations of all needed autocorrelations and gradients, utilizing parallel processing
@@ -36,11 +36,11 @@ def calc_acs_grads_rot_notparallel(Bk, z, kvals, L, k1_map=None, map3=None):
   
     kmax = np.max(kvals)
     Nmax = 6*kmax
-    S3_x, gS3_x = calcS3_x_gradnew2(L, Nmax, Bk, z, kvals, map3)
+    S3_x, gS3_x = calcS3_x_grad(L, Nmax, Bk, z, kvals, map3)
     
-    S3_x_neigh, gS3_x_neigh = calcS3_x_neigh_gradnew2(L, Nmax, Bk, z, kvals, map3)
+    S3_x_neigh, gS3_x_neigh = calcS3_x_neigh_grad(L, Nmax, Bk, z, kvals, map3)
     
-    S3_x_triplets, gS3_x_triplets = calcS3_x_triplets_gradnew2(L, Nmax, Bk, z, kvals, map3)
+    S3_x_triplets, gS3_x_triplets = calcS3_x_triplets_grad(L, Nmax, Bk, z, kvals, map3)
     
     if k1_map == None:
         k1_map = calck1(L)
