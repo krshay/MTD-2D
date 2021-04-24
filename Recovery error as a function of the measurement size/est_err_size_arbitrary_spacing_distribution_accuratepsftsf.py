@@ -9,11 +9,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import time
 
-
 import multiprocessing as mp
 
 from Utils.calc_err_size import calc_err_size_knownpsftsf
-
 
 plt.close("all")
 
@@ -27,7 +25,7 @@ if __name__ == '__main__':
     
     num_cpus = mp.cpu_count()
     pool = mp.Pool(num_cpus)
-    S = pool.starmap(calc_err_size_knownpsftsf, [[L, ne, N, sizes, i+100] for i in range(Niters)])
+    S = pool.starmap(calc_err_size_knownpsftsf, [[L, ne, N, sizes, i] for i in range(Niters)])
     pool.close()
     pool.join() 
     
@@ -42,7 +40,6 @@ if __name__ == '__main__':
     np.save('sizes.npy', sizes)
     
     np.save('errs_accurate_100_150.npy', errs)
-
 
     plt.figure()
     plt.loglog(sizes**2, errs_mean)  

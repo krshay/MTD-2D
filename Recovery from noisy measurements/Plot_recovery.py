@@ -9,17 +9,8 @@ Created on Wed Mar 31 14:07:04 2021
 import numpy as np
 import matplotlib.pyplot as plt
 
-from mpl_toolkits.axes_grid1 import make_axes_locatable
-
-import scipy
-
 from Utils.fb_funcs import expand_fb, calcT
-from Utils.funcs_calc_moments import M2_2d, M3_2d
-from Utils.psf_tsf_funcs import full_psf_2d
-from Utils.psf_tsf_funcs import full_tsf_2d
-import Utils.optimization_funcs_rot
-from Utils.psf_tsf_funcs import makeExtraMat
-from Utils.psf_tsf_funcs import maketsfMat
+
 
 # %% main
 plt.close("all")
@@ -38,9 +29,6 @@ c = np.real(T @ z)
 z = T.H@c
 Xrec_true = np.reshape(np.real(B @ z), np.shape(X))
 
-
-
-
 # %% plots
 with plt.style.context('ieee'):
     # %% Original
@@ -48,13 +36,7 @@ with plt.style.context('ieee'):
     
     ax = plt.axes()
     im = ax.imshow(Xrec_true)
-    # divider = make_axes_locatable(ax)
-    # cax = divider.append_axes("right", size="5%", pad=0.05)
-    # im.set_clim(0, 7)
-    # cbar = plt.colorbar(im, cax=cax)
-    # cbar.ax.tick_params(labelsize=20)
-    # ax.text(-0.1, 1.03, '('+string.ascii_lowercase[n]+')', transform=ax.transAxes, 
-            # size=30, weight='bold')
+
     ax.tick_params(axis='both', which='both', bottom=False, top=False, labelbottom=False, right=False, left=False, labelleft=False)
     fig.tight_layout()
     plt.show()
@@ -69,19 +51,12 @@ with plt.style.context('ieee'):
     
     ax = plt.axes()
     im = ax.imshow(X_SNR10)
-    # divider = make_axes_locatable(ax)
-    # cax = divider.append_axes("right", size="5%", pad=0.05)
-    # im.set_clim(0, 7)
-    # cbar = plt.colorbar(im, cax=cax)
-    # cbar.ax.tick_params(labelsize=20)
-    # ax.text(-0.1, 1.03, '('+string.ascii_lowercase[n]+')', transform=ax.transAxes, 
-            # size=30, weight='bold')
+
     ax.tick_params(axis='both', which='both', bottom=False, top=False, labelbottom=False, right=False, left=False, labelleft=False)
     fig.tight_layout()
     plt.show()
         
     plt.savefig(r'C:\Users\kreym\Google Drive\Thesis\Documents\Article\figures\recovery_SNR_10.pdf')
-    
     
     # %% SNR = 0.5
     z_est_best_SNR_05 = np.load("../Results/Recovery/z_est_best_SNR_05.npy")
@@ -91,19 +66,10 @@ with plt.style.context('ieee'):
     
     ax = plt.axes()
     im = ax.imshow(X_SNR_05)
-    # divider = make_axes_locatable(ax)
-    # cax = divider.append_axes("right", size="5%", pad=0.05)
-    # im.set_clim(0, 7)
-    # cbar = plt.colorbar(im, cax=cax)
-    # cbar.ax.tick_params(labelsize=20)
-    # ax.text(-0.1, 1.03, '('+string.ascii_lowercase[n]+')', transform=ax.transAxes, 
-            # size=30, weight='bold')
+
     ax.tick_params(axis='both', which='both', bottom=False, top=False, labelbottom=False, right=False, left=False, labelleft=False)
     fig.tight_layout()
     plt.show()
         
     plt.savefig(r'C:\Users\kreym\Google Drive\Thesis\Documents\Article\figures\recovery_SNR_05.pdf')
-    
-
-
     

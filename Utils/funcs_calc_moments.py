@@ -7,11 +7,13 @@ Created on Sun Oct 13 22:10:47 2019
 import numpy as np
 
 def M2_2d(A, shift1):
-    """Calculate second order 2-d autocorrelation of A for shift1.
+    """ Calculate second-order autocorrelation of A for shift1.
 
-    Keyword arguments:
-    A -- the 2-d signal
-    shift1 -- a tuple containing the shift
+    Args:
+        A: the image
+        shift1: a tuple containing the shift
+    Returns:
+        second-order autocorrelation of A for shift1
     """
     dim1, dim2, _ = np.shape(A)
     
@@ -29,11 +31,14 @@ def M2_2d(A, shift1):
     return np.sum(A[min(rangey):max(rangey)+1, min(rangex):max(rangex)+1, :] * A[min(rangey1):max(rangey1)+1, min(rangex1):max(rangex1)+1, :], axis=(0,1))/(dim1*dim2)
 
 def M3_2d(A, shift1, shift2):
-    """Calculate second order 2-d autocorrelation of A for shift1, shift2.
+    """ Calculate third-order autocorrelation of A for shift1, shift2.
 
-    Keyword arguments:
-    A -- the 2-d signal
-    shift1, shift2 -- tuples containing the shifts
+    Args:
+        A: the 2-d signal
+        shift1, shift2: tuples containing the shifts
+    
+    Returns:
+        third-order autocorrelation of A for shift1, shift2
     """
     dim1, dim2, _ = np.shape(A)
     

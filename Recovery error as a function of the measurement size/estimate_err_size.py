@@ -12,7 +12,6 @@ import multiprocessing as mp
 
 from Utils.calc_err_size import calc_err_size_knownpsftsf, calc_err_size_Algorithm1, calc_err_size_nopsftsf
 
-
 plt.close("all")
 
 if __name__ == '__main__':

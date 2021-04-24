@@ -2,7 +2,7 @@
 """
 Created on Sat Apr 10 16:31:53 2021
 
-@author: kreym
+@author: Shay Kreymer
 """
 import numpy as np
 import scipy.spatial as spatial
