@@ -13,8 +13,20 @@ from Utils.funcs_calc_moments import M2_2d, M3_2d
 from Utils.psf_tsf_funcs import full_psf_2d, full_tsf_2d, makeExtraMat, maketsfMat
 import Utils.optimization_funcs_rot
 
-def calc_err_size_knownpsftsf(L, ne, N, sizes, sd):
-    # Calculation of estimation error in estimating a specific target image, multiple micrograph sizes. For the case of known PSF and TSF.
+def calc_err_size_knownpsftsf(L, ne, sizes, sd):
+    """ Calculate estimation error in estimating a specific target image, multiple micrograph sizes. For the case of known PSF and TSF.
+
+    Args:
+        L: diameter of the target image
+        ne: number of expansion coefficients
+        sizes: an array containing the desired values of N, the size of the micrograph
+        sd: a seed
+
+    Returns:
+        errs: an array containing the estimation errors for each size (3 initial guesses)
+        errs: an array containing the objective function values for each size (3 initial guesses)
+    """
+    # %% preliminary definitions
     np.random.seed(sd)
     errs = np.zeros((len(sizes), 3))
     costs = np.zeros((len(sizes), 3))
@@ -31,6 +43,7 @@ def calc_err_size_knownpsftsf(L, ne, N, sizes, sd):
     for ii in range(nu):
         Bk[ :, :, ii] = np.fft.fft2(np.pad(np.reshape(B[ :, ii], (L, L)), L//2))
 
+    # %% initial guesses
     gamma_initial = 0.09
 
     X_initial1 = np.random.rand(L, L)
@@ -51,6 +64,7 @@ def calc_err_size_knownpsftsf(L, ne, N, sizes, sd):
     _, z_initial3, _, _, _ = expand_fb(X_initial3, ne)
     c_initial3 = np.real(T @ z_initial3)
 
+    # %% calculations
     for (idx, sz) in enumerate(sizes):
         print(f'{sz} * {sz} in seed #{sd}')
         y_clean, s, locs = generate_clean_micrograph_2d_rots(c, kvals, Bk, W, L, sz, 0.100*(sz/L)**2, T, seed=sd)
@@ -101,8 +115,20 @@ def calc_err_size_knownpsftsf(L, ne, N, sizes, sd):
         costs[idx, 2] = X_est3.fun
     return errs, costs
 
-def calc_err_size_Algorithm1(L, ne, N, sizes, sd):
-    # Calculation of estimation error in estimating a specific target image, multiple micrograph sizes. For the case of Algorithm 1.
+def calc_err_size_Algorithm1(L, ne, sizes, sd):
+    """ Calculate estimation error in estimating a specific target image, multiple micrograph sizes. For the case of Algorithm1.
+
+    Args:
+        L: diameter of the target image
+        ne: number of expansion coefficients
+        sizes: an array containing the desired values of N, the size of the micrograph
+        sd: a seed
+
+    Returns:
+        errs: an array containing the estimation errors for each size (3 initial guesses)
+        errs: an array containing the objective function values for each size (3 initial guesses)
+    """
+    # %% preliminary definitions
     np.random.seed(sd)
     errs = np.zeros((len(sizes), 3))
     costs = np.zeros((len(sizes), 3))
@@ -119,6 +145,7 @@ def calc_err_size_Algorithm1(L, ne, N, sizes, sd):
     for ii in range(nu):
         Bk[ :, :, ii] = np.fft.fft2(np.pad(np.reshape(B[ :, ii], (L, L)), L//2))
 
+    # %% initial guesses
     gamma_initial = 0.09
 
     X_initial1 = np.random.rand(L, L)
@@ -139,6 +166,7 @@ def calc_err_size_Algorithm1(L, ne, N, sizes, sd):
     _, z_initial3, _, _, _ = expand_fb(X_initial3, ne)
     c_initial3 = np.real(T @ z_initial3)
     
+    # %% calculations
     for (idx, sz) in enumerate(sizes):
         print(f'{sz} * {sz} in seed #{sd}')
         y_clean, s, locs = generate_clean_micrograph_2d_rots(c, kvals, Bk, W, L, sz, 0.100*(sz/L)**2, T, seed=sd)
@@ -186,8 +214,20 @@ def calc_err_size_Algorithm1(L, ne, N, sizes, sd):
         costs[idx, 2] = X_est3.fun
     return errs, costs
 
-def calc_err_size_nopsftsf(L, ne, N, sizes, sd):
-    # Calculation of estimation error in estimating a specific target image, multiple micrograph sizes. For the case of assuming that the measurement is well-separated.
+def calc_err_size_nopsftsf(L, ne, sizes, sd):
+    """ Calculate estimation error in estimating a specific target image, multiple micrograph sizes. For the case of assuming the well-separated model.
+
+    Args:
+        L: diameter of the target image
+        ne: number of expansion coefficients
+        sizes: an array containing the desired values of N, the size of the micrograph
+        sd: a seed
+
+    Returns:
+        errs: an array containing the estimation errors for each size (3 initial guesses)
+        errs: an array containing the objective function values for each size (3 initial guesses)
+    """
+    # %% preliminary definitions
     np.random.seed(sd)
     errs = np.zeros((len(sizes), 3))
     costs = np.zeros((len(sizes), 3))
@@ -205,7 +245,7 @@ def calc_err_size_nopsftsf(L, ne, N, sizes, sd):
     for ii in range(nu):
         Bk[ :, :, ii] = np.fft.fft2(np.pad(np.reshape(B[ :, ii], (L, L)), L//2))
 
-
+    # %% initial guesses
     gamma_initial = 0.09
     # y_init, s_init, locs_init = generate_clean_micrograph_2d_rots(c, kvals, Bk, W, L, N, gamma*(N/L)**2, T)
    
@@ -227,6 +267,7 @@ def calc_err_size_nopsftsf(L, ne, N, sizes, sd):
     _, z_initial3, _, _, _ = expand_fb(X_initial3, ne)
     c_initial3 = np.real(T @ z_initial3)
 
+    # %% calculations
     for (idx, sz) in enumerate(sizes):
         print(f'{sz} * {sz} in seed #{sd}')
         y_clean, s, locs = generate_clean_micrograph_2d_rots(c, kvals, Bk, W, L, sz, 0.100*(sz/L)**2, T, seed=sd)

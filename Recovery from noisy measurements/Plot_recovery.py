@@ -15,7 +15,6 @@ from Utils.fb_funcs import expand_fb, calcT
 # %% main
 plt.close("all")
 
-
 X = plt.imread("../images/molecule9.png")
 X = X * 10
 L = np.shape(X)[0]
