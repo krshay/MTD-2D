@@ -31,15 +31,11 @@ if __name__ == '__main__':
     pool.close()
     pool.join() 
     
-    np.save('Sknown.npy', np.array(Sknown))
-    
     # %% Algorithm1
     pool = mp.Pool(num_cpus)
     SAlgorithm1 = pool.starmap(calc_err_size_Algorithm1, [[L, ne, N, sizes, i] for i in range(Niters)])
     pool.close()
     pool.join()
-    
-    np.save('SAlgorithm1.npy', np.array(SAlgorithm1))
     
     # %% No psf and tsf
     sizes_no = np.logspace(np.log10(1000), np.log10(N), 5).astype(int)
@@ -48,10 +44,7 @@ if __name__ == '__main__':
     pool.close()
     pool.join()
     
-    np.save('Sno.npy', np.array(Sno))
-    
     # %% Calculations
-
     errsAlgorithm1 = np.zeros((Niters, Nsizes))
 
     for j in range(Niters):
