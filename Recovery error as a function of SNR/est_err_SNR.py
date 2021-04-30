@@ -7,13 +7,9 @@ Created on Thu Apr  1 12:02:30 2021
 
 import numpy as np
 import matplotlib.pyplot as plt
-
 import multiprocessing as mp
-
 from Utils.calc_err_SNR import calc_err_SNR_bothcases
-
 import scipy.stats as stats
-
 
 plt.close("all")
 
@@ -63,4 +59,4 @@ if __name__ == '__main__':
         plt.ylabel('Mean estimation error')
         fig.tight_layout()
         plt.show()
-        plt.savefig(r'C:\Users\kreym\Google Drive\Thesis\Documents\Article\figures\error_SNR_experiment.pdf')
+        

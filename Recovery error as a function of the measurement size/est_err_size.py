@@ -7,11 +7,8 @@ Created on Mon Nov 23 14:27:49 2020
 
 import numpy as np
 import matplotlib.pyplot as plt
-
 import scipy.stats as stats
-
 import multiprocessing as mp
-
 from Utils.calc_err_size import calc_err_size_knownpsftsf, calc_err_size_Algorithm1, calc_err_size_nopsftsf
 
 plt.close("all")
@@ -93,6 +90,4 @@ if __name__ == '__main__':
         plt.ylabel('Mean estimation error')
         fig.tight_layout()
         plt.show()
-
-        plt.savefig(r'C:\Users\kreym\Google Drive\Thesis\Documents\Article\figures\error_convergence_experiment.pdf')
         
