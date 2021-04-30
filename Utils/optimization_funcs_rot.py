@@ -137,3 +137,35 @@ def optimize_rot_Algorithm1_notparallel(initial_guesses, Bk, T, kvals, M1_y, M2_
     new_guesses = np.concatenate((np.reshape(first_gamma, (1,)), first_c))
     
     return minimize(fun=Utils.c_g_funcs_rot.cost_grad_fun_rot_notparallel, x0=new_guesses, method='BFGS', jac=True, options={'disp': False, 'maxiter':max_iter, 'gtol': gtol}, args = (Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, ExtraMat2, ExtraMat3, tsfMat, L, K, N_mat, k1_map, map3)), psf2, tsf2
+
+# for experiment B
+def optimize_2d_known_psf_triplets_with_callback(initial_guesses, Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, K, tsfMat, ExtraMat2, ExtraMat3, numiters=3000, gtol=1e-15):
+    """ Optimization of the objective function, assuming known PSF and TSF. Here we use callback function to evaluate the value of \gamma through the iterations, for experiment B.
+
+    Args:
+        initial guesses: vector containing initial guesses for gamma and c
+        Bk: matrix that maps from the expansion coefficients to the approximated image, in the freuency domain
+        T: matrix that maps from the real representation to the complex representation of the expansion coefficients
+        kvals: vector of frequencies
+        M1_y: the first-order autocorrelation of the measurement
+        M2_y: the second-order autocorrelations of the measurement, of size L * L
+        M3_y: the third-order autocorrelations of the measurement, of size L * L * L * L
+        sigma2: the variance of the noise
+        L: diameter of the target image
+        K: number of target images' types; may be utilized for heterogeneity
+        tsfMat: matrix containing all TSF values; used to ease computations
+        ExtraMat2: matrix containing all PSF values; used to ease computations of the second-order autocorrelations
+        ExtraMat3: matrix containing all PSF values; used to ease computations of the third-order autocorrelations
+        numiters: maximum number of optimization iterations (default is 3000) 
+        gtol: gradient norm must be less than gtol before successful termination (default is 1e-15)
+    
+    Returns:
+        The optimization result represented as a OptimizeResult object
+    """
+    k1_map = calck1(L)
+    map3 = calcmap3(L)
+    N_mat = calcN_mat(L)
+    history = [initial_guesses[0]]
+    def func_callback(x):
+        history.append(x[0])
+    return minimize(fun=Utils.c_g_funcs_rot.cost_grad_fun_rot_notparallel, x0=initial_guesses, method='BFGS', jac=True, callback=func_callback, options={'disp': True, 'maxiter':numiters, 'gtol': gtol}, args = (Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, ExtraMat2, ExtraMat3, tsfMat, L, K, N_mat, k1_map, map3)), history

@@ -19,7 +19,7 @@ def calc_err_size_knownpsftsf(L, ne, sizes, sd):
     Args:
         L: diameter of the target image
         ne: number of expansion coefficients
-        sizes: an array containing the desired values of N, the size of the micrograph
+        sizes: an array containing the desired values of N, the size of the micrographs to be generated
         sd: a seed
 
     Returns:
@@ -121,7 +121,7 @@ def calc_err_size_Algorithm1(L, ne, sizes, sd):
     Args:
         L: diameter of the target image
         ne: number of expansion coefficients
-        sizes: an array containing the desired values of N, the size of the micrograph
+        sizes: an array containing the desired values of N, the size of the micrographs to be generated
         sd: a seed
 
     Returns:
@@ -220,7 +220,7 @@ def calc_err_size_nopsftsf(L, ne, sizes, sd):
     Args:
         L: diameter of the target image
         ne: number of expansion coefficients
-        sizes: an array containing the desired values of N, the size of the micrograph
+        sizes: an array containing the desired values of N, the size of the micrographs to be generated
         sd: a seed
 
     Returns:
