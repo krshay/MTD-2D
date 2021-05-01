@@ -55,34 +55,3 @@ def calcM3_parallel_micrographs(L, sigma2, gamma, c, kvals, Bk, W, T, N, NumMicr
         M3_ys[ii, :, :, :, :] = Ms_parallel[ii][2]
     
     return M1_ys, M2_ys, M3_ys
-
-# def calcM3_parallel_shifts(L, sigma2, gamma, c, kvals, Bk, W, T, N):
-#     print('Started calculations')
-#     y_clean, _, _ = generate_clean_micrograph_2d_rots(c, kvals, Bk, W, L, N, gamma*(N/L)**2, T, seed=100)
-#     y = y_clean + np.random.default_rng().normal(loc=0, scale=np.sqrt(sigma2), size=np.shape(y_clean))
-#     yy = np.zeros((N, N, 1))
-#     yy[ :, :, 0] = y
-#     M1_y = np.mean(y)
-    
-#     M2_y = np.zeros((L, L))
-#     for i1 in range(L):
-#         for j1 in range(L):
-#             M2_y[i1, j1] = M2_2d(yy, (i1, j1))
-#     print('finished autocorrelations 1st and 2nd order')
-    
-#     num_cpus = mp.cpu_count()
-#     list_shifts = list(itertools.product(np.arange(L), np.arange(L), np.arange(L), np.arange(L)))
-#     list_list_shifts = np.array_split(list_shifts, num_cpus)
-#     pool = mp.Pool(num_cpus)
-#     M3_ys_parallel = pool.starmap(calc_M3_for_list, [[yy, list_list_shifts[ii], ii] for ii in range(num_cpus)])
-#     pool.close()
-#     pool.join()
-    
-#     M3_y = []
-#     for M3_ys in M3_ys_parallel:
-#         values_M3_ys = list(M3_ys.values())
-#         M3_y = M3_y + values_M3_ys
-#     M3_y = np.reshape(np.array(M3_y), (L, L, L, L))
-
-#     return M1_y, M2_y, M3_y
-
