@@ -48,13 +48,5 @@ def calc_M3_for_micrograph(L, c, kvals, Bk, W, N, gamma, T, sigma2, sd):
             for i2 in range(L):
                 for j2 in range(L):
                     M3_y[i1, j1, i2, j2] = M3_2d(yy, (i1, j1), (i2, j2))
-    print(f'finished micrograph #{sd}')
+    
     return M1_y, M2_y, M3_y
-
-# def calc_M3_for_list(yy, list_shifts, ii):
-#     M3_y = {}
-#     for shift_idx in range(np.shape(list_shifts)[0]):
-#         i1, j1, i2, j2 = list_shifts[shift_idx]
-#         M3_y[(i1, j1, i2, j2)] = M3_2d(yy, (i1, j1), (i2, j2))
-#     print(f'finished part #{ii} out of {mp.cpu_count()}')
-#     return M3_y
