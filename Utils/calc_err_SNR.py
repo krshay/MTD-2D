@@ -149,5 +149,5 @@ def calc_err_SNR_bothcases(L, ne, N, SNRs, sd):
         est_err_coeffs3 = min_err_coeffs(z, z_est3, kvals)
         errs_Algorithm1[idx, 2] = est_err_coeffs3[0]
         costs_Algorithm1[idx, 2] = X_est3.fun
-        print(f'iteration #{idx} in seed #{sd} is finished.')
+        
     return errs_known, costs_known, errs_Algorithm1, costs_Algorithm1
