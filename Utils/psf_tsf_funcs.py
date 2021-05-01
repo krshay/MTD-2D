@@ -66,8 +66,8 @@ def full_tsf_2d(locations, L):
                 dif2 = np.array(loc) - np.array(close_loc2)
                 tsf[dif1[0]+2*L-2, dif1[1]+2*L-2, dif2[0]+2*L-2, dif2[1]+2*L-2] += 1/(M**2)
     tsf[2*L-2, 2*L-2, :, :] = 0
+    
     return tsf
-
 
 def makeExtraMat(L, psf):
     """ Rearranging the pair separation function to a matrix-form, to ease calculations.
@@ -121,7 +121,6 @@ def makeExtraMat(L, psf):
                         Mat2[row, np.ravel_multi_index([(i-shift1x)%(2*L-1), (j-shift1y)%(2*L-1)], (2*L-1, 2*L-1))] += psf[i + 2*L-2, j + 2*L-2]
                         
     return scipy.sparse.csr_matrix(Mat2), scipy.sparse.csr_matrix(Mat3)
-
 
 def maketsfMat(L, tsf):
     """ Rearranging the triplet separation function to a matrix-form, to ease calculations.
