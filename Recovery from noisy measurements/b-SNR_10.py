@@ -7,7 +7,6 @@ Created on Sat Mar  6 19:48:24 2021
 
 import numpy as np
 import matplotlib.pyplot as plt
-
 from Utils.fb_funcs import expand_fb, min_err_coeffs, calcT
 import Utils.optimization_funcs_rot
 from Utils.calcM3_parallel import calcM3_parallel_micrographs
@@ -42,7 +41,7 @@ if __name__ == '__main__':
     
     # %% Autocorrelations calculations
     M1_ys, M2_ys, M3_ys = calcM3_parallel_micrographs(L, sigma2, gamma, c, kvals, Bk, W, T, N, NumMicrographs)
-    
+
     M1_y = np.mean(M1_ys)
     
     M2_y = np.mean(M2_ys, 0)

@@ -27,20 +27,20 @@ if __name__ == '__main__':
     num_cpus = mp.cpu_count()
     # %% Known psf and tsf
     pool = mp.Pool(num_cpus)
-    Sknown = pool.starmap(calc_err_size_knownpsftsf, [[L, ne, N, sizes, i] for i in range(Niters)])
+    Sknown = pool.starmap(calc_err_size_knownpsftsf, [[L, ne, sizes, i] for i in range(Niters)])
     pool.close()
     pool.join() 
     
     # %% Algorithm1
     pool = mp.Pool(num_cpus)
-    SAlgorithm1 = pool.starmap(calc_err_size_Algorithm1, [[L, ne, N, sizes, i] for i in range(Niters)])
+    SAlgorithm1 = pool.starmap(calc_err_size_Algorithm1, [[L, ne, sizes, i] for i in range(Niters)])
     pool.close()
     pool.join()
     
     # %% No psf and tsf
     sizes_no = np.logspace(np.log10(1000), np.log10(N), 5).astype(int)
     pool = mp.Pool(num_cpus)
-    Sno = pool.starmap(calc_err_size_nopsftsf, [[L, ne, N, sizes, i] for i in range(Niters)])
+    Sno = pool.starmap(calc_err_size_nopsftsf, [[L, ne, sizes, i] for i in range(Niters)])
     pool.close()
     pool.join()
     
@@ -67,19 +67,13 @@ if __name__ == '__main__':
     plt.close("all")
     with plt.style.context('ieee'):
         fig = plt.figure()
-        
         plt.loglog(sizes**2, errsknown_median[3]*(sizes**2/sizes[3]**2)**(-1/2), 'k--', label='_nolegend_', lw=0.5)
         plt.loglog(sizes**2, errsknown_median, '.-b', label=r'known $\xi$ and $\zeta$')
-    
         plt.loglog(sizes**2, errsAlgorithm1_median[3]*(sizes**2/sizes[3]**2)**(-1/2), 'k--', label='_nolegend_', lw=0.5)
         plt.loglog(sizes**2, errsAlgorithm1_median, '.--r', label='Algorithm 1')
-        
         plt.loglog(sizes_no**2, errs_no_median, ':g', label=r'no $\xi$ and $\zeta$')
-    
-        plt.legend(loc=(0.5, 0.62))#, fontsize=6)
-        
+        plt.legend(loc=(0.5, 0.62))
         plt.xlabel('Measurement size [pixels]')
-        
         plt.ylabel('Mean estimation error')
         fig.tight_layout()
         plt.show()

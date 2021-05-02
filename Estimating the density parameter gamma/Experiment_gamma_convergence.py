@@ -6,9 +6,7 @@ Created on Fri Feb 19 14:37:57 2021
 """
 import numpy as np
 import matplotlib.pyplot as plt
-
 import scipy
-
 from Utils.fb_funcs import expand_fb, calcT
 from Utils.generate_clean_micrograph_2d import generate_clean_micrograph_2d_rots
 from Utils.funcs_calc_moments import M2_2d, M3_2d
@@ -97,5 +95,3 @@ tsfMat_well_separated_009 = scipy.sparse.csr_matrix(np.zeros(np.shape(tsfMat_app
 
 est_well_separated_009, history_well_separated_009 = Utils.optimization_funcs_rot.optimize_2d_known_psf_triplets_with_callback(np.concatenate((np.reshape(gamma_initial_009, (1,)), c_initial)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, tsfMat_well_separated_009, ExtraMat2_well_separated_009, ExtraMat3_well_separated_009, numiters=100, gtol=1e-15)
 errs_well_separated_009 = 100 * np.abs(np.array(history_well_separated_009) - gamma) / gamma
-
-    

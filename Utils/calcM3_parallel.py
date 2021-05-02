@@ -4,17 +4,10 @@ Created on Sat Mar  6 20:15:39 2021
 
 @author: Shay Kreymer
 """
+
 import numpy as np
-
 import multiprocessing as mp
-
-from Utils.funcs_calc_moments import M2_2d
-
-from Utils.calc_3rdorder_ac import calc_M3_for_micrograph, calc_M3_for_list
-
-from Utils.generate_clean_micrograph_2d import generate_clean_micrograph_2d_rots
-
-import itertools
+from Utils.calc_3rdorder_ac import calc_M3_for_micrograph
 
 def calcM3_parallel_micrographs(L, sigma2, gamma, c, kvals, Bk, W, T, N, NumMicrographs):
     """ Create multiple micrographs and calculate the first-, second- 

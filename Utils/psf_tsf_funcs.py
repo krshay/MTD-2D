@@ -4,12 +4,11 @@ Created on Sat Apr 10 16:31:53 2021
 
 @author: Shay Kreymer
 """
+
 import numpy as np
 import scipy.spatial as spatial
 import scipy
-
 import itertools
-
 import multiprocessing as mp
 
 def full_psf_2d(locations, L):

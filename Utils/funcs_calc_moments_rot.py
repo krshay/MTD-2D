@@ -8,8 +8,6 @@ Created on Sat Jul 18 12:23:14 2020
 import numpy as np
 import itertools
 import scipy.sparse as sp
-
-
 import multiprocessing as mp
 
 def calck1k2k3(L):
@@ -32,7 +30,6 @@ def calck1k2k3(L):
         k1k2k3_map.append((shift1, shift2, shift3))
     
     return k1k2k3_map
-
 
 def calcmap3(L):
     """ Calculate triplets of freuencies k1, k2 and -k1-k2, in an array form

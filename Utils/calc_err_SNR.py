@@ -6,7 +6,6 @@ Created on Sun Jan 24 18:38:45 2021
 """
 
 import numpy as np
-
 from Utils.fb_funcs import expand_fb, min_err_coeffs, calcT
 from Utils.generate_clean_micrograph_2d import generate_clean_micrograph_2d_rots
 from Utils.funcs_calc_moments import M2_2d, M3_2d
@@ -128,26 +127,26 @@ def calc_err_SNR_bothcases(L, ne, N, SNRs, sd):
         errs_known[idx, 2] = est_err_coeffs3[0]
         costs_known[idx, 2] = X3_known.fun
         
-        X_est1, _, _ = Utils.optimization_funcs_rot.optimize_rot_Algorithm1_notparallel(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial1)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, W, 10000, iters_till_change=150) 
-        X_est2, _, _ = Utils.optimization_funcs_rot.optimize_rot_Algorithm1_notparallel(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial2)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, W, 10000, iters_till_change=150) 
-        X_est3, _, _ = Utils.optimization_funcs_rot.optimize_rot_Algorithm1_notparallel(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial3)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, W, 10000, iters_till_change=150) 
+        X_Algorithm1_1, _, _ = Utils.optimization_funcs_rot.optimize_rot_Algorithm1_notparallel(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial1)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, W, 10000, iters_till_change=150) 
+        X_Algorithm1_2, _, _ = Utils.optimization_funcs_rot.optimize_rot_Algorithm1_notparallel(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial2)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, W, 10000, iters_till_change=150) 
+        X_Algorithm1_3, _, _ = Utils.optimization_funcs_rot.optimize_rot_Algorithm1_notparallel(np.concatenate((np.reshape(gamma_initial, (1,)), c_initial3)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, W, 10000, iters_till_change=150) 
 
-        c_est1 = X_est1.x[1:]
+        c_est1 = X_Algorithm1_1.x[1:]
         z_est1 = T.H @ c_est1
         est_err_coeffs1 = min_err_coeffs(z, z_est1, kvals)
         errs_Algorithm1[idx, 0] = est_err_coeffs1[0]
-        costs_Algorithm1[idx, 0] = X_est1.fun
+        costs_Algorithm1[idx, 0] = X_Algorithm1_1.fun
         
-        c_est2 = X_est2.x[1:]
+        c_est2 = X_Algorithm1_2.x[1:]
         z_est2 = T.H @ c_est2
         est_err_coeffs2 = min_err_coeffs(z, z_est2, kvals)
         errs_Algorithm1[idx, 1] = est_err_coeffs2[0]
-        costs_Algorithm1[idx, 1] = X_est2.fun
+        costs_Algorithm1[idx, 1] = X_Algorithm1_2.fun
         
-        c_est3 = X_est3.x[1:]
+        c_est3 = X_Algorithm1_3.x[1:]
         z_est3 = T.H @ c_est3
         est_err_coeffs3 = min_err_coeffs(z, z_est3, kvals)
         errs_Algorithm1[idx, 2] = est_err_coeffs3[0]
-        costs_Algorithm1[idx, 2] = X_est3.fun
+        costs_Algorithm1[idx, 2] = X_Algorithm1_3.fun
         
     return errs_known, costs_known, errs_Algorithm1, costs_Algorithm1

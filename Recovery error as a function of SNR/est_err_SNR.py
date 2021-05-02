@@ -48,12 +48,9 @@ if __name__ == '__main__':
     plt.close("all")
     with plt.style.context('ieee'):
         fig = plt.figure()
-
         plt.loglog(SNRs, errs_known_mean, '.-b', label=r'known $\xi$ and $\zeta$', lw=0.2)  
         plt.loglog(SNRs, errs_Algorithm1_mean, '.--r', label='Algorithm 1', lw=0.2)
-        
-        plt.loglog(SNRs[0:25], errs_known_mean[5]*(SNRs[0:25]/SNRs[5])**(-3/2), 'k--', lw=1)    
-        # plt.loglog(SNRs[-18:], errs_known_mean[-11]*(SNRs[-18:]/SNRs[-11])**(-1/2), 'k--', lw=1)    
+        plt.loglog(SNRs[0:25], errs_known_mean[5]*(SNRs[0:25]/SNRs[5])**(-3/2), 'k--', lw=1)   
         plt.legend(loc=1)
         plt.xlabel('SNR')
         plt.ylabel('Mean estimation error')

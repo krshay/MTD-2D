@@ -5,9 +5,7 @@ Created on Sat Mar  6 20:17:45 2021
 @author: Shay Kreymer
 """
 import numpy as np
-
 from Utils.funcs_calc_moments import M2_2d, M3_2d
-
 from Utils.generate_clean_micrograph_2d import generate_clean_micrograph_2d_rots
 
 def calc_M3_for_micrograph(L, c, kvals, Bk, W, N, gamma, T, sigma2, sd):

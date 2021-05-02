@@ -8,7 +8,6 @@ Created on Wed Jul  1 20:00:31 2020
 import numpy as np
 import scipy.special as spl
 import scipy.sparse as sp
-# from Utils.calc_estimation_error import calc_estimation_error
 
 def expand_fb(img, ne):
     """ Expands img using its first ne expansion coefficients
@@ -169,6 +168,7 @@ def min_err_coeffs(z, z_est, kvals):
     for t in range(len(thetas)):
         z_est_rot = z_est*np.exp(1j*thetas[t]*kvals)
         errs[t] = np.linalg.norm(z-z_est_rot, ord=2)/np.linalg.norm(z, ord=2)
+        
     return np.min(errs), thetas[np.argmin(errs)]
 
 def calcT(nu, kvals):
@@ -211,6 +211,7 @@ def calcT(nu, kvals):
     v = v[0:jj] 
     iv = iv[0:jj]
     jv = jv[0:jj]
-    T = sp.csr_matrix((v,(iv,jv)),shape=(nu, nu))  
+    T = sp.csr_matrix((v,(iv,jv)),shape=(nu, nu))
+    
     return T
     

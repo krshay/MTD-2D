@@ -6,7 +6,6 @@ Created on Sun Jan 24 18:38:45 2021
 """
 
 import numpy as np
-
 from Utils.fb_funcs import expand_fb, min_err_coeffs, calcT
 from Utils.generate_clean_micrograph_2d import generate_clean_micrograph_2d_rots
 from Utils.funcs_calc_moments import M2_2d, M3_2d
@@ -113,6 +112,7 @@ def calc_err_size_knownpsftsf(L, ne, sizes, sd):
         est_err_coeffs3 = min_err_coeffs(z, z_est3, kvals)
         errs[idx, 2] = est_err_coeffs3[0]
         costs[idx, 2] = X_est3.fun
+        
     return errs, costs
 
 def calc_err_size_Algorithm1(L, ne, sizes, sd):
@@ -212,6 +212,7 @@ def calc_err_size_Algorithm1(L, ne, sizes, sd):
         est_err_coeffs3 = min_err_coeffs(z, z_est3, kvals)
         errs[idx, 2] = est_err_coeffs3[0]
         costs[idx, 2] = X_est3.fun
+        
     return errs, costs
 
 def calc_err_size_nopsftsf(L, ne, sizes, sd):
@@ -320,5 +321,6 @@ def calc_err_size_nopsftsf(L, ne, sizes, sd):
         errs[idx, 2] = est_err_coeffs3[0]
         costs[idx, 2] = X_est3.fun
         X_ests[idx, 2, :] = X_est3.x
+        
     return errs, costs, X_ests, c
     

@@ -11,7 +11,6 @@ import Utils.c_g_funcs_rot
 from Utils.funcs_calc_moments_rot import calcmap3, calck1, calcN_mat
 from Utils.psf_tsf_funcs import makeExtraMat, maketsfMat, maketsfMat_parallel
 from Utils.generate_clean_micrograph_2d import generate_clean_micrograph_2d_rots
-
 import Utils.psf_tsf_funcs
 
 def optimize_2d_known_psf_triplets(initial_guesses, Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, K, tsfMat, ExtraMat2, ExtraMat3, numiters=3000, gtol=1e-15):
@@ -168,4 +167,5 @@ def optimize_2d_known_psf_triplets_with_callback(initial_guesses, Bk, T, kvals, 
     history = [initial_guesses[0]]
     def func_callback(x):
         history.append(x[0])
+        
     return minimize(fun=Utils.c_g_funcs_rot.cost_grad_fun_rot_notparallel, x0=initial_guesses, method='BFGS', jac=True, callback=func_callback, options={'disp': True, 'maxiter':numiters, 'gtol': gtol}, args = (Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, ExtraMat2, ExtraMat3, tsfMat, L, K, N_mat, k1_map, map3)), history

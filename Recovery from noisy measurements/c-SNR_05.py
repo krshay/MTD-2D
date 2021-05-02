@@ -7,7 +7,6 @@ Created on Sat Mar  6 19:48:24 2021
 
 import numpy as np
 import matplotlib.pyplot as plt
-
 from Utils.fb_funcs import expand_fb, min_err_coeffs, calcT
 import Utils.optimization_funcs_rot
 from Utils.calcM3_parallel import calcM3_parallel_micrographs
