@@ -86,9 +86,6 @@ def calc_err_size_both(L, ne, sizes, sd):
                     for j2 in range(L):
                         M3_y[i1, j1, i2, j2] = M3_2d(yy, (i1, j1), (i2, j2))
         del yy
-        np.save(f'M1_y_size_{sz}_seed_{sd}.npy', M1_y)
-        np.save(f'M2_y_size_{sz}_seed_{sd}.npy', M2_y)
-        np.save(f'M3_y_size_{sz}_seed_{sd}.npy', M3_y)
         
         for jj in range(NumGuesses):
             X_est_known = Utils.optimization_funcs_rot.optimize_2d_known_psf_triplets(np.concatenate((np.reshape(gamma_initial, (1,)), cs[jj, :])), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, tsfMat, ExtraMat2, ExtraMat3) 
@@ -104,8 +101,7 @@ def calc_err_size_both(L, ne, sizes, sd):
             est_err_coeffs_Algorithm1 = min_err_coeffs(z, z_est_Algorithm1, kvals)
             errs_Algorithm1[idx, jj] = est_err_coeffs_Algorithm1[0]
             costs_Algorithm1[idx, jj] = X_est_Algorithm1.fun
-            
-        print(f'finished {sz} * {sz} in seed #{sd}')
+
     return errs_known, costs_known, errs_Algorithm1, costs_Algorithm1
 
 
@@ -188,7 +184,6 @@ def calc_err_size_nopsftsf(L, ne, sizes, sd):
             est_err_coeffs_known = min_err_coeffs(z, z_est_known, kvals)
             errs[idx, jj] = est_err_coeffs_known[0]
             costs[idx, jj] = X_est_known.fun
-        print(f'finished {sz} * {sz} in seed #{sd}')
         
     return errs, costs
     
