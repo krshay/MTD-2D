@@ -76,3 +76,4 @@ if __name__ == '__main__':
         plt.ylabel('Mean estimation error')
         fig.tight_layout()
         plt.show()
+
