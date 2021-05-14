@@ -19,11 +19,11 @@ if __name__ == '__main__':
     # Estimation error as a function of SNR for both cases: known pair separation functions, and Algorithm 1.
     # %% Preliminary definitions
     N = 7000
-    Niters = 50
-    SNRs_length = 50
+    Niters = 40
+    SNRs_length = 70
     L = 5
     ne = 10
-    SNRs = np.concatenate((np.logspace(np.log10(0.0005), np.log10(0.005), 18), np.logspace(np.log10(0.0005), np.log10(1000), 32)))
+    SNRs = np.concatenate((np.logspace(np.log10(0.0005), np.log10(0.01), 40), np.logspace(np.log10(0.012), np.log10(250), 30)))
     
     # %% Calculations
     num_cpus = mp.cpu_count()

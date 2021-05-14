@@ -29,7 +29,7 @@ def calc_err_SNR_bothcases(L, ne, N, SNRs, sd):
     """
     # %% preliminary definitions
     np.random.seed(sd)
-    NumGuesses = 10
+    NumGuesses = 3
     errs_known = np.zeros((len(SNRs), NumGuesses))
     costs_known = np.zeros((len(SNRs), NumGuesses))
     errs_Algorithm1 = np.zeros((len(SNRs), NumGuesses))
