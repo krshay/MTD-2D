@@ -6,7 +6,6 @@ Created on Sun Jan 24 18:38:45 2021
 """
 
 import numpy as np
-
 from Utils.fb_funcs import expand_fb, min_err_coeffs, calcT
 from Utils.generate_clean_micrograph_2d import generate_clean_micrograph_2d_rots
 from Utils.funcs_calc_moments import M2_2d, M3_2d
