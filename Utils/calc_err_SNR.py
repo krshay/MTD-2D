@@ -55,7 +55,7 @@ def calc_err_SNR_bothcases(L, ne, N, SNRs, sd):
     Bk = np.zeros((2*L-1, 2*L-1, nu), dtype=np.complex_)
     for ii in range(nu):
         Bk[ :, :, ii] = np.fft.fft2(np.pad(np.reshape(B[ :, ii], (L, L)), L//2))
-    Xrec = np.reshape(np.real(B @ z), np.shape(X))\
+    Xrec = np.reshape(np.real(B @ z), np.shape(X))
     # %% initial guesses
     gamma_initial = 0.09
 
