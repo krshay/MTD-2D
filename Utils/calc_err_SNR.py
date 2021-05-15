@@ -68,7 +68,7 @@ def calc_err_SNR_bothcases(L, ne, N, SNRs, sd):
         cs[jj, :] = c_initial
 
     # %% calculations
-    y_clean, s, locs = generate_clean_micrograph_2d_rots(c, kvals, Bk, W, L, N, 0.100*(N/L)**2, T, seed=sd)
+    y_clean, s, locs = generate_clean_micrograph_2d_rots(c, kvals, Bk, W, L, N, 0.1*(N/L)**2, T, seed=sd)
     psf = full_psf_2d(locs, L)
     tsf = full_tsf_2d(locs, L)
     
