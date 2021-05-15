@@ -1,5 +1,5 @@
 # MTD-2D
- Code for the paper Two-dimensional Multi-target Detection by Shay Kreymer and Tamir Bendory.
+ Code for the paper "Two-dimensional Multi-target Detection" by Shay Kreymer and Tamir Bendory.
  
  # Paper reproduction:
  
@@ -13,7 +13,7 @@
  
  # Images and utilities:
  
- The image used in the paper are located in the folder images.
+ The 9*9 target image used in the paper is located in the folder images.
  
  All utilities are in the Utils folder.
  
