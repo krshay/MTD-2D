@@ -47,7 +47,7 @@ _, z_initial, _, _, _ = expand_fb(X_initial, ne)
 c_initial = np.real(T @ z_initial)
 
 y_clean, s, locs = generate_clean_micrograph_2d_rots(c, kvals, Bk, W, L, N, gamma*(N/L)**2, T, seed=100)
-SNR = 1
+SNR = 0.1
 sigma2 = 1 / (SNR * L**2)
 y = y_clean + np.random.default_rng().normal(loc=0, scale=np.sqrt(sigma2), size=np.shape(y_clean))
 
@@ -98,9 +98,12 @@ peaks_locs[ :, 0] = x_peaks
 peaks_locs[ :, 1] = y_peaks
 
 X_est_conv = np.zeros((L, L))
+count = 0
 for i in range(len(locs)):
-    X_est_conv += y[peaks_locs[i, 0] - L + 1: peaks_locs[i, 0] + 1,  peaks_locs[i, 1] - L + 1: peaks_locs[i, 1] + 1]
-X_est_conv = X_est_conv / len(locs)
-_, z_est_conv, _, _, _ = expand_fb(X, ne)
+    if peaks_locs[i, 0] >= L-1 and peaks_locs[i, 1] >= L-1 and peaks_locs[i, 0] < N and peaks_locs[i, 1] < N:
+        count += 1
+        X_est_conv += y[peaks_locs[i, 0] - L + 1: peaks_locs[i, 0] + 1,  peaks_locs[i, 1] - L + 1: peaks_locs[i, 1] + 1]
+X_est_conv = X_est_conv / count
+_, z_est_conv, _, _, _ = expand_fb(X_est_conv, ne)
 err_conv = min_err_coeffs(z, z_est_conv, kvals)[0]
 
