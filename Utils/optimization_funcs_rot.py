@@ -69,7 +69,7 @@ def optimize_rot_Algorithm1_parallel(initial_guesses, Bk, T, kvals, M1_y, M2_y, 
     map3 = calcmap3(L)
     N_mat = calcN_mat(L)
     
-    _, _, locs_init = generate_clean_micrograph_2d_rots(initial_guesses[1: ], kvals, Bk, W, L, 10000, (initial_guesses[0]*(10000/L)**2).astype(int), T, seed=1)
+    _, _, locs_init = generate_clean_micrograph_2d_rots(initial_guesses[1: ], kvals, Bk, W, L, N, (initial_guesses[0]*(N/L)**2).astype(int), T, seed=1)
     psf_init = Utils.psf_tsf_funcs.full_psf_2d(locs_init, L)
     ExtraMat2, ExtraMat3 = makeExtraMat(L, psf_init)
     tsf_init = Utils.psf_tsf_funcs.full_tsf_2d(locs_init, L)
@@ -117,7 +117,7 @@ def optimize_rot_Algorithm1_notparallel(initial_guesses, Bk, T, kvals, M1_y, M2_
     map3 = calcmap3(L)
     N_mat = calcN_mat(L)
     
-    y_init, _, locs_init = generate_clean_micrograph_2d_rots(initial_guesses[1: ], kvals, Bk, W, L, 10000, (initial_guesses[0]*(10000/L)**2).astype(int), T, seed=100)
+    y_init, _, locs_init = generate_clean_micrograph_2d_rots(initial_guesses[1: ], kvals, Bk, W, L, N, (initial_guesses[0]*(N/L)**2).astype(int), T, seed=100)
     psf_init = Utils.psf_tsf_funcs.full_psf_2d(locs_init, L)
     ExtraMat2, ExtraMat3 = makeExtraMat(L, psf_init)
     tsf_init = Utils.psf_tsf_funcs.full_tsf_2d(locs_init, L)
@@ -127,7 +127,7 @@ def optimize_rot_Algorithm1_notparallel(initial_guesses, Bk, T, kvals, M1_y, M2_
     first_gamma = first_estimates.x[0]
     first_c = first_estimates.x[1: ]
     
-    y2, _, locs2 = generate_clean_micrograph_2d_rots(first_c, kvals, Bk, W, L, 10000, (first_gamma*(10000/L)**2).astype(int), T, seed=1000)
+    y2, _, locs2 = generate_clean_micrograph_2d_rots(first_c, kvals, Bk, W, L, N, (first_gamma*(N/L)**2).astype(int), T, seed=1000)
     psf2 = Utils.psf_tsf_funcs.full_psf_2d(locs2, L)
     ExtraMat2, ExtraMat3 = makeExtraMat(L, psf2)
     tsf2 = Utils.psf_tsf_funcs.full_tsf_2d(locs2, L)

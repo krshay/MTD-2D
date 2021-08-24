@@ -179,7 +179,7 @@ with plt.style.context('ieee'):
     plt.grid(True, which='both', axis='both')
 
     plt.xlim(0, 250)
-    plt.ylim(0.09, 0.11)
+    plt.ylim(0.085, 0.11)
 
     labels = [r"known $\xi$ and $\zeta$", r"approximated $\xi$ and $\zeta$", r"no $\xi$ and $\zeta$"]#, r"accurate $\xi$ and $\zeta$; $\gamma_{\mathrm{init}} = 0.11$", r"approximated $\xi$ and $\zeta$; $\gamma_{\mathrm{init}} = 0.11$"]
     plt.legend(labels, loc=1, fontsize=7)

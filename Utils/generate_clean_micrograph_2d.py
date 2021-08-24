@@ -31,7 +31,6 @@ def generate_clean_micrograph_2d_rots(c, kvals, Bk, W, L, N, m, T, p=np.array([1
     if seed != None:
         np.random.seed(seed)
     m = round(m)
-    thetas = np.linspace(0, 2*np.pi, m)
     thetas = np.random.uniform(low=0, high=2*np.pi, size=(m, ))
     mask = np.zeros((N, N))
     # The locations table records the chosen signal locations.
