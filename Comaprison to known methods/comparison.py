@@ -7,6 +7,7 @@ Created on Tue Aug 24 17:46:04 2021
 
 import numpy as np
 import matplotlib.pyplot as plt
+import shelve
 
 import multiprocessing as mp
 
@@ -44,15 +45,26 @@ if __name__ == '__main__':
     for j in range(Niters):
         errs_conv[j, :] = S[j][2]
     errs_conv_mean = np.mean(errs_conv, 0)
-
+    
+    
+    filename=r'C:/Users/kreym/Documents/GitHub/MTD-2D/Comaprison to known methods/shelve_25082021.out'
+    # %% load
+    my_shelf = shelve.open(filename)
+    for key in my_shelf:
+        globals()[key]=my_shelf[key]
+    my_shelf.close()
     # %% Plotting
     plt.close("all")
     with plt.style.context('ieee'):
         fig = plt.figure()
         plt.loglog(SNRs, errs_Algorithm1_mean, '.-b', label='Algorithm 1', lw=0.2)  
-        plt.loglog(SNRs, errs_conv_mean, '.--r', label='oracle-conv', lw=0.2)
+        plt.loglog(SNRs, errs_conv_mean, '.--r', label='oracle-deconv', lw=0.2)
         plt.legend(loc=1)
         plt.xlabel('SNR')
         plt.ylabel('Mean estimation error')
         fig.tight_layout()
         plt.show()
+        
+        plt.savefig(r'C:\Users\kreym\Google Drive\Thesis\Documents\Article v2\figures\comparison_oracle.pdf')
+
+
