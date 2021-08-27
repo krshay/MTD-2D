@@ -198,7 +198,7 @@ with plt.style.context('ieee'):
     l1 = plt.plot(iters, history_true_001)
     l2 = plt.plot(iters, history_approx_001)
     l3 = plt.plot(iters, history_well_separated_001)
-
+    plt.axvline(x=100, color='k', linestyle='--')
 
     plt.xticks(list(range(0,251,25)))
     plt.yticks(list(np.arange(0, 0.12, 0.01)))

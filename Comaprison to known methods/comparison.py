@@ -57,8 +57,8 @@ if __name__ == '__main__':
     plt.close("all")
     with plt.style.context('ieee'):
         fig = plt.figure()
-        plt.loglog(SNRs, errs_Algorithm1_mean, '.-b', label='Algorithm 1', lw=0.2)  
-        plt.loglog(SNRs, errs_conv_mean, '.--r', label='oracle-deconv', lw=0.2)
+        plt.loglog(SNRs, errs_Algorithm1_mean, '.-b', label='Algorithm 1')  
+        plt.loglog(SNRs, errs_conv_mean, '.--r', label='oracle-deconv')
         plt.legend(loc=1)
         plt.xlabel('SNR')
         plt.ylabel('Mean estimation error')
