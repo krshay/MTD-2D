@@ -25,8 +25,10 @@ def calc_err_SNR_bothcases(L, ne, N, SNRs, sd):
         sd: a seed
 
     Returns:
-        errs: an array containing the estimation errors for each size (3 initial guesses)
-        errs: an array containing the objective function values for each size (3 initial guesses)
+        errs_known: an array containing the estimation errors for each size, known separation functions 
+        costs_known: an array containing the objective function values for each size, known separation functions
+        errs_Algorithm1: an array containing the estimation errors for each size, Algorithm 1
+        costs_Algorithm1: an array containing the objective function values for each size, Algorithm 1
     """
     # %% preliminary definitions
     np.random.seed(sd)
@@ -126,8 +128,9 @@ def calc_err_SNR_comparison(L, ne, N, SNRs, sd):
         sd: a seed
 
     Returns:
-        errs: an array containing the estimation errors for each size (3 initial guesses)
-        errs: an array containing the objective function values for each size (3 initial guesses)
+        errs_Algorithm1: an array containing the estimation errors for each size, Algorithm 1 
+        costs_Algorithm1: an array containing the objective function values for each size, Algorithm 1
+        errs_conv: an array containing the estimation errors for each size, oracle-based deconvolution
     """
     # %% preliminary definitions
     np.random.seed(sd)

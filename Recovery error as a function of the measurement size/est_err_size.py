@@ -14,7 +14,7 @@ plt.close("all")
 
 
 if __name__ == '__main__':
-    # Code to reproduce Fig. 5 in the paper. 
+    # Code to reproduce Fig. 6 in the paper. 
     # Estimation error as a function of measurement size for 3 cases: known pair separation functions, Algorithm 1, and assuming the well-separated model.
     # %% Preliminary definitions
     N = 30000

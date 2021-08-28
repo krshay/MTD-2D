@@ -15,7 +15,7 @@ from Utils.calc_err_SNR import calc_err_SNR_bothcases
 plt.close("all")
 
 if __name__ == '__main__':
-    # Code to reproduce Fig. 6 in the paper. 
+    # Code to reproduce Fig. 7 in the paper. 
     # Estimation error as a function of SNR for both cases: known pair separation functions, and Algorithm 1.
     # %% Preliminary definitions
     N = 7000

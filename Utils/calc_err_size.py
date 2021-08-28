@@ -22,8 +22,10 @@ def calc_err_size_both(L, ne, sizes, sd):
         sd: a seed
 
     Returns:
-        errs: an array containing the estimation errors for each size (3 initial guesses)
-        errs: an array containing the objective function values for each size (3 initial guesses)
+        errs_known: an array containing the estimation errors for each size, known separation functions 
+        costs_known: an array containing the objective function values for each size, known separation functions
+        errs_Algorithm1: an array containing the estimation errors for each size, Algorithm 1
+        costs_Algorithm1: an array containing the objective function values for each size, Algorithm 1
     """
     # %% preliminary definitions
     np.random.seed(sd)
@@ -115,8 +117,8 @@ def calc_err_size_nopsftsf(L, ne, sizes, sd):
         sd: a seed
 
     Returns:
-        errs: an array containing the estimation errors for each size (3 initial guesses)
-        errs: an array containing the objective function values for each size (3 initial guesses)
+        errs: an array containing the estimation errors for each size (10 initial guesses)
+        costs: an array containing the objective function values for each size (10 initial guesses)
     """
     # %% preliminary definitions
     np.random.seed(sd)

@@ -5,17 +5,12 @@ Created on Fri Feb 19 14:37:57 2021
 @author: Shay Kreymer
 """
 import numpy as np
-import matplotlib.pyplot as plt
 import scipy
 from Utils.fb_funcs import expand_fb, calcT
 from Utils.generate_clean_micrograph_2d import generate_clean_micrograph_2d_rots
 from Utils.funcs_calc_moments import M2_2d, M3_2d
 from Utils.psf_tsf_funcs import full_psf_2d, full_tsf_2d, makeExtraMat, maketsfMat
 import Utils.optimization_funcs_rot
-
-import shelve
-
-plt.close("all")
 
 np.random.seed(1)
 X = np.random.rand(5, 5)
@@ -134,90 +129,3 @@ tsfMat_well_separated_001 = scipy.sparse.csr_matrix(np.zeros(np.shape(tsfMat_app
 
 est_well_separated_001, history_well_separated_001 = Utils.optimization_funcs_rot.optimize_2d_known_psf_triplets_with_callback(np.concatenate((np.reshape(gamma_initial_001, (1,)), c_initial)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, tsfMat_well_separated_001, ExtraMat2_well_separated_001, ExtraMat3_well_separated_001, numiters=250, gtol=1e-15)
 errs_well_separated_001 = 100 * np.abs(np.array(history_well_separated_001) - gamma) / gamma
-
-
-
-filename=r'C:\Users\kreym\Google Drive\Thesis\Code\MTD-2D-FULL\FINAL_RESULTS\gamma_experiment_data\v2\shelf_experimentb.out'
-# %% save
-my_shelf = shelve.open(filename,'n') # 'n' for new
-
-for key in dir():
-    try:
-        my_shelf[key] = globals()[key]
-    except TypeError:
-        #
-        # __builtins__, my_shelf, and imported modules can not be shelved.
-        #
-        print('ERROR shelving: {0}'.format(key))
-    except AttributeError:
-        print('ERROR shelving: {0}'.format(key))
-my_shelf.close()
-
-# %% load
-my_shelf = shelve.open(filename)
-for key in my_shelf:
-    globals()[key]=my_shelf[key]
-my_shelf.close()
-
-# %% plots
-with plt.style.context('ieee'):
-    plt.close("all")
-    iters = list(range(251))
-    fig = plt.figure()
-    plt.plot(iters, 0.10 * np.ones((251, )), label='_nolegend_')
-    l1 = plt.plot(iters, history_true_009)
-    l2 = plt.plot(iters, history_approx_009)
-    l3 = plt.plot(iters, history_well_separated_009)
-
-
-    plt.xticks(list(range(0,251,25)))
-
-    plt.xlabel('iterations')
-
-    plt.ylabel('$\gamma$')
-
-    plt.grid(True, which='both', axis='both')
-
-    plt.xlim(0, 250)
-    plt.ylim(0.085, 0.11)
-
-    labels = [r"known $\xi$ and $\zeta$", r"approximated $\xi$ and $\zeta$", r"no $\xi$ and $\zeta$"]#, r"accurate $\xi$ and $\zeta$; $\gamma_{\mathrm{init}} = 0.11$", r"approximated $\xi$ and $\zeta$; $\gamma_{\mathrm{init}} = 0.11$"]
-    plt.legend(labels, loc=1, fontsize=7)
-
-    fig.tight_layout()
-    plt.show()
-
-    plt.savefig(r'C:\Users\kreym\Google Drive\Thesis\Documents\Article v2\figures\gamma_experiment_009.pdf')
-    
-# %% plots
-with plt.style.context('ieee'):
-    plt.close("all")
-    iters = list(range(251))
-    fig = plt.figure()
-    plt.plot(iters, 0.10 * np.ones((251, )), label='_nolegend_')
-    l1 = plt.plot(iters, history_true_001)
-    l2 = plt.plot(iters, history_approx_001)
-    l3 = plt.plot(iters, history_well_separated_001)
-    plt.axvline(x=100, color='k', linestyle='--')
-
-    plt.xticks(list(range(0,251,25)))
-    plt.yticks(list(np.arange(0, 0.12, 0.01)))
-
-
-    plt.xlabel('iterations')
-
-    plt.ylabel('$\gamma$')
-
-    plt.grid(True, which='both', axis='both')
-
-    plt.xlim(0, 250)
-    plt.ylim(0, 0.11)
-
-    labels = [r"known $\xi$ and $\zeta$", r"approximated $\xi$ and $\zeta$", r"no $\xi$ and $\zeta$"]#, r"accurate $\xi$ and $\zeta$; $\gamma_{\mathrm{init}} = 0.11$", r"approximated $\xi$ and $\zeta$; $\gamma_{\mathrm{init}} = 0.11$"]
-    plt.legend(labels, loc=4, fontsize=7)
-
-    fig.tight_layout()
-    plt.show()
-
-    plt.savefig(r'C:\Users\kreym\Google Drive\Thesis\Documents\Article v2\figures\gamma_experiment_001.pdf')
-    
