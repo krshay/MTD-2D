@@ -11,7 +11,7 @@
  
  To reproduce the experiments from Section III-D, run the scripts from the folder Recovery error as a function of SNR.
  
- To reproduce the experiments from Section III-E, run the scripts from the folder Comaprison to an oracle-based deconvolution method.
+ To reproduce the experiments from Section III-E, run the scripts from the folder Comaprison to an oracle-deconvolution method.
  
  # Images and utilities:
  
