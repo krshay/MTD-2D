@@ -20,7 +20,8 @@ def calc_acs_grads_rot_parallel(Bk, z, kvals, L, k1_map, map3):
         map3: array of triplets of frequencies
 
     Returns:
-        autocorrelations and gradients, second- and third-order autocorrelations, autocorrelations with a neighbor, and autocorrelations of a triplet of target images
+        autocorrelations and gradients, second- and third-order autocorrelations, autocorrelations with a neighbor,
+         and autocorrelations of a triplet of target images
     """
     kmax = np.max(kvals)
     Nmax = 6*kmax

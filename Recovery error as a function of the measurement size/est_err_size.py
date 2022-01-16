@@ -14,20 +14,21 @@ plt.close("all")
 
 
 if __name__ == '__main__':
-    # Code to reproduce Fig. 6 in the paper. 
-    # Estimation error as a function of measurement size for 3 cases: known pair separation functions, Algorithm 1, and assuming the well-separated model.
+    # Code to reproduce Fig. 5a in the paper.
+    # Estimation error as a function of measurement size for 3 cases: known pair separation functions,
+    # Algorithm 1, and assuming the well-separated model.
     # %% Preliminary definitions
     N = 30000
-    Niters = 10
+    Niters = 50
     L = 5
     ne = 10
     Nsizes = 15
     sizes = np.logspace(np.log10(1000), np.log10(N), Nsizes).astype(int)
     
     num_cpus = mp.cpu_count()
-    # %% Known psf and tsf
+    # %% Known psf and tsf and Algorithm 1
     pool = mp.Pool(num_cpus)
-    S = pool.starmap(calc_err_size_both, [[L, ne, sizes, i+50] for i in range(Niters)])
+    S = pool.starmap(calc_err_size_both, [[L, ne, sizes, i] for i in range(Niters)])
     pool.close()
     pool.join() 
     
@@ -69,11 +70,10 @@ if __name__ == '__main__':
         
         plt.loglog(sizes_no**2, errs_no_mean, ':g', label=r'no $\xi$ and $\zeta$')
     
-        plt.legend(loc=(0.5, 0.62))#, fontsize=6)
+        plt.legend(loc=(0.5, 0.62))
         
         plt.xlabel('Measurement size [pixels]')
         
         plt.ylabel('Mean estimation error')
         fig.tight_layout()
         plt.show()
-

@@ -12,13 +12,13 @@ import multiprocessing as mp
 from Utils.calc_err_SNR import calc_err_SNR_comparison
 
 if __name__ == '__main__':
-    # Code to reproduce Fig. 8 in the paper. 
+    # Code to reproduce Fig. 7 in the paper.
     # Estimation error as a function of SNR for Algorithm 1 and an oracle-based deconvolution.
     # %% Preliminary definitions
     N = 20000
     Niters = 10
     SNRs_length = 10
-    L = 5
+    L = 9
     ne = 10
     SNRs = np.logspace(np.log10(10**(-2)), np.log10(4), SNRs_length)
     

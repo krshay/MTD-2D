@@ -15,7 +15,7 @@ from Utils.calc_err_SNR import calc_err_SNR_bothcases
 plt.close("all")
 
 if __name__ == '__main__':
-    # Code to reproduce Fig. 7 in the paper. 
+    # Code to reproduce Fig. 6 in the paper.
     # Estimation error as a function of SNR for both cases: known pair separation functions, and Algorithm 1.
     # %% Preliminary definitions
     N = 7000
@@ -23,7 +23,8 @@ if __name__ == '__main__':
     SNRs_length = 70
     L = 5
     ne = 10
-    SNRs = np.concatenate((np.logspace(np.log10(0.0005), np.log10(0.01), 40), np.logspace(np.log10(0.012), np.log10(250), 30)))
+    SNRs = np.concatenate((np.logspace(np.log10(0.0005), np.log10(0.01), 40), np.logspace(np.log10(0.012),
+                                                                                          np.log10(250), 30)))
     
     # %% Calculations
     num_cpus = mp.cpu_count()

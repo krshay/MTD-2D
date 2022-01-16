@@ -16,7 +16,7 @@ np.random.seed(1)
 X = np.random.rand(5, 5)
 L = np.shape(X)[0]
 X = X / np.linalg.norm(X)
-W = L # L for arbitrary spacing distribution, 2*L-1 for well-separated
+W = L  # L for arbitrary spacing distribution, 2*L-1 for well-separated
 
 gamma = 0.1
 N = 25000
@@ -29,7 +29,7 @@ z = T.H@c
 Xrec = np.reshape(np.real(B @ z), np.shape(X))
 Bk = np.zeros((2*L-1, 2*L-1, nu), dtype=np.complex_)
 for i in range(nu):
-    Bk[ :, :, i] = np.fft.fft2(np.pad(np.reshape(B[ :, i], (L, L)), L//2))
+    Bk[:, :, i] = np.fft.fft2(np.pad(np.reshape(B[:, i], (L, L)), L//2))
 
 y_clean, s, locs = generate_clean_micrograph_2d_rots(c, kvals, Bk, W, L, N, gamma*(N/L)**2, T, seed=100)
 
@@ -41,7 +41,7 @@ y = y_clean + np.random.default_rng().normal(loc=0, scale=np.sqrt(sigma2), size=
 kmax = np.max(kvals)
 
 yy = np.zeros((N, N, 1))
-yy[ :, :, 0] = y
+yy[:, :, 0] = y
 M1_y = np.mean(y)
 
 M2_y = np.zeros((L, L))
@@ -73,7 +73,8 @@ gamma_initial_009 = 0.09
 y_initial, _, locs_initial = generate_clean_micrograph_2d_rots(c, kvals, Bk, W, L, N, gamma_initial_009*(N/L)**2, T)
 
 # using known PSF and TSF
-est_true_009, history_true_009 = Utils.optimization_funcs_rot.optimize_2d_known_psf_triplets_with_callback(np.concatenate((np.reshape(gamma_initial_009, (1,)), c_initial)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, tsfMat_true, ExtraMat2_true, ExtraMat3_true, numiters=250, gtol=1e-15)
+est_true_009, history_true_009 = Utils.optimization_funcs_rot.\
+    optimize_2d_known_psf_triplets_with_callback(np.concatenate((np.reshape(gamma_initial_009, (1,)), c_initial)), Bk, T, kvals, M1_y, M2_y, M3_y, sigma2, L, 1, tsfMat_true, ExtraMat2_true, ExtraMat3_true, numiters=250, gtol=1e-15)
 errs_true_009 = np.abs(np.array(history_true_009) - gamma) / gamma
 
 # using approximated PSF and TSF

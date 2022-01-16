@@ -48,3 +48,44 @@ def calc_M3_for_micrograph(L, c, kvals, Bk, W, N, gamma, T, sigma2, sd):
                     M3_y[i1, j1, i2, j2] = M3_2d(yy, (i1, j1), (i2, j2))
     
     return M1_y, M2_y, M3_y
+
+
+def calc_M3_for_micrograph_given(L, y):
+    """ Calculate first three autocorrelations of a micrograph.
+
+    Args:
+        L: diameter of the target image
+        c: real representation of the expansion coefficients of the target image
+        kvals: vector of frequencies
+        Bk: matrix that maps from the expansion coefficients to the approximated image, in the freuency domain
+        W: separation between images; L for arbitrary spacing distribution, 2*L-1 for the well-separated case
+        N: the width and height of each micrograph
+        gamma: the density
+        T: matrix that maps from the real representation to the complex representation of the expansion coefficients
+        sigma2: the variance of the noise
+        sd: a seed
+
+    Returns:
+        M1_ys: list of first-order autocorrelations
+        M2_ys: list of second-order autocorrelations
+        M3_ys: list of third-order autocorrelations
+    """
+    N = np.shape(y)[0]
+    yy = np.zeros((N, N, 1))
+    yy[:, :, 0] = y
+
+    M1_y = np.mean(y)
+
+    M2_y = np.zeros((L, L))
+    for i1 in range(L):
+        for j1 in range(L):
+            M2_y[i1, j1] = M2_2d(yy, (i1, j1))
+
+    M3_y = np.zeros((L, L, L, L))
+    for i1 in range(L):
+        for j1 in range(L):
+            for i2 in range(L):
+                for j2 in range(L):
+                    M3_y[i1, j1, i2, j2] = M3_2d(yy, (i1, j1), (i2, j2))
+
+    return M1_y, M2_y, M3_y
