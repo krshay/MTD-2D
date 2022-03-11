@@ -1,5 +1,5 @@
 # MTD-2D
- Code for the paper ["Two-Dimensional Multi-Target Detection: An Autocorrelation Analysis Approach"](https://ieeexplore.ieee.org/document/9699103) by Shay Kreymer and Tamir Bendory, [arXiv][https://arxiv.org/abs/2105.06765].
+ Code for the paper ["Two-Dimensional Multi-Target Detection: An Autocorrelation Analysis Approach"](https://ieeexplore.ieee.org/document/9699103) by Shay Kreymer and Tamir Bendory, [arXiv](https://arxiv.org/abs/2105.06765).
  
  # Paper reproduction:
  
